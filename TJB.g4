@@ -4,8 +4,12 @@ codeLine: (expression)* EOF;
 
 expression: assignment
           | calculation
-          | comparison
-          | if;
+          | if
+          | while
+          | display
+          | for
+          | booleanEXP
+          ;
 
 //...
 
@@ -18,6 +22,7 @@ calculation: '(' calculation ')'                                              # 
           | '-' calculation                                                   # ExNegate
           | left=calculation '*' right=calculation                            # ExMulOp
           | left=calculation '/' right=calculation                            # ExDivOp
+          | left=calculation '%' right=calculation                            # ExModOp
           | left=calculation op=('+' | '-') right=calculation                 # ExAddOp
           ;
 
@@ -25,12 +30,24 @@ calculation: '(' calculation ')'                                              # 
 //very good, tho.
 
 if: ifStatement (elseIfStatement)* (elseStatement)* 'End';
-ifStatement: 'If' (comparison | comparisonSTR) thenStatement;
+ifStatement: 'If' booleanEXP thenStatement;
 thenStatement: 'Then' (expression)*;
 elseStatement: 'Else' (expression)*;
 elseIfStatement: 'Else' ifStatement;
 
-comparison: left=calculation op=('<' | '<=' | '=' | '>' | '>=' ) right=calculation  # ExBoolean;
+booleanEXP: '(' booleanEXP ')'
+          | '!' booleanEXP
+          | calculation
+          | STR
+          | STRID
+          | left=booleanEXP comp=COMPTKN right=booleanEXP
+          ;
+
+while: 'While' booleanEXP (expression)* 'End';
+display: 'Disp' (calculation | STR) (',' (calculation | STR))*;
+//FIXME: Fix the calculation part ??
+for: 'For' iterator=VAR  (',' iterVal=(INT | DBL))? ',' comp=COMPTKN ',' upper=(VAR|INT|DBL) ',' increments=calculation expression* 'End';
+
 comparisonSTR:;
 
 assignment: calculation ASN VAR
@@ -42,7 +59,8 @@ arrayBuild: '{' (NIN | INT | DBL) (',' (NIN | INT | DBL))* '}';
 ASN: '->';
 VAR: [A-Z];
 STRID: 'Str' [0-9];
-STR: '"' ('a'..'z' | 'A'..'Z')+ '"';
+STR: '"' ('a'..'z' | 'A'..'Z' | ' ')+ '"' | '""';
+COMPTKN: '<' | '<=' | '=' | '!=' | '>' | '>=' | ('||' | 'And') | ('&&' | 'Or');
 //TODO: ONLY ALLOW UP TO 5 CHARACTERS FOR STRING NAME
 ARRAY: 'L'[1-6] | 'l'[a-zA-Z0-9];
 INT: '0' | [1-9][0-9]*;
