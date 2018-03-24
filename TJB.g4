@@ -52,8 +52,8 @@ comparisonSTR:;
 
 assignment: value=calculation ASN name=VAR         #NumAsn
           | value=(STR|STRID) ASN name=STRID       #StrAsn
-          | value=arrayBuild ASN name=ARRAY        #ArrAsn
-          | value=string32 ASN name=ARRAY             #ArrCpyAsn
+          | value=arrayBuild ASN name=checkArray   #ArrAsn
+          | value=checkArray ASN name=checkArray   #ArrCpyAsn
           ;
 
 arrayBuild: '{' (NIN | INT | DBL) (',' (NIN | INT | DBL))* '}';
@@ -71,7 +71,7 @@ NIN: '-' INT;
 DBL: (NIN | INT) ',' INT;
 WS: [\r\t\n ]+ -> skip;
 
-string32
+checkArray
     : ARRAY
     {
         final String id = $ARRAY.text;
