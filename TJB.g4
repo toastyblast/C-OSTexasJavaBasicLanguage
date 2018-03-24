@@ -4,10 +4,10 @@ codeLine: (expression)* EOF;
 
 expression: assignment
           | calculation
-          | if
-          | while
+          | ifTJB
+          | whileTJB
           | display
-          | for
+          | forTJB
           | booleanEXP
           ;
 
@@ -29,7 +29,7 @@ calculation: '(' calculation ')'                                              # 
 //I defined so many things because I thought it would be easier to manage them with the parser. I don't know if it is
 //very good, tho.
 
-if: ifStatement (elseIfStatement)* (elseStatement)* 'End';
+ifTJB: ifStatement (elseIfStatement)* (elseStatement)* 'End';
 ifStatement: 'If' booleanEXP thenStatement;
 thenStatement: 'Then' (expression)*;
 elseStatement: 'Else' (expression)*;
@@ -43,16 +43,18 @@ booleanEXP: '(' booleanEXP ')'
           | left=booleanEXP comp=COMPTKN right=booleanEXP
           ;
 
-while: 'While' booleanEXP (expression)* 'End';
+whileTJB: 'While' booleanEXP (expression)* 'End';
 display: 'Disp' (calculation | STR) (',' (calculation | STR))*;
 //FIXME: Fix the calculation part ??
-for: 'For' iterator=VAR  (',' iterVal=(INT | DBL))? ',' comp=COMPTKN ',' upper=(VAR|INT|DBL) ',' increments=calculation expression* 'End';
+forTJB: 'For' iterator=VAR  (',' iterVal=(INT | DBL))? ',' comp=COMPTKN ',' upper=(VAR|INT|DBL) ',' increments=calculation expression* 'End';
 
 comparisonSTR:;
 
-assignment: calculation ASN VAR
-          | STR ASN STRID
-          | arrayBuild ASN ARRAY;
+assignment: value=calculation ASN name=VAR         #NumAsn
+          | value=(STR|STRID) ASN name=STRID       #StrAsn
+          | value=arrayBuild ASN name=ARRAY        #ArrAsn
+          | value=string32 ASN name=ARRAY             #ArrCpyAsn
+          ;
 
 arrayBuild: '{' (NIN | INT | DBL) (',' (NIN | INT | DBL))* '}';
 
@@ -62,9 +64,28 @@ STRID: 'Str' [0-9];
 STR: '"' ('a'..'z' | 'A'..'Z' | ' ')+ '"' | '""';
 COMPTKN: '<' | '<=' | '=' | '!=' | '>' | '>=' | ('||' | 'And') | ('&&' | 'Or');
 //TODO: ONLY ALLOW UP TO 5 CHARACTERS FOR STRING NAME
-ARRAY: 'L'[1-6] | 'l'[a-zA-Z0-9];
+ARRAY: ('L' | 'l') INT;
 INT: '0' | [1-9][0-9]*;
 NIN: '-' INT;
 //FIXME: Is this okay???
 DBL: (NIN | INT) ',' INT;
 WS: [\r\t\n ]+ -> skip;
+
+string32
+    : ARRAY
+    {
+        final String id = $ARRAY.text;
+        if(id.charAt(0) == 'L'){
+        int number = Integer.parseInt(String.valueOf(id.charAt(1)));
+        if(id.length() > 2){
+        throw new RuntimeException(id + " Cannot be more than 2 characters.");
+        } else if (number > 6 || number < 1){
+        throw new RuntimeException(id + " Number must be between 1 and 6.");
+        }
+        } else {
+        if (id.length() > 5){
+        throw new RuntimeException(id + " Cannot be more than 5 characters.");
+        }
+        }
+    }
+    ;
