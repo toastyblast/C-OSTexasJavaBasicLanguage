@@ -122,11 +122,47 @@ public interface TJBVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitElseIfStatement(TJBParser.ElseIfStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TJBParser#booleanEXP}.
+	 * Visit a parse tree produced by the {@code BoolParentheses}
+	 * labeled alternative in {@link TJBParser#booleanEXP}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBooleanEXP(TJBParser.BooleanEXPContext ctx);
+	T visitBoolParentheses(TJBParser.BoolParenthesesContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code BoolCalc}
+	 * labeled alternative in {@link TJBParser#booleanEXP}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolCalc(TJBParser.BoolCalcContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code BoolSTR}
+	 * labeled alternative in {@link TJBParser#booleanEXP}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolSTR(TJBParser.BoolSTRContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code BoolComp}
+	 * labeled alternative in {@link TJBParser#booleanEXP}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolComp(TJBParser.BoolCompContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code BoolNeg}
+	 * labeled alternative in {@link TJBParser#booleanEXP}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolNeg(TJBParser.BoolNegContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code BoolSTRID}
+	 * labeled alternative in {@link TJBParser#booleanEXP}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolSTRID(TJBParser.BoolSTRIDContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TJBParser#whileTJB}.
 	 * @param ctx the parse tree
@@ -151,6 +187,27 @@ public interface TJBVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitComparisonSTR(TJBParser.ComparisonSTRContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code DispSTR}
+	 * labeled alternative in {@link TJBParser#displayOptions}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDispSTR(TJBParser.DispSTRContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code DispSTRID}
+	 * labeled alternative in {@link TJBParser#displayOptions}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDispSTRID(TJBParser.DispSTRIDContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code DispCalc}
+	 * labeled alternative in {@link TJBParser#displayOptions}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDispCalc(TJBParser.DispCalcContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code NumAsn}
 	 * labeled alternative in {@link TJBParser#assignment}.

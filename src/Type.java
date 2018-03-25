@@ -2,5 +2,7 @@ public enum  Type {
     INT,
     BOOLEAN,
     STRING,
-    ARRAY
+    ARRAY,
+    DOUBLE,
+    VAR
 }

@@ -30,25 +30,31 @@ calculation: '(' calculation ')'                                              # 
 //very good, tho.
 
 ifTJB: ifStatement (elseIfStatement)* (elseStatement)* 'End';
-ifStatement: 'If' booleanEXP thenStatement;
+ifStatement: 'If' bool=booleanEXP thenStatement;
 thenStatement: 'Then' (expression)*;
 elseStatement: 'Else' (expression)*;
 elseIfStatement: 'Else' ifStatement;
 
-booleanEXP: '(' booleanEXP ')'
-          | '!' booleanEXP
-          | calculation
-          | STR
-          | checkSTRID
-          | left=booleanEXP comp=COMPTKN right=booleanEXP
+booleanEXP: '(' booleanEXP ')'  #BoolParentheses
+          | '!' booleanEXP      #BoolNeg
+          | calculation         #BoolCalc
+          | STR                 #BoolSTR
+          | checkSTRID          #BoolSTRID
+          | left=booleanEXP comp=COMPTKN right=booleanEXP   #BoolComp
           ;
 
-whileTJB: 'While' booleanEXP (expression)* 'End';
-display: 'Disp' (calculation | STR) (',' (calculation | STR))*;
+whileTJB: 'While' bool=booleanEXP (expression)* 'End';
+display: 'Disp' displayOptions (',' displayOptions)*;
 //FIXME: Fix the calculation part ??
 forTJB: 'For' iterator=checkVAR  (',' iterVal=(INT | DBL))? ',' comp=COMPTKN ',' upper=(VAR|INT|DBL) ',' increments=calculation expression* 'End';
 
 comparisonSTR:;
+
+displayOptions:
+           STR              #DispSTR
+          | checkSTRID      #DispSTRID
+          | calculation     #DispCalc
+          ;
 
 assignment: value=calculation ASN name=VAR         #NumAsn
           | value=STR ASN name=checkSTRID          #StrAsn

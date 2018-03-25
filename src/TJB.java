@@ -50,6 +50,7 @@ public class TJB {
             } catch (RuntimeException RE){
                 System.err.println(RE.getMessage());
             }
+
         }
         System.out.println("KTHNXBYE");
     }
