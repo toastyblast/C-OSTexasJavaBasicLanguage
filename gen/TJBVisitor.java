@@ -166,6 +166,13 @@ public interface TJBVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStrAsn(TJBParser.StrAsnContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code StrCpyAsn}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStrCpyAsn(TJBParser.StrCpyAsnContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code ArrAsn}
 	 * labeled alternative in {@link TJBParser#assignment}.
 	 * @param ctx the parse tree
@@ -186,9 +193,21 @@ public interface TJBVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitArrayBuild(TJBParser.ArrayBuildContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TJBParser#string32}.
+	 * Visit a parse tree produced by {@link TJBParser#checkSTRID}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitString32(TJBParser.String32Context ctx);
+	T visitCheckSTRID(TJBParser.CheckSTRIDContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TJBParser#checkVAR}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCheckVAR(TJBParser.CheckVARContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TJBParser#checkArray}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCheckArray(TJBParser.CheckArrayContext ctx);
 }

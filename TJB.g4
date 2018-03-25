@@ -18,7 +18,7 @@ calculation: '(' calculation ')'                                              # 
           | NIN                                                               # ExNegLiteral
           | INT                                                               # ExIntLiteral
           | DBL                                                               # ExDblLiteral
-          | VAR                                                               # ExVarLiteral
+          | checkVAR                                                          # ExVarLiteral
           | '-' calculation                                                   # ExNegate
           | left=calculation '*' right=calculation                            # ExMulOp
           | left=calculation '/' right=calculation                            # ExDivOp
@@ -39,19 +39,20 @@ booleanEXP: '(' booleanEXP ')'
           | '!' booleanEXP
           | calculation
           | STR
-          | STRID
+          | checkSTRID
           | left=booleanEXP comp=COMPTKN right=booleanEXP
           ;
 
 whileTJB: 'While' booleanEXP (expression)* 'End';
 display: 'Disp' (calculation | STR) (',' (calculation | STR))*;
 //FIXME: Fix the calculation part ??
-forTJB: 'For' iterator=VAR  (',' iterVal=(INT | DBL))? ',' comp=COMPTKN ',' upper=(VAR|INT|DBL) ',' increments=calculation expression* 'End';
+forTJB: 'For' iterator=checkVAR  (',' iterVal=(INT | DBL))? ',' comp=COMPTKN ',' upper=(VAR|INT|DBL) ',' increments=calculation expression* 'End';
 
 comparisonSTR:;
 
 assignment: value=calculation ASN name=VAR         #NumAsn
-          | value=(STR|STRID) ASN name=STRID       #StrAsn
+          | value=STR ASN name=checkSTRID          #StrAsn
+          | value=checkSTRID ASN name=checkSTRID   #StrCpyAsn
           | value=arrayBuild ASN name=checkArray   #ArrAsn
           | value=checkArray ASN name=checkArray   #ArrCpyAsn
           ;
@@ -59,33 +60,53 @@ assignment: value=calculation ASN name=VAR         #NumAsn
 arrayBuild: '{' (NIN | INT | DBL) (',' (NIN | INT | DBL))* '}';
 
 ASN: '->';
-VAR: [A-Z];
-STRID: 'Str' [0-9];
+VAR: [A-Z]+;
+STRID: 'Str' [0-9]+;
 STR: '"' ('a'..'z' | 'A'..'Z' | ' ')+ '"' | '""';
 COMPTKN: '<' | '<=' | '=' | '!=' | '>' | '>=' | ('||' | 'And') | ('&&' | 'Or');
-//TODO: ONLY ALLOW UP TO 5 CHARACTERS FOR STRING NAME
 ARRAY: ('L' | 'l') INT;
 INT: '0' | [1-9][0-9]*;
 NIN: '-' INT;
-//FIXME: Is this okay???
 DBL: (NIN | INT) ',' INT;
 WS: [\r\t\n ]+ -> skip;
+
+checkSTRID
+    :
+    STRID
+    {
+        final String strid = $STRID.text;
+        if (strid.length() > 4) {
+            throw new RuntimeException(strid + " Cannot be more than 4 characters.");
+        }
+    }
+    ;
+
+checkVAR
+    :
+    VAR
+    {
+        final String strid = $VAR.text;
+        if (strid.length() > 1) {
+            throw new RuntimeException(VAR + " Cannot be more than 1 characters.");
+        }
+    }
+    ;
 
 checkArray
     : ARRAY
     {
         final String id = $ARRAY.text;
         if(id.charAt(0) == 'L'){
-        int number = Integer.parseInt(String.valueOf(id.charAt(1)));
-        if(id.length() > 2){
-        throw new RuntimeException(id + " Cannot be more than 2 characters.");
-        } else if (number > 6 || number < 1){
-        throw new RuntimeException(id + " Number must be between 1 and 6.");
-        }
+            int number = Integer.parseInt(String.valueOf(id.charAt(1)));
+            if(id.length() > 2){
+            throw new RuntimeException(id + " Cannot be more than 2 characters.");
+            } else if (number > 6 || number < 1){
+            throw new RuntimeException(id + " Number must be between 1 and 6.");
+            }
         } else {
-        if (id.length() > 5){
-        throw new RuntimeException(id + " Cannot be more than 5 characters.");
-        }
+            if (id.length() > 5){
+            throw new RuntimeException(id + " Cannot be more than 5 characters.");
+            }
         }
     }
     ;

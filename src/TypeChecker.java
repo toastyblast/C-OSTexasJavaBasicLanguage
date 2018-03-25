@@ -45,21 +45,27 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
     }
 
     @Override
-    public Type visitArrAsn(TJBParser.ArrAsnContext ctx) {
-        performAssignChecks(ctx, ctx.name.getText(), ctx.value.getText(), Type.ARRAY);
-        return super.visitArrAsn(ctx);
-    }
-
-    @Override
     public Type visitStrAsn(TJBParser.StrAsnContext ctx) {
         performAssignChecks(ctx, ctx.name.getText(), ctx.value.getText(), Type.STRING);
         return super.visitStrAsn(ctx);
     }
 
     @Override
+    public Type visitStrCpyAsn(TJBParser.StrCpyAsnContext ctx) {
+        performAssignChecks(ctx, ctx.name.getText(), ctx.value.getText(), Type.STRING);
+        return super.visitStrCpyAsn(ctx);
+    }
+
+    @Override
     public Type visitArrCpyAsn(TJBParser.ArrCpyAsnContext ctx) {
         performAssignChecks(ctx, ctx.name.getText(), ctx.value.getText(), Type.ARRAY);
         return super.visitArrCpyAsn(ctx);
+    }
+
+    @Override
+    public Type visitArrAsn(TJBParser.ArrAsnContext ctx) {
+        performAssignChecks(ctx, ctx.name.getText(), ctx.value.getText(), Type.ARRAY);
+        return super.visitArrAsn(ctx);
     }
 
     //Other checks...
