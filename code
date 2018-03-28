@@ -1,0 +1,8 @@
+5 -> A
+A -> B
+If 5>5
+Then
+A --> B
+Disp A , "acb", C
+A -> B
+End
