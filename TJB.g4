@@ -14,12 +14,12 @@ expression: assignment
 //...
 
 //FIXME: Allow multiple brackets (i.e. "(((5)))") and more than 2 negatives (i.e. "------2")?
-calculation: '(' calculation ')'                                              # ExParentheses
+calculation: '(' val=calculation ')'                                          # ExParentheses
           | NIN                                                               # ExNegLiteral
           | INT                                                               # ExIntLiteral
           | DBL                                                               # ExDblLiteral
-          | checkVAR                                                          # ExVarLiteral
-          | '-' calculation                                                   # ExNegate
+          | val=checkVAR                                                      # ExVarLiteral
+          | '-' val=calculation                                               # ExNegate
           | left=calculation '*' right=calculation                            # ExMulOp
           | left=calculation '/' right=calculation                            # ExDivOp
           | left=calculation '%' right=calculation                            # ExModOp
@@ -35,8 +35,8 @@ thenStatement: 'Then' (expression)*;
 elseStatement: 'Else' (expression)*;
 elseIfStatement: 'Else' ifStatement;
 
-booleanEXP: '(' booleanEXP ')'  #BoolParentheses
-          | '!' booleanEXP      #BoolNeg
+booleanEXP: '(' bool=booleanEXP ')'  #BoolParentheses
+          | '!' bool=booleanEXP      #BoolNeg
           | calculation         #BoolCalc
           | STR                 #BoolSTR
           | checkSTRID          #BoolSTRID
@@ -54,6 +54,7 @@ displayOptions:
            STR              #DispSTR
           | checkSTRID      #DispSTRID
           | calculation     #DispCalc
+          | checkArray      #DispArray
           ;
 
 assignment: value=calculation ASN name=checkVAR       #NumAsn
@@ -72,9 +73,9 @@ ASN: '->';
 CPYASN: '-->';
 VAR: [A-Z]+;
 STRID: 'Str' [0-9]+;
-STR: '"' ('a'..'z' | 'A'..'Z' | ' ')+ '"' | '""';
+STR: '"' ('a'..'z' | 'A'..'Z' | ' ' | [0-9])+ '"' | '""';
 COMPTKN: '<' | '<=' | '=' | '!=' | '>' | '>=' | ('||' | 'And') | ('&&' | 'Or');
-ARRAY: ('L' | 'l') INT;
+ARRAY: ('L' | 'l') (INT|VAR)+;
 INT: '0' | [1-9][0-9]*;
 NIN: '-' INT;
 DBL: (NIN | INT) ',' INT;

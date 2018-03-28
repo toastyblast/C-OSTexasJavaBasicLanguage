@@ -209,6 +209,13 @@ public interface TJBVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDispCalc(TJBParser.DispCalcContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code DispArray}
+	 * labeled alternative in {@link TJBParser#displayOptions}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDispArray(TJBParser.DispArrayContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code NumAsn}
 	 * labeled alternative in {@link TJBParser#assignment}.
 	 * @param ctx the parse tree

@@ -48,7 +48,6 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
         checkIfSelfAssign(ctx, name, value);
         checkIfDeclared(ctx, name);
         checkIfExists(ctx, value);
-
         singleton.getSymbolTable().addSymbol(name, type);
     }
 
@@ -56,31 +55,42 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
 
     @Override
     public Type visitNumAsn(TJBParser.NumAsnContext ctx) {
-        performAssignChecks(ctx, ctx.name.getText(), ctx.value.getText(), Type.INT);
+        String name = ctx.name.getText();
+        String value = ctx.value.getText();
+        Type valueType = visit(ctx.value);
+        performAssignChecks(ctx, name, value, valueType);
         return super.visitNumAsn(ctx);
     }
 
     @Override
     public Type visitStrAsn(TJBParser.StrAsnContext ctx) {
-        performAssignChecks(ctx, ctx.name.getText(), ctx.value.getText(), Type.STRING);
+        String name = ctx.name.getText();
+        String value = ctx.value.getText();
+        performAssignChecks(ctx, name, value, Type.STRING);
         return super.visitStrAsn(ctx);
     }
 
     @Override
     public Type visitStrCpyAsn(TJBParser.StrCpyAsnContext ctx) {
-        performAssignChecks(ctx, ctx.name.getText(), ctx.value.getText(), Type.STRING);
+        String name = ctx.name.getText();
+        String value = ctx.value.getText();
+        performAssignChecks(ctx, name, value, Type.STRING);
         return super.visitStrCpyAsn(ctx);
     }
 
     @Override
     public Type visitArrCpyAsn(TJBParser.ArrCpyAsnContext ctx) {
-        performAssignChecks(ctx, ctx.name.getText(), ctx.value.getText(), Type.ARRAY);
+        String name = ctx.name.getText();
+        String value = ctx.value.getText();
+        performAssignChecks(ctx, name, value, Type.ARRAY);
         return super.visitArrCpyAsn(ctx);
     }
 
     @Override
     public Type visitArrAsn(TJBParser.ArrAsnContext ctx) {
-        performAssignChecks(ctx, ctx.name.getText(), ctx.value.getText(), Type.ARRAY);
+        String name = ctx.name.getText();
+        String value = ctx.value.getText();
+        performAssignChecks(ctx, name, value, Type.ARRAY);
         return super.visitArrAsn(ctx);
     }
 
@@ -88,6 +98,14 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
     public Type visitNumAsnVAR(TJBParser.NumAsnVARContext ctx) {
         checkIfExists(ctx, ctx.value.getText());
         checkIfExists(ctx, ctx.name.getText());
+
+        Type valueType = visit(ctx.value);
+        Type nameType = visit(ctx.name);
+
+        if (nameType == Type.INT && valueType == Type.DOUBLE){
+            throw new CompilerException(ctx, "Cannot assign boolean to an int. " + ctx.name.getText() + " is int. "
+            + ctx.value.getText() + " is double");
+        }
         return super.visitNumAsnVAR(ctx);
     }
 
@@ -121,7 +139,7 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
 
     @Override
     public Type visitExVarLiteral(TJBParser.ExVarLiteralContext ctx) {
-        return Type.INT;
+        return visit(ctx.val);
     }
 
     @Override
@@ -144,18 +162,82 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
         return Type.STRING;
     }
 
+    @Override
+    public Type visitExParentheses(TJBParser.ExParenthesesContext ctx) {
+        return visit(ctx.val);
+    }
+
+    @Override
+    public Type visitExNegate(TJBParser.ExNegateContext ctx) {
+        return visit(ctx.val);
+    }
+
+    @Override
+    public Type visitExMulOp(TJBParser.ExMulOpContext ctx) {
+        Type left = visit(ctx.left);
+        Type right = visit(ctx.right);
+        if (left == Type.INT && right == Type.INT){
+            return Type.INT;
+        } else {
+            return Type.DOUBLE;
+        }
+    }
+
+    @Override
+    public Type visitExDivOp(TJBParser.ExDivOpContext ctx) {
+        Type left = visit(ctx.left);
+        Type right = visit(ctx.right);
+        if (left == Type.INT && right == Type.INT){
+            return Type.INT;
+        } else {
+            return Type.DOUBLE;
+        }
+    }
+
+    @Override
+    public Type visitExModOp(TJBParser.ExModOpContext ctx) {
+        Type left = visit(ctx.left);
+        Type right = visit(ctx.right);
+        if (left == Type.INT && right == Type.INT){
+            return Type.INT;
+        } else {
+            return Type.DOUBLE;
+        }
+    }
+
+    @Override
+    public Type visitExAddOp(TJBParser.ExAddOpContext ctx) {
+        Type left = visit(ctx.left);
+        Type right = visit(ctx.right);
+        if (left == Type.INT && right == Type.INT){
+            return Type.INT;
+        } else {
+            return Type.DOUBLE;
+        }
+    }
+
     //Boolean visitors. ↓
     @Override
     public Type visitBoolComp(TJBParser.BoolCompContext ctx) {
-        equalType(ctx.left, ctx.right);
         checkIfExistsIFStatement(ctx, ctx.left.getText());
         checkIfExistsIFStatement(ctx, ctx.right.getText());
+        equalType(ctx.left, ctx.right);
         if (getType(ctx.left) == Type.STRING){
             if (!ctx.comp.getText().equals("=")){
                 throw new CompilerException(ctx, "Cannot compare strings with " + ctx.comp.getText());
             }
         }
         return Type.BOOLEAN;
+    }
+
+    @Override
+    public Type visitBoolParentheses(TJBParser.BoolParenthesesContext ctx) {
+        return visit(ctx.bool);
+    }
+
+    @Override
+    public Type visitBoolNeg(TJBParser.BoolNegContext ctx) {
+        return visit(ctx.bool);
     }
 
     //If visitors. ↓
@@ -200,12 +282,21 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
         return super.visitDispSTRID(ctx);
     }
 
+    @Override
+    public Type visitDispArray(TJBParser.DispArrayContext ctx) {
+        String text = ctx.getText();
+        if(singleton.getSymbolTable().getSymTable().get(text) == null){
+            throw new CompilerException(ctx, "Variable " + text + " not defined");
+        }
+        return super.visitDispArray(ctx);
+    }
+
     //For visitors. ↓
 
     @Override
     public Type visitForTJB(TJBParser.ForTJBContext ctx) {
         String iteratorName = ctx.iterator.getText();
-        if(singleton.getSymbolTable().getSymTable().get(iteratorName) == null){
+        if(singleton.getSymbolTable().getSymTable().get(iteratorName) != null){
             throw new CompilerException(ctx, "Variable " + iteratorName + " already defined");
         }
         Type iteratorType;
@@ -221,7 +312,7 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
         }
 
         String upperValue = ctx.upper.getText();
-        if(singleton.getSymbolTable().getSymTable().get(upperValue) == null){
+        if(singleton.getSymbolTable().getSymTable().get(upperValue) == null && !upperValue.matches(".*\\d+.*")){
             throw new CompilerException(ctx, "Variable " + upperValue + " not defined");
         }
         String increment = ctx.increments.getText();
@@ -253,11 +344,7 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
     public Type visitCheckVAR(TJBParser.CheckVARContext ctx) {
         String value = ctx.getText();
         if(singleton.getSymbolTable().getSymTable().get(value) != null){
-            if (value.contains(",")){
-                return Type.DOUBLE;
-            } else {
-                return Type.INT;
-            }
+            return singleton.getSymbolTable().getSymTable().get(value);
         }
         return null;
     }

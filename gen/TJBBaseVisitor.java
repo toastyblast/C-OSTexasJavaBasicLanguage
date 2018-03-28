@@ -226,6 +226,13 @@ public class TJBBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements TJ
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitDispArray(TJBParser.DispArrayContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitNumAsn(TJBParser.NumAsnContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

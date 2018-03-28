@@ -23,7 +23,7 @@ public class TJB {
 
         // Create parser and feed it the tokens
         TJBParser parser = new TJBParser(tokens);
-        ParseTree expression = parser.expression();
+        ParseTree expression = parser.codeLine();
 
         // Type check then evaulate by running the visitor
         evaluateAndPrint(expression); // <-- Change this to checkEvaluateAndPrint when you implemented a checker
