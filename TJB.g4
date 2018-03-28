@@ -56,16 +56,20 @@ displayOptions:
           | calculation     #DispCalc
           ;
 
-assignment: value=calculation ASN name=VAR         #NumAsn
-          | value=STR ASN name=checkSTRID          #StrAsn
-          | value=checkSTRID ASN name=checkSTRID   #StrCpyAsn
-          | value=arrayBuild ASN name=checkArray   #ArrAsn
-          | value=checkArray ASN name=checkArray   #ArrCpyAsn
+assignment: value=calculation ASN name=checkVAR       #NumAsn
+          | value=STR ASN name=checkSTRID             #StrAsn
+          | value=checkSTRID ASN name=checkSTRID      #StrCpyAsn
+          | value=arrayBuild ASN name=checkArray      #ArrAsn
+          | value=checkArray ASN name=checkArray      #ArrCpyAsn
+          | value=checkArray CPYASN name=checkArray   #ArrAsnVAR
+          | value=checkVAR CPYASN name=checkVAR       #NumAsnVAR
+          | value=checkSTRID CPYASN name=checkSTRID   #StrAsnVAR
           ;
 
 arrayBuild: '{' (NIN | INT | DBL) (',' (NIN | INT | DBL))* '}';
 
 ASN: '->';
+CPYASN: '-->';
 VAR: [A-Z]+;
 STRID: 'Str' [0-9]+;
 STR: '"' ('a'..'z' | 'A'..'Z' | ' ')+ '"' | '""';
@@ -93,7 +97,7 @@ checkVAR
     {
         final String strid = $VAR.text;
         if (strid.length() > 1) {
-            throw new RuntimeException(VAR + " Cannot be more than 1 characters.");
+            throw new RuntimeException(strid + " Cannot be more than 1 characters.");
         }
     }
     ;

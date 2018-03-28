@@ -1,4 +1,4 @@
-// Generated from D:/School/Projects/Java Projects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
+// Generated from D:/School/Projects/Java Projects/C-OSTexasJavaBasicLanguage - Copy\TJB.g4 by ANTLR 4.7
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -18,8 +18,8 @@ public class TJBParser extends Parser {
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
 		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
-		T__17=18, ASN=19, VAR=20, STRID=21, STR=22, COMPTKN=23, ARRAY=24, INT=25, 
-		NIN=26, DBL=27, WS=28;
+		T__17=18, ASN=19, CPYASN=20, VAR=21, STRID=22, STR=23, COMPTKN=24, ARRAY=25, 
+		INT=26, NIN=27, DBL=28, WS=29;
 	public static final int
 		RULE_codeLine = 0, RULE_expression = 1, RULE_calculation = 2, RULE_ifTJB = 3, 
 		RULE_ifStatement = 4, RULE_thenStatement = 5, RULE_elseStatement = 6, 
@@ -36,12 +36,12 @@ public class TJBParser extends Parser {
 	private static final String[] _LITERAL_NAMES = {
 		null, "'('", "')'", "'-'", "'*'", "'/'", "'%'", "'+'", "'End'", "'If'", 
 		"'Then'", "'Else'", "'!'", "'While'", "'Disp'", "','", "'For'", "'{'", 
-		"'}'", "'->'"
+		"'}'", "'->'", "'-->'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, null, null, null, null, null, null, null, null, null, null, null, 
-		null, null, null, null, null, null, null, "ASN", "VAR", "STRID", "STR", 
-		"COMPTKN", "ARRAY", "INT", "NIN", "DBL", "WS"
+		null, null, null, null, null, null, null, "ASN", "CPYASN", "VAR", "STRID", 
+		"STR", "COMPTKN", "ARRAY", "INT", "NIN", "DBL", "WS"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -1436,6 +1436,23 @@ public class TJBParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class ArrAsnVARContext extends AssignmentContext {
+		public CheckArrayContext value;
+		public CheckArrayContext name;
+		public TerminalNode CPYASN() { return getToken(TJBParser.CPYASN, 0); }
+		public List<CheckArrayContext> checkArray() {
+			return getRuleContexts(CheckArrayContext.class);
+		}
+		public CheckArrayContext checkArray(int i) {
+			return getRuleContext(CheckArrayContext.class,i);
+		}
+		public ArrAsnVARContext(AssignmentContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitArrAsnVAR(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class StrCpyAsnContext extends AssignmentContext {
 		public CheckSTRIDContext value;
 		public CheckSTRIDContext name;
@@ -1455,16 +1472,35 @@ public class TJBParser extends Parser {
 	}
 	public static class NumAsnContext extends AssignmentContext {
 		public CalculationContext value;
-		public Token name;
+		public CheckVARContext name;
 		public TerminalNode ASN() { return getToken(TJBParser.ASN, 0); }
 		public CalculationContext calculation() {
 			return getRuleContext(CalculationContext.class,0);
 		}
-		public TerminalNode VAR() { return getToken(TJBParser.VAR, 0); }
+		public CheckVARContext checkVAR() {
+			return getRuleContext(CheckVARContext.class,0);
+		}
 		public NumAsnContext(AssignmentContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitNumAsn(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class NumAsnVARContext extends AssignmentContext {
+		public CheckVARContext value;
+		public CheckVARContext name;
+		public TerminalNode CPYASN() { return getToken(TJBParser.CPYASN, 0); }
+		public List<CheckVARContext> checkVAR() {
+			return getRuleContexts(CheckVARContext.class);
+		}
+		public CheckVARContext checkVAR(int i) {
+			return getRuleContext(CheckVARContext.class,i);
+		}
+		public NumAsnVARContext(AssignmentContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitNumAsnVAR(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1485,20 +1521,32 @@ public class TJBParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class StrAsnVARContext extends AssignmentContext {
+		public CheckSTRIDContext value;
+		public CheckSTRIDContext name;
+		public TerminalNode CPYASN() { return getToken(TJBParser.CPYASN, 0); }
+		public List<CheckSTRIDContext> checkSTRID() {
+			return getRuleContexts(CheckSTRIDContext.class);
+		}
+		public CheckSTRIDContext checkSTRID(int i) {
+			return getRuleContext(CheckSTRIDContext.class,i);
+		}
+		public StrAsnVARContext(AssignmentContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitStrAsnVAR(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 
 	public final AssignmentContext assignment() throws RecognitionException {
 		AssignmentContext _localctx = new AssignmentContext(_ctx, getState());
 		enterRule(_localctx, 28, RULE_assignment);
 		try {
-			setState(206);
+			setState(218);
 			_errHandler.sync(this);
-			switch (_input.LA(1)) {
-			case T__0:
-			case T__2:
-			case VAR:
-			case INT:
-			case NIN:
-			case DBL:
+			switch ( getInterpreter().adaptivePredict(_input,16,_ctx) ) {
+			case 1:
 				_localctx = new NumAsnContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
@@ -1507,10 +1555,10 @@ public class TJBParser extends Parser {
 				setState(188);
 				match(ASN);
 				setState(189);
-				((NumAsnContext)_localctx).name = match(VAR);
+				((NumAsnContext)_localctx).name = checkVAR();
 				}
 				break;
-			case STR:
+			case 2:
 				_localctx = new StrAsnContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
@@ -1522,7 +1570,7 @@ public class TJBParser extends Parser {
 				((StrAsnContext)_localctx).name = checkSTRID();
 				}
 				break;
-			case STRID:
+			case 3:
 				_localctx = new StrCpyAsnContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
@@ -1534,7 +1582,7 @@ public class TJBParser extends Parser {
 				((StrCpyAsnContext)_localctx).name = checkSTRID();
 				}
 				break;
-			case T__16:
+			case 4:
 				_localctx = new ArrAsnContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
@@ -1546,7 +1594,7 @@ public class TJBParser extends Parser {
 				((ArrAsnContext)_localctx).name = checkArray();
 				}
 				break;
-			case ARRAY:
+			case 5:
 				_localctx = new ArrCpyAsnContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
@@ -1558,8 +1606,42 @@ public class TJBParser extends Parser {
 				((ArrCpyAsnContext)_localctx).name = checkArray();
 				}
 				break;
-			default:
-				throw new NoViableAltException(this);
+			case 6:
+				_localctx = new ArrAsnVARContext(_localctx);
+				enterOuterAlt(_localctx, 6);
+				{
+				setState(206);
+				((ArrAsnVARContext)_localctx).value = checkArray();
+				setState(207);
+				match(CPYASN);
+				setState(208);
+				((ArrAsnVARContext)_localctx).name = checkArray();
+				}
+				break;
+			case 7:
+				_localctx = new NumAsnVARContext(_localctx);
+				enterOuterAlt(_localctx, 7);
+				{
+				setState(210);
+				((NumAsnVARContext)_localctx).value = checkVAR();
+				setState(211);
+				match(CPYASN);
+				setState(212);
+				((NumAsnVARContext)_localctx).name = checkVAR();
+				}
+				break;
+			case 8:
+				_localctx = new StrAsnVARContext(_localctx);
+				enterOuterAlt(_localctx, 8);
+				{
+				setState(214);
+				((StrAsnVARContext)_localctx).value = checkSTRID();
+				setState(215);
+				match(CPYASN);
+				setState(216);
+				((StrAsnVARContext)_localctx).name = checkSTRID();
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -1604,9 +1686,9 @@ public class TJBParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(208);
+			setState(220);
 			match(T__16);
-			setState(209);
+			setState(221);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << INT) | (1L << NIN) | (1L << DBL))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -1616,15 +1698,15 @@ public class TJBParser extends Parser {
 				_errHandler.reportMatch(this);
 				consume();
 			}
-			setState(214);
+			setState(226);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==T__14) {
 				{
 				{
-				setState(210);
+				setState(222);
 				match(T__14);
-				setState(211);
+				setState(223);
 				_la = _input.LA(1);
 				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << INT) | (1L << NIN) | (1L << DBL))) != 0)) ) {
 				_errHandler.recoverInline(this);
@@ -1636,11 +1718,11 @@ public class TJBParser extends Parser {
 				}
 				}
 				}
-				setState(216);
+				setState(228);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(217);
+			setState(229);
 			match(T__17);
 			}
 		}
@@ -1675,7 +1757,7 @@ public class TJBParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(219);
+			setState(231);
 			((CheckSTRIDContext)_localctx).STRID = match(STRID);
 
 			        final String strid = (((CheckSTRIDContext)_localctx).STRID!=null?((CheckSTRIDContext)_localctx).STRID.getText():null);
@@ -1716,12 +1798,12 @@ public class TJBParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(222);
+			setState(234);
 			((CheckVARContext)_localctx).VAR = match(VAR);
 
 			        final String strid = (((CheckVARContext)_localctx).VAR!=null?((CheckVARContext)_localctx).VAR.getText():null);
 			        if (strid.length() > 1) {
-			            throw new RuntimeException(VAR + " Cannot be more than 1 characters.");
+			            throw new RuntimeException(strid + " Cannot be more than 1 characters.");
 			        }
 			    
 			}
@@ -1757,7 +1839,7 @@ public class TJBParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(225);
+			setState(237);
 			((CheckArrayContext)_localctx).ARRAY = match(ARRAY);
 
 			        final String id = (((CheckArrayContext)_localctx).ARRAY!=null?((CheckArrayContext)_localctx).ARRAY.getText():null);
@@ -1818,7 +1900,7 @@ public class TJBParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\36\u00e7\4\2\t\2"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\37\u00f3\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\3\2\7\2*\n\2\f\2\16\2-\13\2\3\2\3\2\3\3\3\3\3\3\3"+
@@ -1832,66 +1914,71 @@ public class TJBParser extends Parser {
 		"\7\f\u009e\n\f\f\f\16\f\u00a1\13\f\3\r\3\r\3\r\3\r\5\r\u00a7\n\r\3\r\3"+
 		"\r\3\r\3\r\3\r\3\r\3\r\7\r\u00b0\n\r\f\r\16\r\u00b3\13\r\3\r\3\r\3\16"+
 		"\3\16\3\17\3\17\3\17\5\17\u00bc\n\17\3\20\3\20\3\20\3\20\3\20\3\20\3\20"+
-		"\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\5\20\u00d1"+
-		"\n\20\3\21\3\21\3\21\3\21\7\21\u00d7\n\21\f\21\16\21\u00da\13\21\3\21"+
-		"\3\21\3\22\3\22\3\22\3\23\3\23\3\23\3\24\3\24\3\24\3\24\2\4\6\22\25\2"+
-		"\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&\2\6\4\2\5\5\t\t\4\2\33\33\35"+
-		"\35\5\2\26\26\33\33\35\35\3\2\33\35\2\u00f7\2+\3\2\2\2\4\67\3\2\2\2\6"+
-		"D\3\2\2\2\bW\3\2\2\2\nf\3\2\2\2\fj\3\2\2\2\16q\3\2\2\2\20x\3\2\2\2\22"+
-		"\u0085\3\2\2\2\24\u008f\3\2\2\2\26\u0099\3\2\2\2\30\u00a2\3\2\2\2\32\u00b6"+
-		"\3\2\2\2\34\u00bb\3\2\2\2\36\u00d0\3\2\2\2 \u00d2\3\2\2\2\"\u00dd\3\2"+
-		"\2\2$\u00e0\3\2\2\2&\u00e3\3\2\2\2(*\5\4\3\2)(\3\2\2\2*-\3\2\2\2+)\3\2"+
-		"\2\2+,\3\2\2\2,.\3\2\2\2-+\3\2\2\2./\7\2\2\3/\3\3\2\2\2\608\5\36\20\2"+
-		"\618\5\6\4\2\628\5\b\5\2\638\5\24\13\2\648\5\26\f\2\658\5\30\r\2\668\5"+
-		"\22\n\2\67\60\3\2\2\2\67\61\3\2\2\2\67\62\3\2\2\2\67\63\3\2\2\2\67\64"+
-		"\3\2\2\2\67\65\3\2\2\2\67\66\3\2\2\28\5\3\2\2\29:\b\4\1\2:;\7\3\2\2;<"+
-		"\5\6\4\2<=\7\4\2\2=E\3\2\2\2>E\7\34\2\2?E\7\33\2\2@E\7\35\2\2AE\5$\23"+
-		"\2BC\7\5\2\2CE\5\6\4\7D9\3\2\2\2D>\3\2\2\2D?\3\2\2\2D@\3\2\2\2DA\3\2\2"+
-		"\2DB\3\2\2\2ET\3\2\2\2FG\f\6\2\2GH\7\6\2\2HS\5\6\4\7IJ\f\5\2\2JK\7\7\2"+
-		"\2KS\5\6\4\6LM\f\4\2\2MN\7\b\2\2NS\5\6\4\5OP\f\3\2\2PQ\t\2\2\2QS\5\6\4"+
-		"\4RF\3\2\2\2RI\3\2\2\2RL\3\2\2\2RO\3\2\2\2SV\3\2\2\2TR\3\2\2\2TU\3\2\2"+
-		"\2U\7\3\2\2\2VT\3\2\2\2W[\5\n\6\2XZ\5\20\t\2YX\3\2\2\2Z]\3\2\2\2[Y\3\2"+
-		"\2\2[\\\3\2\2\2\\a\3\2\2\2][\3\2\2\2^`\5\16\b\2_^\3\2\2\2`c\3\2\2\2a_"+
-		"\3\2\2\2ab\3\2\2\2bd\3\2\2\2ca\3\2\2\2de\7\n\2\2e\t\3\2\2\2fg\7\13\2\2"+
-		"gh\5\22\n\2hi\5\f\7\2i\13\3\2\2\2jn\7\f\2\2km\5\4\3\2lk\3\2\2\2mp\3\2"+
-		"\2\2nl\3\2\2\2no\3\2\2\2o\r\3\2\2\2pn\3\2\2\2qu\7\r\2\2rt\5\4\3\2sr\3"+
-		"\2\2\2tw\3\2\2\2us\3\2\2\2uv\3\2\2\2v\17\3\2\2\2wu\3\2\2\2xy\7\r\2\2y"+
-		"z\5\n\6\2z\21\3\2\2\2{|\b\n\1\2|}\7\3\2\2}~\5\22\n\2~\177\7\4\2\2\177"+
-		"\u0086\3\2\2\2\u0080\u0081\7\16\2\2\u0081\u0086\5\22\n\7\u0082\u0086\5"+
-		"\6\4\2\u0083\u0086\7\30\2\2\u0084\u0086\5\"\22\2\u0085{\3\2\2\2\u0085"+
-		"\u0080\3\2\2\2\u0085\u0082\3\2\2\2\u0085\u0083\3\2\2\2\u0085\u0084\3\2"+
-		"\2\2\u0086\u008c\3\2\2\2\u0087\u0088\f\3\2\2\u0088\u0089\7\31\2\2\u0089"+
-		"\u008b\5\22\n\4\u008a\u0087\3\2\2\2\u008b\u008e\3\2\2\2\u008c\u008a\3"+
-		"\2\2\2\u008c\u008d\3\2\2\2\u008d\23\3\2\2\2\u008e\u008c\3\2\2\2\u008f"+
-		"\u0090\7\17\2\2\u0090\u0094\5\22\n\2\u0091\u0093\5\4\3\2\u0092\u0091\3"+
-		"\2\2\2\u0093\u0096\3\2\2\2\u0094\u0092\3\2\2\2\u0094\u0095\3\2\2\2\u0095"+
-		"\u0097\3\2\2\2\u0096\u0094\3\2\2\2\u0097\u0098\7\n\2\2\u0098\25\3\2\2"+
-		"\2\u0099\u009a\7\20\2\2\u009a\u009f\5\34\17\2\u009b\u009c\7\21\2\2\u009c"+
-		"\u009e\5\34\17\2\u009d\u009b\3\2\2\2\u009e\u00a1\3\2\2\2\u009f\u009d\3"+
-		"\2\2\2\u009f\u00a0\3\2\2\2\u00a0\27\3\2\2\2\u00a1\u009f\3\2\2\2\u00a2"+
-		"\u00a3\7\22\2\2\u00a3\u00a6\5$\23\2\u00a4\u00a5\7\21\2\2\u00a5\u00a7\t"+
-		"\3\2\2\u00a6\u00a4\3\2\2\2\u00a6\u00a7\3\2\2\2\u00a7\u00a8\3\2\2\2\u00a8"+
-		"\u00a9\7\21\2\2\u00a9\u00aa\7\31\2\2\u00aa\u00ab\7\21\2\2\u00ab\u00ac"+
-		"\t\4\2\2\u00ac\u00ad\7\21\2\2\u00ad\u00b1\5\6\4\2\u00ae\u00b0\5\4\3\2"+
-		"\u00af\u00ae\3\2\2\2\u00b0\u00b3\3\2\2\2\u00b1\u00af\3\2\2\2\u00b1\u00b2"+
-		"\3\2\2\2\u00b2\u00b4\3\2\2\2\u00b3\u00b1\3\2\2\2\u00b4\u00b5\7\n\2\2\u00b5"+
-		"\31\3\2\2\2\u00b6\u00b7\3\2\2\2\u00b7\33\3\2\2\2\u00b8\u00bc\7\30\2\2"+
-		"\u00b9\u00bc\5\"\22\2\u00ba\u00bc\5\6\4\2\u00bb\u00b8\3\2\2\2\u00bb\u00b9"+
-		"\3\2\2\2\u00bb\u00ba\3\2\2\2\u00bc\35\3\2\2\2\u00bd\u00be\5\6\4\2\u00be"+
-		"\u00bf\7\25\2\2\u00bf\u00c0\7\26\2\2\u00c0\u00d1\3\2\2\2\u00c1\u00c2\7"+
-		"\30\2\2\u00c2\u00c3\7\25\2\2\u00c3\u00d1\5\"\22\2\u00c4\u00c5\5\"\22\2"+
-		"\u00c5\u00c6\7\25\2\2\u00c6\u00c7\5\"\22\2\u00c7\u00d1\3\2\2\2\u00c8\u00c9"+
-		"\5 \21\2\u00c9\u00ca\7\25\2\2\u00ca\u00cb\5&\24\2\u00cb\u00d1\3\2\2\2"+
-		"\u00cc\u00cd\5&\24\2\u00cd\u00ce\7\25\2\2\u00ce\u00cf\5&\24\2\u00cf\u00d1"+
-		"\3\2\2\2\u00d0\u00bd\3\2\2\2\u00d0\u00c1\3\2\2\2\u00d0\u00c4\3\2\2\2\u00d0"+
-		"\u00c8\3\2\2\2\u00d0\u00cc\3\2\2\2\u00d1\37\3\2\2\2\u00d2\u00d3\7\23\2"+
-		"\2\u00d3\u00d8\t\5\2\2\u00d4\u00d5\7\21\2\2\u00d5\u00d7\t\5\2\2\u00d6"+
-		"\u00d4\3\2\2\2\u00d7\u00da\3\2\2\2\u00d8\u00d6\3\2\2\2\u00d8\u00d9\3\2"+
-		"\2\2\u00d9\u00db\3\2\2\2\u00da\u00d8\3\2\2\2\u00db\u00dc\7\24\2\2\u00dc"+
-		"!\3\2\2\2\u00dd\u00de\7\27\2\2\u00de\u00df\b\22\1\2\u00df#\3\2\2\2\u00e0"+
-		"\u00e1\7\26\2\2\u00e1\u00e2\b\23\1\2\u00e2%\3\2\2\2\u00e3\u00e4\7\32\2"+
-		"\2\u00e4\u00e5\b\24\1\2\u00e5\'\3\2\2\2\24+\67DRT[anu\u0085\u008c\u0094"+
-		"\u009f\u00a6\u00b1\u00bb\u00d0\u00d8";
+		"\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20"+
+		"\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\5\20\u00dd\n\20\3\21"+
+		"\3\21\3\21\3\21\7\21\u00e3\n\21\f\21\16\21\u00e6\13\21\3\21\3\21\3\22"+
+		"\3\22\3\22\3\23\3\23\3\23\3\24\3\24\3\24\3\24\2\4\6\22\25\2\4\6\b\n\f"+
+		"\16\20\22\24\26\30\32\34\36 \"$&\2\6\4\2\5\5\t\t\4\2\34\34\36\36\5\2\27"+
+		"\27\34\34\36\36\3\2\34\36\2\u0106\2+\3\2\2\2\4\67\3\2\2\2\6D\3\2\2\2\b"+
+		"W\3\2\2\2\nf\3\2\2\2\fj\3\2\2\2\16q\3\2\2\2\20x\3\2\2\2\22\u0085\3\2\2"+
+		"\2\24\u008f\3\2\2\2\26\u0099\3\2\2\2\30\u00a2\3\2\2\2\32\u00b6\3\2\2\2"+
+		"\34\u00bb\3\2\2\2\36\u00dc\3\2\2\2 \u00de\3\2\2\2\"\u00e9\3\2\2\2$\u00ec"+
+		"\3\2\2\2&\u00ef\3\2\2\2(*\5\4\3\2)(\3\2\2\2*-\3\2\2\2+)\3\2\2\2+,\3\2"+
+		"\2\2,.\3\2\2\2-+\3\2\2\2./\7\2\2\3/\3\3\2\2\2\608\5\36\20\2\618\5\6\4"+
+		"\2\628\5\b\5\2\638\5\24\13\2\648\5\26\f\2\658\5\30\r\2\668\5\22\n\2\67"+
+		"\60\3\2\2\2\67\61\3\2\2\2\67\62\3\2\2\2\67\63\3\2\2\2\67\64\3\2\2\2\67"+
+		"\65\3\2\2\2\67\66\3\2\2\28\5\3\2\2\29:\b\4\1\2:;\7\3\2\2;<\5\6\4\2<=\7"+
+		"\4\2\2=E\3\2\2\2>E\7\35\2\2?E\7\34\2\2@E\7\36\2\2AE\5$\23\2BC\7\5\2\2"+
+		"CE\5\6\4\7D9\3\2\2\2D>\3\2\2\2D?\3\2\2\2D@\3\2\2\2DA\3\2\2\2DB\3\2\2\2"+
+		"ET\3\2\2\2FG\f\6\2\2GH\7\6\2\2HS\5\6\4\7IJ\f\5\2\2JK\7\7\2\2KS\5\6\4\6"+
+		"LM\f\4\2\2MN\7\b\2\2NS\5\6\4\5OP\f\3\2\2PQ\t\2\2\2QS\5\6\4\4RF\3\2\2\2"+
+		"RI\3\2\2\2RL\3\2\2\2RO\3\2\2\2SV\3\2\2\2TR\3\2\2\2TU\3\2\2\2U\7\3\2\2"+
+		"\2VT\3\2\2\2W[\5\n\6\2XZ\5\20\t\2YX\3\2\2\2Z]\3\2\2\2[Y\3\2\2\2[\\\3\2"+
+		"\2\2\\a\3\2\2\2][\3\2\2\2^`\5\16\b\2_^\3\2\2\2`c\3\2\2\2a_\3\2\2\2ab\3"+
+		"\2\2\2bd\3\2\2\2ca\3\2\2\2de\7\n\2\2e\t\3\2\2\2fg\7\13\2\2gh\5\22\n\2"+
+		"hi\5\f\7\2i\13\3\2\2\2jn\7\f\2\2km\5\4\3\2lk\3\2\2\2mp\3\2\2\2nl\3\2\2"+
+		"\2no\3\2\2\2o\r\3\2\2\2pn\3\2\2\2qu\7\r\2\2rt\5\4\3\2sr\3\2\2\2tw\3\2"+
+		"\2\2us\3\2\2\2uv\3\2\2\2v\17\3\2\2\2wu\3\2\2\2xy\7\r\2\2yz\5\n\6\2z\21"+
+		"\3\2\2\2{|\b\n\1\2|}\7\3\2\2}~\5\22\n\2~\177\7\4\2\2\177\u0086\3\2\2\2"+
+		"\u0080\u0081\7\16\2\2\u0081\u0086\5\22\n\7\u0082\u0086\5\6\4\2\u0083\u0086"+
+		"\7\31\2\2\u0084\u0086\5\"\22\2\u0085{\3\2\2\2\u0085\u0080\3\2\2\2\u0085"+
+		"\u0082\3\2\2\2\u0085\u0083\3\2\2\2\u0085\u0084\3\2\2\2\u0086\u008c\3\2"+
+		"\2\2\u0087\u0088\f\3\2\2\u0088\u0089\7\32\2\2\u0089\u008b\5\22\n\4\u008a"+
+		"\u0087\3\2\2\2\u008b\u008e\3\2\2\2\u008c\u008a\3\2\2\2\u008c\u008d\3\2"+
+		"\2\2\u008d\23\3\2\2\2\u008e\u008c\3\2\2\2\u008f\u0090\7\17\2\2\u0090\u0094"+
+		"\5\22\n\2\u0091\u0093\5\4\3\2\u0092\u0091\3\2\2\2\u0093\u0096\3\2\2\2"+
+		"\u0094\u0092\3\2\2\2\u0094\u0095\3\2\2\2\u0095\u0097\3\2\2\2\u0096\u0094"+
+		"\3\2\2\2\u0097\u0098\7\n\2\2\u0098\25\3\2\2\2\u0099\u009a\7\20\2\2\u009a"+
+		"\u009f\5\34\17\2\u009b\u009c\7\21\2\2\u009c\u009e\5\34\17\2\u009d\u009b"+
+		"\3\2\2\2\u009e\u00a1\3\2\2\2\u009f\u009d\3\2\2\2\u009f\u00a0\3\2\2\2\u00a0"+
+		"\27\3\2\2\2\u00a1\u009f\3\2\2\2\u00a2\u00a3\7\22\2\2\u00a3\u00a6\5$\23"+
+		"\2\u00a4\u00a5\7\21\2\2\u00a5\u00a7\t\3\2\2\u00a6\u00a4\3\2\2\2\u00a6"+
+		"\u00a7\3\2\2\2\u00a7\u00a8\3\2\2\2\u00a8\u00a9\7\21\2\2\u00a9\u00aa\7"+
+		"\32\2\2\u00aa\u00ab\7\21\2\2\u00ab\u00ac\t\4\2\2\u00ac\u00ad\7\21\2\2"+
+		"\u00ad\u00b1\5\6\4\2\u00ae\u00b0\5\4\3\2\u00af\u00ae\3\2\2\2\u00b0\u00b3"+
+		"\3\2\2\2\u00b1\u00af\3\2\2\2\u00b1\u00b2\3\2\2\2\u00b2\u00b4\3\2\2\2\u00b3"+
+		"\u00b1\3\2\2\2\u00b4\u00b5\7\n\2\2\u00b5\31\3\2\2\2\u00b6\u00b7\3\2\2"+
+		"\2\u00b7\33\3\2\2\2\u00b8\u00bc\7\31\2\2\u00b9\u00bc\5\"\22\2\u00ba\u00bc"+
+		"\5\6\4\2\u00bb\u00b8\3\2\2\2\u00bb\u00b9\3\2\2\2\u00bb\u00ba\3\2\2\2\u00bc"+
+		"\35\3\2\2\2\u00bd\u00be\5\6\4\2\u00be\u00bf\7\25\2\2\u00bf\u00c0\5$\23"+
+		"\2\u00c0\u00dd\3\2\2\2\u00c1\u00c2\7\31\2\2\u00c2\u00c3\7\25\2\2\u00c3"+
+		"\u00dd\5\"\22\2\u00c4\u00c5\5\"\22\2\u00c5\u00c6\7\25\2\2\u00c6\u00c7"+
+		"\5\"\22\2\u00c7\u00dd\3\2\2\2\u00c8\u00c9\5 \21\2\u00c9\u00ca\7\25\2\2"+
+		"\u00ca\u00cb\5&\24\2\u00cb\u00dd\3\2\2\2\u00cc\u00cd\5&\24\2\u00cd\u00ce"+
+		"\7\25\2\2\u00ce\u00cf\5&\24\2\u00cf\u00dd\3\2\2\2\u00d0\u00d1\5&\24\2"+
+		"\u00d1\u00d2\7\26\2\2\u00d2\u00d3\5&\24\2\u00d3\u00dd\3\2\2\2\u00d4\u00d5"+
+		"\5$\23\2\u00d5\u00d6\7\26\2\2\u00d6\u00d7\5$\23\2\u00d7\u00dd\3\2\2\2"+
+		"\u00d8\u00d9\5\"\22\2\u00d9\u00da\7\26\2\2\u00da\u00db\5\"\22\2\u00db"+
+		"\u00dd\3\2\2\2\u00dc\u00bd\3\2\2\2\u00dc\u00c1\3\2\2\2\u00dc\u00c4\3\2"+
+		"\2\2\u00dc\u00c8\3\2\2\2\u00dc\u00cc\3\2\2\2\u00dc\u00d0\3\2\2\2\u00dc"+
+		"\u00d4\3\2\2\2\u00dc\u00d8\3\2\2\2\u00dd\37\3\2\2\2\u00de\u00df\7\23\2"+
+		"\2\u00df\u00e4\t\5\2\2\u00e0\u00e1\7\21\2\2\u00e1\u00e3\t\5\2\2\u00e2"+
+		"\u00e0\3\2\2\2\u00e3\u00e6\3\2\2\2\u00e4\u00e2\3\2\2\2\u00e4\u00e5\3\2"+
+		"\2\2\u00e5\u00e7\3\2\2\2\u00e6\u00e4\3\2\2\2\u00e7\u00e8\7\24\2\2\u00e8"+
+		"!\3\2\2\2\u00e9\u00ea\7\30\2\2\u00ea\u00eb\b\22\1\2\u00eb#\3\2\2\2\u00ec"+
+		"\u00ed\7\27\2\2\u00ed\u00ee\b\23\1\2\u00ee%\3\2\2\2\u00ef\u00f0\7\33\2"+
+		"\2\u00f0\u00f1\b\24\1\2\u00f1\'\3\2\2\2\24+\67DRT[anu\u0085\u008c\u0094"+
+		"\u009f\u00a6\u00b1\u00bb\u00dc\u00e4";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

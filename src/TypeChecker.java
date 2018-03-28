@@ -1,14 +1,7 @@
 
 public class TypeChecker extends TJBBaseVisitor<Type> {
 
-    Singleton singleton = Singleton.getInstance();
-
-    private void validateType(TJBParser.CalculationContext ctx, Type type){
-        Type inferred = visit(ctx);
-        if (inferred != type){
-            throw new CompilerException(ctx, "expected");
-        }
-    }
+    private Singleton singleton = Singleton.getInstance();
 
     private void equalType(TJBParser.BooleanEXPContext left, TJBParser.BooleanEXPContext right){
         Type inferredTypeLeft = visit(left);
@@ -28,7 +21,10 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
         return visit(ctx);
     }
 
-    //Assign checking.
+    //Assign checking. ↓
+
+    //Assign helper methods. ↓
+
     private void checkIfDeclared(TJBParser.AssignmentContext ctx, String variableName){
         if(singleton.getSymbolTable().getSymTable().get(variableName) != null){
             throw new CompilerException(ctx, "Variable " + variableName + " already declared.");
@@ -55,6 +51,8 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
 
         singleton.getSymbolTable().addSymbol(name, type);
     }
+
+    //Assign visitors. ↓
 
     @Override
     public Type visitNumAsn(TJBParser.NumAsnContext ctx) {
@@ -86,8 +84,30 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
         return super.visitArrAsn(ctx);
     }
 
-    //If checking.
+    @Override
+    public Type visitNumAsnVAR(TJBParser.NumAsnVARContext ctx) {
+        checkIfExists(ctx, ctx.value.getText());
+        checkIfExists(ctx, ctx.name.getText());
+        return super.visitNumAsnVAR(ctx);
+    }
 
+    @Override
+    public Type visitStrAsnVAR(TJBParser.StrAsnVARContext ctx) {
+        checkIfExists(ctx, ctx.value.getText());
+        checkIfExists(ctx, ctx.name.getText());
+        return super.visitStrAsnVAR(ctx);
+    }
+
+    @Override
+    public Type visitArrAsnVAR(TJBParser.ArrAsnVARContext ctx) {
+        checkIfExists(ctx, ctx.value.getText());
+        checkIfExists(ctx, ctx.name.getText());
+        return super.visitArrAsnVAR(ctx);
+    }
+
+    //Boolean checking. ↓
+
+    //Boolean helper methods. ↓
     private void checkIfExistsIFStatement(TJBParser.BooleanEXPContext ctx, String value){
         if ((value.length() == 1 && !value.matches(".*\\d+.*")) || (value.substring(0, Math.min(value.length(), 3)).equals("Str"))
                 || (value.charAt(0) == 'L' || value.charAt(0) == 'l')){
@@ -96,6 +116,8 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
             }
         }
     }
+
+    //Calculation visitors. ↓
 
     @Override
     public Type visitExVarLiteral(TJBParser.ExVarLiteralContext ctx) {
@@ -122,6 +144,7 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
         return Type.STRING;
     }
 
+    //Boolean visitors. ↓
     @Override
     public Type visitBoolComp(TJBParser.BoolCompContext ctx) {
         equalType(ctx.left, ctx.right);
@@ -135,7 +158,7 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
         return Type.BOOLEAN;
     }
 
-    //If statement
+    //If visitors. ↓
 
     @Override
     public Type visitIfStatement(TJBParser.IfStatementContext ctx) {
@@ -145,7 +168,7 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
         return super.visitIfStatement(ctx);
     }
 
-    //While statement
+    //While visitors. ↓
 
     @Override
     public Type visitWhileTJB(TJBParser.WhileTJBContext ctx) {
@@ -155,7 +178,7 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
         return super.visitWhileTJB(ctx);
     }
 
-    //Display
+    //Display visitors. ↓
 
     @Override
     public Type visitDispCalc(TJBParser.DispCalcContext ctx) {
@@ -175,6 +198,77 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
             throw new CompilerException(ctx, "Variable " + text + " not defined");
         }
         return super.visitDispSTRID(ctx);
+    }
+
+    //For visitors. ↓
+
+    @Override
+    public Type visitForTJB(TJBParser.ForTJBContext ctx) {
+        String iteratorName = ctx.iterator.getText();
+        if(singleton.getSymbolTable().getSymTable().get(iteratorName) == null){
+            throw new CompilerException(ctx, "Variable " + iteratorName + " already defined");
+        }
+        Type iteratorType;
+        if (ctx.iterVal.getText().contains(",")){
+            iteratorType = Type.DOUBLE;
+        } else {
+            iteratorType = Type.INT;
+        }
+        singleton.getSymbolTable().addSymbol(iteratorName, iteratorType);
+        if (ctx.comp.getText().equals("||") || ctx.comp.getText().equals("AND")
+                || ctx.comp.getText().equals("&&") || ctx.comp.getText().equals("Or")){
+            throw new CompilerException(ctx, "Invalid comparison.");
+        }
+
+        String upperValue = ctx.upper.getText();
+        if(singleton.getSymbolTable().getSymTable().get(upperValue) == null){
+            throw new CompilerException(ctx, "Variable " + upperValue + " not defined");
+        }
+        String increment = ctx.increments.getText();
+        if (increment.length() == 1 && !increment.matches(".*\\d+.*")){
+            if(singleton.getSymbolTable().getSymTable().get(increment) == null){
+                throw new CompilerException(ctx, "Variable " + increment + " not defined");
+            }
+        }
+        return super.visitForTJB(ctx);
+    }
+
+    //"Type" visitors. ↓
+
+    @Override
+    public Type visitExNegLiteral(TJBParser.ExNegLiteralContext ctx) {
+        return Type.INT;
+    }
+
+    @Override
+    public Type visitCheckSTRID(TJBParser.CheckSTRIDContext ctx) {
+        String value = ctx.getText();
+        if(singleton.getSymbolTable().getSymTable().get(value) != null){
+            return Type.STRING;
+        }
+        return null;
+    }
+
+    @Override
+    public Type visitCheckVAR(TJBParser.CheckVARContext ctx) {
+        String value = ctx.getText();
+        if(singleton.getSymbolTable().getSymTable().get(value) != null){
+            if (value.contains(",")){
+                return Type.DOUBLE;
+            } else {
+                return Type.INT;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Type visitCheckArray(TJBParser.CheckArrayContext ctx) {
+        String value = ctx.getText();
+        if(singleton.getSymbolTable().getSymTable().get(value) != null){
+            return Type.ARRAY;
+        }
+        return null;
     }
 
     //Other checks...

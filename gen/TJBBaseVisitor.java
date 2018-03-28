@@ -1,4 +1,4 @@
-// Generated from D:/School/Projects/Java Projects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
+// Generated from D:/School/Projects/Java Projects/C-OSTexasJavaBasicLanguage - Copy\TJB.g4 by ANTLR 4.7
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
@@ -255,6 +255,27 @@ public class TJBBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements TJ
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitArrCpyAsn(TJBParser.ArrCpyAsnContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitArrAsnVAR(TJBParser.ArrAsnVARContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitNumAsnVAR(TJBParser.NumAsnVARContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitStrAsnVAR(TJBParser.StrAsnVARContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

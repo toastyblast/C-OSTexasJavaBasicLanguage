@@ -3,8 +3,15 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 public class TJB {
 
@@ -35,24 +42,22 @@ public class TJB {
     }
 
     public static void main(String[] args) {
-        Scanner s = new Scanner(System.in);
-        Singleton singleton = Singleton.getInstance();
-        while( true ) {
-            // Ask for expression
-            System.out.print("CALC> ");
-            String line = s.nextLine();
-            if( line.equals("exit") )
-                break;
-
-            // Eval
-            try {
-                evaluate(line);
-            } catch (RuntimeException RE){
-                System.err.println(RE.getMessage());
-            }
-
+        String content = "";
+        try
+        {
+            content = new String ( Files.readAllBytes( Paths.get("./code") ) );
         }
-        System.out.println("KTHNXBYE");
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        // Eval
+        try {
+            evaluate(content);
+        } catch (RuntimeException RE){
+            System.err.println(RE.getMessage());
+        }
     }
 
 }
