@@ -1,4 +1,4 @@
-// Generated from D:/School/Projects/Java Projects/C-OSTexasJavaBasicLanguage - Copy\TJB.g4 by ANTLR 4.7
+// Generated from D:/School/Projects/Java Projects/C-OSTexasJavaBasicLanguage-Main\TJB.g4 by ANTLR 4.7
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -36,12 +36,12 @@ public interface TJBVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExModOp(TJBParser.ExModOpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ExNegLiteral}
+	 * Visit a parse tree produced by the {@code ExVarLiteral}
 	 * labeled alternative in {@link TJBParser#calculation}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitExNegLiteral(TJBParser.ExNegLiteralContext ctx);
+	T visitExVarLiteral(TJBParser.ExVarLiteralContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code ExDblLiteral}
 	 * labeled alternative in {@link TJBParser#calculation}.
@@ -50,12 +50,12 @@ public interface TJBVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExDblLiteral(TJBParser.ExDblLiteralContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ExVarLiteral}
+	 * Visit a parse tree produced by the {@code ExNegLiteral}
 	 * labeled alternative in {@link TJBParser#calculation}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitExVarLiteral(TJBParser.ExVarLiteralContext ctx);
+	T visitExNegLiteral(TJBParser.ExNegLiteralContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code ExMulOp}
 	 * labeled alternative in {@link TJBParser#calculation}.
@@ -182,11 +182,11 @@ public interface TJBVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitForTJB(TJBParser.ForTJBContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TJBParser#comparisonSTR}.
+	 * Visit a parse tree produced by {@link TJBParser#comment}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitComparisonSTR(TJBParser.ComparisonSTRContext ctx);
+	T visitComment(TJBParser.CommentContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code DispSTR}
 	 * labeled alternative in {@link TJBParser#displayOptions}.
@@ -271,6 +271,13 @@ public interface TJBVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitStrAsnVAR(TJBParser.StrAsnVARContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code StrAsnNEWVAR}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStrAsnNEWVAR(TJBParser.StrAsnNEWVARContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TJBParser#arrayBuild}.
 	 * @param ctx the parse tree

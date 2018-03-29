@@ -11,6 +11,6 @@ public class CompilerException extends RuntimeException {
 		//int line = firstToken.getLine();
 		int pos = firstToken.getStartIndex();
 
-		return String.format("pos %d: %s", pos, msg);
+		return String.format("LINE %d, POS %d => %s", ctx.start.getLine(),pos, msg);
 	}
 }

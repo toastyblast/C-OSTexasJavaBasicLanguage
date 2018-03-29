@@ -9,21 +9,22 @@ expression: assignment
           | display
           | forTJB
           | booleanEXP
+          | comment
           ;
 
 //...
 
 //FIXME: Allow multiple brackets (i.e. "(((5)))") and more than 2 negatives (i.e. "------2")?
 calculation: '(' val=calculation ')'                                          # ExParentheses
-          | NIN                                                               # ExNegLiteral
-          | INT                                                               # ExIntLiteral
-          | DBL                                                               # ExDblLiteral
-          | val=checkVAR                                                      # ExVarLiteral
           | '-' val=calculation                                               # ExNegate
           | left=calculation '*' right=calculation                            # ExMulOp
           | left=calculation '/' right=calculation                            # ExDivOp
           | left=calculation '%' right=calculation                            # ExModOp
           | left=calculation op=('+' | '-') right=calculation                 # ExAddOp
+          | val=checkVAR                                                      # ExVarLiteral
+          | DBL                                                               # ExDblLiteral
+          | NIN                                                               # ExNegLiteral
+          | INT                                                               # ExIntLiteral
           ;
 
 //I defined so many things because I thought it would be easier to manage them with the parser. I don't know if it is
@@ -35,12 +36,12 @@ thenStatement: 'Then' (expression)*;
 elseStatement: 'Else' (expression)*;
 elseIfStatement: 'Else' ifStatement;
 
-booleanEXP: '(' bool=booleanEXP ')'  #BoolParentheses
-          | '!' bool=booleanEXP      #BoolNeg
-          | calculation         #BoolCalc
-          | STR                 #BoolSTR
-          | checkSTRID          #BoolSTRID
+booleanEXP: '(' bool=booleanEXP ')'                         #BoolParentheses
+          | '!' bool=booleanEXP                             #BoolNeg
           | left=booleanEXP comp=COMPTKN right=booleanEXP   #BoolComp
+          | calculation                                     #BoolCalc
+          | checkSTRID                                      #BoolSTRID
+          | STR                                             #BoolSTR
           ;
 
 whileTJB: 'While' bool=booleanEXP (expression)* 'End';
@@ -48,7 +49,7 @@ display: 'Disp' displayOptions (',' displayOptions)*;
 //FIXME: Fix the calculation part ??
 forTJB: 'For' iterator=checkVAR  (',' iterVal=(INT | DBL))? ',' comp=COMPTKN ',' upper=(VAR|INT|DBL) ',' increments=calculation expression* 'End';
 
-comparisonSTR:;
+comment: '<COM>' STR '</COM>';
 
 displayOptions:
            STR              #DispSTR
@@ -57,14 +58,15 @@ displayOptions:
           | checkArray      #DispArray
           ;
 
-assignment: value=calculation ASN name=checkVAR       #NumAsn
-          | value=STR ASN name=checkSTRID             #StrAsn
-          | value=checkSTRID ASN name=checkSTRID      #StrCpyAsn
-          | value=arrayBuild ASN name=checkArray      #ArrAsn
-          | value=checkArray ASN name=checkArray      #ArrCpyAsn
-          | value=checkArray CPYASN name=checkArray   #ArrAsnVAR
-          | value=checkVAR CPYASN name=checkVAR       #NumAsnVAR
-          | value=checkSTRID CPYASN name=checkSTRID   #StrAsnVAR
+assignment: value=calculation ASN name=checkVAR       #NumAsn //Declaration of a number + inital assign.
+          | value=STR ASN name=checkSTRID             #StrAsn //Declaration of a string + inital assign.
+          | value=checkSTRID ASN name=checkSTRID      #StrCpyAsn //Declaration of a string + copying the value of another string variable.
+          | value=arrayBuild ASN name=checkArray      #ArrAsn //Declaration of an array + inital assign.
+          | value=checkArray ASN name=checkArray      #ArrCpyAsn //Declaration of an array + copying the value of another array variable.
+          | value=checkArray CPYASN name=checkArray   #ArrAsnVAR //Changing the value of an already existing array.
+          | value=calculation CPYASN name=checkVAR    #NumAsnVAR //Changing the value of an already existing number.
+          | value=checkSTRID CPYASN name=checkSTRID   #StrAsnVAR //Changing the value of an already existing string (value from another existing string).
+          | value=STR CPYASN name=checkSTRID          #StrAsnNEWVAR //Changing the value of an already existing string (value from user typed string).
           ;
 
 arrayBuild: '{' (NIN | INT | DBL) (',' (NIN | INT | DBL))* '}';

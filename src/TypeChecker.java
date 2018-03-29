@@ -96,15 +96,24 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
 
     @Override
     public Type visitNumAsnVAR(TJBParser.NumAsnVARContext ctx) {
-        checkIfExists(ctx, ctx.value.getText());
-        checkIfExists(ctx, ctx.name.getText());
+        if ((ctx.value.getText().length() == 1 && !ctx.value.getText().matches(".*\\d+.*"))){
+            checkIfExists(ctx, ctx.name.getText());
+            Type nameType = visit(ctx.name);
+            if (visit(ctx.value) == Type.DOUBLE && nameType == Type.INT){
+                throw new CompilerException(ctx, "Cannot assign double to an int. " + ctx.name.getText() + " is int. "
+                        + ctx.value.getText() + " is double");
+            }
+        } else {
+            checkIfExists(ctx, ctx.value.getText());
+            checkIfExists(ctx, ctx.name.getText());
 
-        Type valueType = visit(ctx.value);
-        Type nameType = visit(ctx.name);
+            Type valueType = visit(ctx.value);
+            Type nameType = visit(ctx.name);
 
-        if (nameType == Type.INT && valueType == Type.DOUBLE){
-            throw new CompilerException(ctx, "Cannot assign boolean to an int. " + ctx.name.getText() + " is int. "
-            + ctx.value.getText() + " is double");
+            if (nameType == Type.INT && valueType == Type.DOUBLE){
+                throw new CompilerException(ctx, "Cannot assign double to an int. " + ctx.name.getText() + " is int. "
+                        + ctx.value.getText() + " is double");
+            }
         }
         return super.visitNumAsnVAR(ctx);
     }
@@ -114,6 +123,12 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
         checkIfExists(ctx, ctx.value.getText());
         checkIfExists(ctx, ctx.name.getText());
         return super.visitStrAsnVAR(ctx);
+    }
+
+    @Override
+    public Type visitStrAsnNEWVAR(TJBParser.StrAsnNEWVARContext ctx) {
+        checkIfExists(ctx, ctx.name.getText());
+        return super.visitStrAsnNEWVAR(ctx);
     }
 
     @Override
@@ -223,7 +238,7 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
         checkIfExistsIFStatement(ctx, ctx.right.getText());
         equalType(ctx.left, ctx.right);
         if (getType(ctx.left) == Type.STRING){
-            if (!ctx.comp.getText().equals("=")){
+            if (!ctx.comp.getText().equals("=") && !ctx.comp.getText().equals("!=")){
                 throw new CompilerException(ctx, "Cannot compare strings with " + ctx.comp.getText());
             }
         }
