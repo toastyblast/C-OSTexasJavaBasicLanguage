@@ -2,6 +2,7 @@
 public class TypeChecker extends TJBBaseVisitor<Type> {
 
     private Singleton singleton = Singleton.getInstance();
+    int counter = 0;
 
     private void equalType(TJBParser.BooleanEXPContext left, TJBParser.BooleanEXPContext right){
         Type inferredTypeLeft = visit(left);
@@ -48,7 +49,7 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
         checkIfSelfAssign(ctx, name, value);
         checkIfDeclared(ctx, name);
         checkIfExists(ctx, value);
-        singleton.getSymbolTable().addSymbol(name, type);
+        singleton.getSymbolTable().addSymbol(name, new Symbol(ctx, type));
     }
 
     //Assign visitors. ↓
@@ -154,6 +155,8 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
 
     @Override
     public Type visitExVarLiteral(TJBParser.ExVarLiteralContext ctx) {
+        singleton.getSymbolTable().addSymbol(String.valueOf(counter), new Symbol(ctx, visit(ctx.val)));
+        counter++;
         return visit(ctx.val);
     }
 
@@ -179,11 +182,15 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
 
     @Override
     public Type visitExParentheses(TJBParser.ExParenthesesContext ctx) {
+        singleton.getSymbolTable().addSymbol(String.valueOf(counter), new Symbol(ctx, visit(ctx.val)));
+        counter++;
         return visit(ctx.val);
     }
 
     @Override
     public Type visitExNegate(TJBParser.ExNegateContext ctx) {
+        singleton.getSymbolTable().addSymbol(String.valueOf(counter), new Symbol(ctx, visit(ctx.val)));
+        counter++;
         return visit(ctx.val);
     }
 
@@ -192,8 +199,12 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
         Type left = visit(ctx.left);
         Type right = visit(ctx.right);
         if (left == Type.INT && right == Type.INT){
+            singleton.getSymbolTable().addSymbol(String.valueOf(counter), new Symbol(ctx, Type.INT));
+            counter++;
             return Type.INT;
         } else {
+            singleton.getSymbolTable().addSymbol(String.valueOf(counter), new Symbol(ctx, Type.DOUBLE));
+            counter++;
             return Type.DOUBLE;
         }
     }
@@ -203,8 +214,12 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
         Type left = visit(ctx.left);
         Type right = visit(ctx.right);
         if (left == Type.INT && right == Type.INT){
+            singleton.getSymbolTable().addSymbol(String.valueOf(counter), new Symbol(ctx, Type.INT));
+            counter++;
             return Type.INT;
         } else {
+            singleton.getSymbolTable().addSymbol(String.valueOf(counter), new Symbol(ctx, Type.DOUBLE));
+            counter++;
             return Type.DOUBLE;
         }
     }
@@ -214,8 +229,12 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
         Type left = visit(ctx.left);
         Type right = visit(ctx.right);
         if (left == Type.INT && right == Type.INT){
+            singleton.getSymbolTable().addSymbol(String.valueOf(counter), new Symbol(ctx, Type.INT));
+            counter++;
             return Type.INT;
         } else {
+            singleton.getSymbolTable().addSymbol(String.valueOf(counter), new Symbol(ctx, Type.DOUBLE));
+            counter++;
             return Type.DOUBLE;
         }
     }
@@ -225,8 +244,12 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
         Type left = visit(ctx.left);
         Type right = visit(ctx.right);
         if (left == Type.INT && right == Type.INT){
+            singleton.getSymbolTable().addSymbol(String.valueOf(counter), new Symbol(ctx, Type.INT));
+            counter++;
             return Type.INT;
         } else {
+            singleton.getSymbolTable().addSymbol(String.valueOf(counter), new Symbol(ctx, Type.DOUBLE));
+            counter++;
             return Type.DOUBLE;
         }
     }
@@ -320,7 +343,7 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
         } else {
             iteratorType = Type.INT;
         }
-        singleton.getSymbolTable().addSymbol(iteratorName, iteratorType);
+        singleton.getSymbolTable().addSymbol(iteratorName, new Symbol(ctx, iteratorType));
         if (ctx.comp.getText().equals("||") || ctx.comp.getText().equals("AND")
                 || ctx.comp.getText().equals("&&") || ctx.comp.getText().equals("Or")){
             throw new CompilerException(ctx, "Invalid comparison.");
@@ -359,7 +382,7 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
     public Type visitCheckVAR(TJBParser.CheckVARContext ctx) {
         String value = ctx.getText();
         if(singleton.getSymbolTable().getSymTable().get(value) != null){
-            return singleton.getSymbolTable().getSymTable().get(value);
+            return singleton.getSymbolTable().getSymTable().get(value).getType();
         }
         return null;
     }
