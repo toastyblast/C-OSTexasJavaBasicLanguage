@@ -327,13 +327,13 @@ public class TJBBaseListener implements TJBListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterComment(TJBParser.CommentContext ctx) { }
+	@Override public void enterCommentLine(TJBParser.CommentLineContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitComment(TJBParser.CommentContext ctx) { }
+	@Override public void exitCommentLine(TJBParser.CommentLineContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

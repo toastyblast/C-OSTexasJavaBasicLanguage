@@ -182,11 +182,12 @@ public interface TJBVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitForTJB(TJBParser.ForTJBContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TJBParser#comment}.
+	 * Visit a parse tree produced by the {@code CommentLine}
+	 * labeled alternative in {@link TJBParser#comment}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitComment(TJBParser.CommentContext ctx);
+	T visitCommentLine(TJBParser.CommentLineContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code DispSTR}
 	 * labeled alternative in {@link TJBParser#displayOptions}.

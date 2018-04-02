@@ -267,5 +267,139 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
         return code;
     }
 
+    @Override
+    public ArrayList<String> visitBoolParentheses(TJBParser.BoolParenthesesContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        code.addAll(visit(ctx.bool));
+
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitBoolNeg(TJBParser.BoolNegContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        code.addAll(visit(ctx.bool));
+        //FIXME? Do something to make the result negative here?
+
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitBoolComp(TJBParser.BoolCompContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        code.addAll(visit(ctx.left));
+        code.addAll(visit(ctx.right));
+
+        String comparisonToken = ctx.comp.getText();
+
+        //TODO - Yoran: Figure out comparisons.
+        if (comparisonToken.equals("<")) {
+            code.add("");
+        } else if (comparisonToken.equals("<=")) {
+            code.add("");
+        } else if (comparisonToken.equals("=")) {
+            code.add("");
+        } else if (comparisonToken.equals("!=")) {
+            code.add("");
+        } else if (comparisonToken.equals(">")) {
+            code.add("");
+        } else if (comparisonToken.equals(">=")) {
+            code.add("");
+        } else if (comparisonToken.equals("||")) {
+            code.add("");
+        } else if (comparisonToken.equals("And")) {
+            code.add("");
+        } else if (comparisonToken.equals("&&")) {
+            code.add("");
+        } else if (comparisonToken.equals("Or")) {
+            code.add("");
+        }
+
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitCommentLine(TJBParser.CommentLineContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        code.add("\t;\t" + ctx.STR().getText());
+
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitDisplay(TJBParser.DisplayContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        for (TJBParser.DisplayOptionsContext displayOptions: ctx.displayOptions()) {
+            code.addAll(visit(displayOptions));
+        }
+
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitDispSTR(TJBParser.DispSTRContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
+        code.add("\tldc\t" + ctx.STR().getText());
+        code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava/lang/String;)V\n");
+
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitDispSTRID(TJBParser.DispSTRIDContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
+
+        String strID = ctx.name.getText();
+        int indexOffset = variables.indexOf(strID) + 1;
+
+        code.add("\taload\t" + indexOffset);
+        code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava/lang/String;)V\n");
+
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitDispCalc(TJBParser.DispCalcContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
+        code.addAll(visit(ctx.calculation()));
+        //FIXME: I HAVE TO KNOW IF THE RETURNING VALUE IS AN INT OR A DOUBLE HERE!
+        code.add("\tinvokevirtual\tjava/io/PrintStream/println(I)V\n");
+
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitDispArray(TJBParser.DispArrayContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        String arrID = ctx.name.getText();
+        int indexOffset = variables.indexOf(arrID) + 1;
+
+        code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
+
+        code.add("\taload\t" + indexOffset);
+
+        //FIXME - Yoran: CHECK IF THIS IS CORRECT FOR ARRAYS!
+        code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava.lang.reflect.Array;)V\n");
+
+        return code;
+    }
+
+    //TODO STILL TO ADD:
+    // - If statements;
+    // - For loops;
+    // - While loops;
+
     //visit methods here.
 }

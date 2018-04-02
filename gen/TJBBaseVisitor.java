@@ -198,7 +198,7 @@ public class TJBBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements TJ
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitComment(TJBParser.CommentContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCommentLine(TJBParser.CommentLineContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

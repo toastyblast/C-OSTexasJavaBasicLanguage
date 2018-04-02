@@ -1492,22 +1492,30 @@ public class TJBParser extends Parser {
 	}
 
 	public static class CommentContext extends ParserRuleContext {
-		public TerminalNode STR() { return getToken(TJBParser.STR, 0); }
 		public CommentContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_comment; }
+	 
+		public CommentContext() { }
+		public void copyFrom(CommentContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class CommentLineContext extends CommentContext {
+		public TerminalNode STR() { return getToken(TJBParser.STR, 0); }
+		public CommentLineContext(CommentContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterComment(this);
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterCommentLine(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitComment(this);
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitCommentLine(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitComment(this);
+			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitCommentLine(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1516,6 +1524,7 @@ public class TJBParser extends Parser {
 		CommentContext _localctx = new CommentContext(_ctx, getState());
 		enterRule(_localctx, 24, RULE_comment);
 		try {
+			_localctx = new CommentLineContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(181);
@@ -1585,6 +1594,7 @@ public class TJBParser extends Parser {
 		}
 	}
 	public static class DispSTRIDContext extends DisplayOptionsContext {
+		public CheckSTRIDContext name;
 		public CheckSTRIDContext checkSTRID() {
 			return getRuleContext(CheckSTRIDContext.class,0);
 		}
@@ -1604,6 +1614,7 @@ public class TJBParser extends Parser {
 		}
 	}
 	public static class DispArrayContext extends DisplayOptionsContext {
+		public CheckArrayContext name;
 		public CheckArrayContext checkArray() {
 			return getRuleContext(CheckArrayContext.class,0);
 		}
@@ -1643,7 +1654,7 @@ public class TJBParser extends Parser {
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(186);
-				checkSTRID();
+				((DispSTRIDContext)_localctx).name = checkSTRID();
 				}
 				break;
 			case T__0:
@@ -1664,7 +1675,7 @@ public class TJBParser extends Parser {
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(188);
-				checkArray();
+				((DispArrayContext)_localctx).name = checkArray();
 				}
 				break;
 			default:

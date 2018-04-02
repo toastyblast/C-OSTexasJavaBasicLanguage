@@ -49,13 +49,13 @@ display: 'Disp' displayOptions (',' displayOptions)*;
 //FIXME: Fix the calculation part ??
 forTJB: 'For' iterator=checkVAR  (',' iterVal=(INT | DBL))? ',' comp=COMPTKN ',' upper=(VAR|INT|DBL) ',' increments=calculation expression* 'End';
 
-comment: '<COM>' STR '</COM>';
+comment: '<COM>' STR '</COM>'                               #CommentLine;
 
 displayOptions:
-           STR              #DispSTR
-          | checkSTRID      #DispSTRID
-          | calculation     #DispCalc
-          | checkArray      #DispArray
+           STR                   #DispSTR
+          | name=checkSTRID      #DispSTRID
+          | calculation          #DispCalc
+          | name=checkArray      #DispArray
           ;
 
 assignment: value=calculation ASN name=checkVAR       #NumAsn //Declaration of a number + inital assign.

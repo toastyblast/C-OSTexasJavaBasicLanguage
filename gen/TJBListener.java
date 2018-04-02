@@ -299,15 +299,17 @@ public interface TJBListener extends ParseTreeListener {
 	 */
 	void exitForTJB(TJBParser.ForTJBContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TJBParser#comment}.
+	 * Enter a parse tree produced by the {@code CommentLine}
+	 * labeled alternative in {@link TJBParser#comment}.
 	 * @param ctx the parse tree
 	 */
-	void enterComment(TJBParser.CommentContext ctx);
+	void enterCommentLine(TJBParser.CommentLineContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TJBParser#comment}.
+	 * Exit a parse tree produced by the {@code CommentLine}
+	 * labeled alternative in {@link TJBParser#comment}.
 	 * @param ctx the parse tree
 	 */
-	void exitComment(TJBParser.CommentContext ctx);
+	void exitCommentLine(TJBParser.CommentLineContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code DispSTR}
 	 * labeled alternative in {@link TJBParser#displayOptions}.
