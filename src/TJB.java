@@ -9,13 +9,36 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class TJB {
+    private static String startProg = ".class public {{name}}\n" +
+            ".super java/lang/Object\n" +
+            "\n" +
+            ";\n" +
+            "; standard initializer (calls java.lang.Object's initializer)\n" +
+            ";\n" +
+            ".method public <init>()V\n" +
+            "\taload_0\n" +
+            "\tinvokenonvirtual java/lang/Object/<init>()V\n" +
+            "\treturn\n" +
+            ".end method\n" +
+            "\n" +
+            ";\n" +
+            "; main() method\n" +
+            ";\n" +
+            ".method public static main([Ljava/lang/String;)V";
+
+    private static String endProg = "\n\treturn\n.end method";
 
     private static void evaluate(String line){
+        //FIXME: Get a name for the program from the user in some way (will replace the "{{name}}" at the start of the startProg variable)
+        String programName = "PLACEHOLDER";
+
         // Create lexer and run scanner to create stream of tokens
         CharStream charStream = CharStreams.fromString(line);
         TJBLexer lexer = new TJBLexer(charStream);
@@ -27,6 +50,16 @@ public class TJB {
 
         // Type check then evaulate by running the visitor
         evaluateAndPrint(expression); // <-- Change this to checkEvaluateAndPrint when you implemented a checker
+
+        //TODO - Yoran: Make the code generator
+        CodeGenVisitor genVisitor = new CodeGenVisitor();
+        ArrayList<String> generatedCode = genVisitor.visit(expression);
+
+        System.out.println(startProg.replaceAll("\\{\\{name\\}\\}", programName));
+        // Output compiled part of the jasmin file
+        System.out.println(generatedCode.stream().collect(Collectors.joining("\n")));
+        // Output footer of jasmin file
+        System.out.println(endProg);
     }
 
     private static void evaluateAndPrint( ParseTree parseTree ) {

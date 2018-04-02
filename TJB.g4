@@ -19,8 +19,8 @@ calculation: '(' val=calculation ')'                                          # 
           | '-' val=calculation                                               # ExNegate
           | left=calculation '*' right=calculation                            # ExMulOp
           | left=calculation '/' right=calculation                            # ExDivOp
-          | left=calculation '%' right=calculation                            # ExModOp
           | left=calculation op=('+' | '-') right=calculation                 # ExAddOp
+          | left=calculation '%' right=calculation                            # ExModOp
           | val=checkVAR                                                      # ExVarLiteral
           | DBL                                                               # ExDblLiteral
           | NIN                                                               # ExNegLiteral

@@ -1,4 +1,4 @@
-// Generated from D:/School/Projects/Java Projects/C-OSTexasJavaBasicLanguage-Main\TJB.g4 by ANTLR 4.7
+// Generated from D:/IdeaProjects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -36,7 +36,7 @@ public class TJBLexer extends Lexer {
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, "'('", "')'", "'-'", "'*'", "'/'", "'%'", "'+'", "'End'", "'If'", 
+		null, "'('", "')'", "'-'", "'*'", "'/'", "'+'", "'%'", "'End'", "'If'", 
 		"'Then'", "'Else'", "'!'", "'While'", "'Disp'", "','", "'For'", "'<COM>'", 
 		"'</COM>'", "'{'", "'}'", "'->'", "'-->'"
 	};
@@ -136,7 +136,7 @@ public class TJBLexer extends Lexer {
 		"\3\2\2\2\63\u00a2\3\2\2\2\65\u00ba\3\2\2\2\67\u00bc\3\2\2\29\u00cb\3\2"+
 		"\2\2;\u00cd\3\2\2\2=\u00d2\3\2\2\2?\u00d8\3\2\2\2AB\7*\2\2B\4\3\2\2\2"+
 		"CD\7+\2\2D\6\3\2\2\2EF\7/\2\2F\b\3\2\2\2GH\7,\2\2H\n\3\2\2\2IJ\7\61\2"+
-		"\2J\f\3\2\2\2KL\7\'\2\2L\16\3\2\2\2MN\7-\2\2N\20\3\2\2\2OP\7G\2\2PQ\7"+
+		"\2J\f\3\2\2\2KL\7-\2\2L\16\3\2\2\2MN\7\'\2\2N\20\3\2\2\2OP\7G\2\2PQ\7"+
 		"p\2\2QR\7f\2\2R\22\3\2\2\2ST\7K\2\2TU\7h\2\2U\24\3\2\2\2VW\7V\2\2WX\7"+
 		"j\2\2XY\7g\2\2YZ\7p\2\2Z\26\3\2\2\2[\\\7G\2\2\\]\7n\2\2]^\7u\2\2^_\7g"+
 		"\2\2_\30\3\2\2\2`a\7#\2\2a\32\3\2\2\2bc\7Y\2\2cd\7j\2\2de\7k\2\2ef\7n"+

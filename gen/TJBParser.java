@@ -1,4 +1,4 @@
-// Generated from D:/School/Projects/Java Projects/C-OSTexasJavaBasicLanguage-Main\TJB.g4 by ANTLR 4.7
+// Generated from D:/IdeaProjects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -34,7 +34,7 @@ public class TJBParser extends Parser {
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, "'('", "')'", "'-'", "'*'", "'/'", "'%'", "'+'", "'End'", "'If'", 
+		null, "'('", "')'", "'-'", "'*'", "'/'", "'+'", "'%'", "'End'", "'If'", 
 		"'Then'", "'Else'", "'!'", "'While'", "'Disp'", "','", "'For'", "'<COM>'", 
 		"'</COM>'", "'{'", "'}'", "'->'", "'-->'"
 	};
@@ -104,6 +104,14 @@ public class TJBParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_codeLine; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterCodeLine(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitCodeLine(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitCodeLine(this);
@@ -176,6 +184,14 @@ public class TJBParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_expression; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterExpression(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitExpression(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitExpression(this);
@@ -277,6 +293,14 @@ public class TJBParser extends Parser {
 		}
 		public ExNegateContext(CalculationContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterExNegate(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitExNegate(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitExNegate(this);
 			else return visitor.visitChildren(this);
@@ -293,6 +317,14 @@ public class TJBParser extends Parser {
 		}
 		public ExModOpContext(CalculationContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterExModOp(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitExModOp(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitExModOp(this);
 			else return visitor.visitChildren(this);
@@ -305,6 +337,14 @@ public class TJBParser extends Parser {
 		}
 		public ExVarLiteralContext(CalculationContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterExVarLiteral(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitExVarLiteral(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitExVarLiteral(this);
 			else return visitor.visitChildren(this);
@@ -314,6 +354,14 @@ public class TJBParser extends Parser {
 		public TerminalNode DBL() { return getToken(TJBParser.DBL, 0); }
 		public ExDblLiteralContext(CalculationContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterExDblLiteral(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitExDblLiteral(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitExDblLiteral(this);
 			else return visitor.visitChildren(this);
@@ -322,6 +370,14 @@ public class TJBParser extends Parser {
 	public static class ExNegLiteralContext extends CalculationContext {
 		public TerminalNode NIN() { return getToken(TJBParser.NIN, 0); }
 		public ExNegLiteralContext(CalculationContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterExNegLiteral(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitExNegLiteral(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitExNegLiteral(this);
@@ -338,6 +394,14 @@ public class TJBParser extends Parser {
 			return getRuleContext(CalculationContext.class,i);
 		}
 		public ExMulOpContext(CalculationContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterExMulOp(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitExMulOp(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitExMulOp(this);
@@ -356,6 +420,14 @@ public class TJBParser extends Parser {
 		}
 		public ExAddOpContext(CalculationContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterExAddOp(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitExAddOp(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitExAddOp(this);
 			else return visitor.visitChildren(this);
@@ -364,6 +436,14 @@ public class TJBParser extends Parser {
 	public static class ExIntLiteralContext extends CalculationContext {
 		public TerminalNode INT() { return getToken(TJBParser.INT, 0); }
 		public ExIntLiteralContext(CalculationContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterExIntLiteral(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitExIntLiteral(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitExIntLiteral(this);
@@ -381,6 +461,14 @@ public class TJBParser extends Parser {
 		}
 		public ExDivOpContext(CalculationContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterExDivOp(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitExDivOp(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitExDivOp(this);
 			else return visitor.visitChildren(this);
@@ -392,6 +480,14 @@ public class TJBParser extends Parser {
 			return getRuleContext(CalculationContext.class,0);
 		}
 		public ExParenthesesContext(CalculationContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterExParentheses(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitExParentheses(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitExParentheses(this);
@@ -522,28 +618,15 @@ public class TJBParser extends Parser {
 						break;
 					case 3:
 						{
-						_localctx = new ExModOpContext(new CalculationContext(_parentctx, _parentState));
-						((ExModOpContext)_localctx).left = _prevctx;
+						_localctx = new ExAddOpContext(new CalculationContext(_parentctx, _parentState));
+						((ExAddOpContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_calculation);
 						setState(75);
 						if (!(precpred(_ctx, 6))) throw new FailedPredicateException(this, "precpred(_ctx, 6)");
 						setState(76);
-						match(T__5);
-						setState(77);
-						((ExModOpContext)_localctx).right = calculation(7);
-						}
-						break;
-					case 4:
-						{
-						_localctx = new ExAddOpContext(new CalculationContext(_parentctx, _parentState));
-						((ExAddOpContext)_localctx).left = _prevctx;
-						pushNewRecursionContext(_localctx, _startState, RULE_calculation);
-						setState(78);
-						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
-						setState(79);
 						((ExAddOpContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !(_la==T__2 || _la==T__6) ) {
+						if ( !(_la==T__2 || _la==T__5) ) {
 							((ExAddOpContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
@@ -551,8 +634,21 @@ public class TJBParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
+						setState(77);
+						((ExAddOpContext)_localctx).right = calculation(7);
+						}
+						break;
+					case 4:
+						{
+						_localctx = new ExModOpContext(new CalculationContext(_parentctx, _parentState));
+						((ExModOpContext)_localctx).left = _prevctx;
+						pushNewRecursionContext(_localctx, _startState, RULE_calculation);
+						setState(78);
+						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
+						setState(79);
+						match(T__6);
 						setState(80);
-						((ExAddOpContext)_localctx).right = calculation(6);
+						((ExModOpContext)_localctx).right = calculation(6);
 						}
 						break;
 					}
@@ -595,6 +691,14 @@ public class TJBParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_ifTJB; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterIfTJB(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitIfTJB(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitIfTJB(this);
@@ -670,6 +774,14 @@ public class TJBParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_ifStatement; }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterIfStatement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitIfStatement(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitIfStatement(this);
 			else return visitor.visitChildren(this);
@@ -712,6 +824,14 @@ public class TJBParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_thenStatement; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterThenStatement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitThenStatement(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitThenStatement(this);
@@ -767,6 +887,14 @@ public class TJBParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_elseStatement; }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterElseStatement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitElseStatement(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitElseStatement(this);
 			else return visitor.visitChildren(this);
@@ -818,6 +946,14 @@ public class TJBParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_elseIfStatement; }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterElseIfStatement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitElseIfStatement(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitElseIfStatement(this);
 			else return visitor.visitChildren(this);
@@ -865,6 +1001,14 @@ public class TJBParser extends Parser {
 		}
 		public BoolParenthesesContext(BooleanEXPContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterBoolParentheses(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitBoolParentheses(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitBoolParentheses(this);
 			else return visitor.visitChildren(this);
@@ -876,6 +1020,14 @@ public class TJBParser extends Parser {
 		}
 		public BoolCalcContext(BooleanEXPContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterBoolCalc(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitBoolCalc(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitBoolCalc(this);
 			else return visitor.visitChildren(this);
@@ -884,6 +1036,14 @@ public class TJBParser extends Parser {
 	public static class BoolSTRContext extends BooleanEXPContext {
 		public TerminalNode STR() { return getToken(TJBParser.STR, 0); }
 		public BoolSTRContext(BooleanEXPContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterBoolSTR(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitBoolSTR(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitBoolSTR(this);
@@ -903,6 +1063,14 @@ public class TJBParser extends Parser {
 		public TerminalNode COMPTKN() { return getToken(TJBParser.COMPTKN, 0); }
 		public BoolCompContext(BooleanEXPContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterBoolComp(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitBoolComp(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitBoolComp(this);
 			else return visitor.visitChildren(this);
@@ -915,6 +1083,14 @@ public class TJBParser extends Parser {
 		}
 		public BoolNegContext(BooleanEXPContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterBoolNeg(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitBoolNeg(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitBoolNeg(this);
 			else return visitor.visitChildren(this);
@@ -925,6 +1101,14 @@ public class TJBParser extends Parser {
 			return getRuleContext(CheckSTRIDContext.class,0);
 		}
 		public BoolSTRIDContext(BooleanEXPContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterBoolSTRID(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitBoolSTRID(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitBoolSTRID(this);
@@ -1058,6 +1242,14 @@ public class TJBParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_whileTJB; }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterWhileTJB(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitWhileTJB(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitWhileTJB(this);
 			else return visitor.visitChildren(this);
@@ -1115,6 +1307,14 @@ public class TJBParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_display; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterDisplay(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitDisplay(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitDisplay(this);
@@ -1194,6 +1394,14 @@ public class TJBParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_forTJB; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterForTJB(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitForTJB(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitForTJB(this);
@@ -1290,6 +1498,14 @@ public class TJBParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_comment; }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterComment(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitComment(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitComment(this);
 			else return visitor.visitChildren(this);
@@ -1336,6 +1552,14 @@ public class TJBParser extends Parser {
 		public TerminalNode STR() { return getToken(TJBParser.STR, 0); }
 		public DispSTRContext(DisplayOptionsContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterDispSTR(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitDispSTR(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitDispSTR(this);
 			else return visitor.visitChildren(this);
@@ -1346,6 +1570,14 @@ public class TJBParser extends Parser {
 			return getRuleContext(CalculationContext.class,0);
 		}
 		public DispCalcContext(DisplayOptionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterDispCalc(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitDispCalc(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitDispCalc(this);
@@ -1358,6 +1590,14 @@ public class TJBParser extends Parser {
 		}
 		public DispSTRIDContext(DisplayOptionsContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterDispSTRID(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitDispSTRID(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitDispSTRID(this);
 			else return visitor.visitChildren(this);
@@ -1368,6 +1608,14 @@ public class TJBParser extends Parser {
 			return getRuleContext(CheckArrayContext.class,0);
 		}
 		public DispArrayContext(DisplayOptionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterDispArray(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitDispArray(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitDispArray(this);
@@ -1455,6 +1703,14 @@ public class TJBParser extends Parser {
 		}
 		public StrAsnContext(AssignmentContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterStrAsn(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitStrAsn(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitStrAsn(this);
 			else return visitor.visitChildren(this);
@@ -1471,6 +1727,14 @@ public class TJBParser extends Parser {
 			return getRuleContext(CheckArrayContext.class,i);
 		}
 		public ArrCpyAsnContext(AssignmentContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterArrCpyAsn(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitArrCpyAsn(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitArrCpyAsn(this);
@@ -1489,6 +1753,14 @@ public class TJBParser extends Parser {
 		}
 		public ArrAsnVARContext(AssignmentContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterArrAsnVAR(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitArrAsnVAR(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitArrAsnVAR(this);
 			else return visitor.visitChildren(this);
@@ -1503,6 +1775,14 @@ public class TJBParser extends Parser {
 			return getRuleContext(CheckSTRIDContext.class,0);
 		}
 		public StrAsnNEWVARContext(AssignmentContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterStrAsnNEWVAR(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitStrAsnNEWVAR(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitStrAsnNEWVAR(this);
@@ -1521,6 +1801,14 @@ public class TJBParser extends Parser {
 		}
 		public StrCpyAsnContext(AssignmentContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterStrCpyAsn(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitStrCpyAsn(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitStrCpyAsn(this);
 			else return visitor.visitChildren(this);
@@ -1537,6 +1825,14 @@ public class TJBParser extends Parser {
 			return getRuleContext(CheckVARContext.class,0);
 		}
 		public NumAsnContext(AssignmentContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterNumAsn(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitNumAsn(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitNumAsn(this);
@@ -1555,6 +1851,14 @@ public class TJBParser extends Parser {
 		}
 		public NumAsnVARContext(AssignmentContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterNumAsnVAR(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitNumAsnVAR(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitNumAsnVAR(this);
 			else return visitor.visitChildren(this);
@@ -1572,6 +1876,14 @@ public class TJBParser extends Parser {
 		}
 		public ArrAsnContext(AssignmentContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterArrAsn(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitArrAsn(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitArrAsn(this);
 			else return visitor.visitChildren(this);
@@ -1588,6 +1900,14 @@ public class TJBParser extends Parser {
 			return getRuleContext(CheckSTRIDContext.class,i);
 		}
 		public StrAsnVARContext(AssignmentContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterStrAsnVAR(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitStrAsnVAR(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitStrAsnVAR(this);
@@ -1741,6 +2061,14 @@ public class TJBParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_arrayBuild; }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterArrayBuild(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitArrayBuild(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitArrayBuild(this);
 			else return visitor.visitChildren(this);
@@ -1813,6 +2141,14 @@ public class TJBParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_checkSTRID; }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterCheckSTRID(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitCheckSTRID(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitCheckSTRID(this);
 			else return visitor.visitChildren(this);
@@ -1854,6 +2190,14 @@ public class TJBParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_checkVAR; }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterCheckVAR(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitCheckVAR(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitCheckVAR(this);
 			else return visitor.visitChildren(this);
@@ -1894,6 +2238,14 @@ public class TJBParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_checkArray; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).enterCheckArray(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TJBListener ) ((TJBListener)listener).exitCheckArray(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof TJBVisitor ) return ((TJBVisitor<? extends T>)visitor).visitCheckArray(this);
@@ -1987,7 +2339,7 @@ public class TJBParser extends Parser {
 		"\3\20\3\20\3\20\5\20\u00e4\n\20\3\21\3\21\3\21\3\21\7\21\u00ea\n\21\f"+
 		"\21\16\21\u00ed\13\21\3\21\3\21\3\22\3\22\3\22\3\23\3\23\3\23\3\24\3\24"+
 		"\3\24\3\24\2\4\6\22\25\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&\2\6"+
-		"\4\2\5\5\t\t\4\2\36\36  \5\2\31\31\36\36  \3\2\36 \2\u0110\2+\3\2\2\2"+
+		"\4\2\5\5\b\b\4\2\36\36  \5\2\31\31\36\36  \3\2\36 \2\u0110\2+\3\2\2\2"+
 		"\48\3\2\2\2\6E\3\2\2\2\bX\3\2\2\2\ng\3\2\2\2\fk\3\2\2\2\16r\3\2\2\2\20"+
 		"y\3\2\2\2\22\u0086\3\2\2\2\24\u0090\3\2\2\2\26\u009a\3\2\2\2\30\u00a3"+
 		"\3\2\2\2\32\u00b7\3\2\2\2\34\u00bf\3\2\2\2\36\u00e3\3\2\2\2 \u00e5\3\2"+
@@ -1999,8 +2351,8 @@ public class TJBParser extends Parser {
 		"\2\2\2:;\b\4\1\2;<\7\3\2\2<=\5\6\4\2=>\7\4\2\2>F\3\2\2\2?@\7\5\2\2@F\5"+
 		"\6\4\13AF\5$\23\2BF\7 \2\2CF\7\37\2\2DF\7\36\2\2E:\3\2\2\2E?\3\2\2\2E"+
 		"A\3\2\2\2EB\3\2\2\2EC\3\2\2\2ED\3\2\2\2FU\3\2\2\2GH\f\n\2\2HI\7\6\2\2"+
-		"IT\5\6\4\13JK\f\t\2\2KL\7\7\2\2LT\5\6\4\nMN\f\b\2\2NO\7\b\2\2OT\5\6\4"+
-		"\tPQ\f\7\2\2QR\t\2\2\2RT\5\6\4\bSG\3\2\2\2SJ\3\2\2\2SM\3\2\2\2SP\3\2\2"+
+		"IT\5\6\4\13JK\f\t\2\2KL\7\7\2\2LT\5\6\4\nMN\f\b\2\2NO\t\2\2\2OT\5\6\4"+
+		"\tPQ\f\7\2\2QR\7\t\2\2RT\5\6\4\bSG\3\2\2\2SJ\3\2\2\2SM\3\2\2\2SP\3\2\2"+
 		"\2TW\3\2\2\2US\3\2\2\2UV\3\2\2\2V\7\3\2\2\2WU\3\2\2\2X\\\5\n\6\2Y[\5\20"+
 		"\t\2ZY\3\2\2\2[^\3\2\2\2\\Z\3\2\2\2\\]\3\2\2\2]b\3\2\2\2^\\\3\2\2\2_a"+
 		"\5\16\b\2`_\3\2\2\2ad\3\2\2\2b`\3\2\2\2bc\3\2\2\2ce\3\2\2\2db\3\2\2\2"+
