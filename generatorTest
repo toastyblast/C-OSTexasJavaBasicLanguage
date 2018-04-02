@@ -1,0 +1,12 @@
+((-5) + 5 + 1) * 6 -> A
+6 -> B
+"asd" -> Str1
+"asdd" --> Str1
+"wasd" -> Str2
+Str2 -> Str3
+Str3 --> Str1
+B --> A
+5 --> B
+<COM> "A B" </COM>
+Disp A, "Random"
+Disp B, Str1, Str2, Str3

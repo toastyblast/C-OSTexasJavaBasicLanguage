@@ -78,7 +78,7 @@ public class TJB {
         String content = "";
         try
         {
-            content = new String ( Files.readAllBytes( Paths.get("./code") ) );
+            content = new String ( Files.readAllBytes( Paths.get("./generatorTest") ) );
         }
         catch (IOException e)
         {
