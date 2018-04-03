@@ -70,10 +70,10 @@ public class TJB {
             TypeCheckerV2 typeChecker = new TypeCheckerV2();
             Type type = typeChecker.visit(parseTree);  // throws on error
             Singleton.getInstance().copyTable();
-            for (ParserRuleContext context:
-                    Singleton.getInstance().getCheckUpTable().keySet()) {
-                System.out.println(Singleton.getInstance().getCheckUpTable().get(context));
-            }
+//            for (ParserRuleContext context:
+//                    Singleton.getInstance().getCheckUpTable().keySet()) {
+//                System.out.println(Singleton.getInstance().getCheckUpTable().get(context));
+//            }
         } catch( CompilerException ce ) {
             System.err.println("ERROR: " + ce.getMessage() );
         }
@@ -84,7 +84,7 @@ public class TJB {
         String content = "";
         try
         {
-            content = new String ( Files.readAllBytes( Paths.get("./code") ) );
+            content = new String ( Files.readAllBytes( Paths.get("./generatorTest") ) );
         }
         catch (IOException e)
         {
