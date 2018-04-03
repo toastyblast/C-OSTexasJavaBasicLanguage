@@ -39,8 +39,8 @@ elseIfStatement: 'Else' ifStatement;
 booleanEXP: '(' bool=booleanEXP ')'                         #BoolParentheses
           | '!' bool=booleanEXP                             #BoolNeg
           | left=booleanEXP comp=COMPTKN right=booleanEXP   #BoolComp
-          | calculation                                     #BoolCalc
-          | checkSTRID                                      #BoolSTRID
+          | calc=calculation                                #BoolCalc
+          | str=checkSTRID                                  #BoolSTRID
           | STR                                             #BoolSTR
           ;
 

@@ -1,4 +1,4 @@
-// Generated from D:/IdeaProjects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
+// Generated from D:/School/Projects/Java Projects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -1015,6 +1015,7 @@ public class TJBParser extends Parser {
 		}
 	}
 	public static class BoolCalcContext extends BooleanEXPContext {
+		public CalculationContext calc;
 		public CalculationContext calculation() {
 			return getRuleContext(CalculationContext.class,0);
 		}
@@ -1097,6 +1098,7 @@ public class TJBParser extends Parser {
 		}
 	}
 	public static class BoolSTRIDContext extends BooleanEXPContext {
+		public CheckSTRIDContext str;
 		public CheckSTRIDContext checkSTRID() {
 			return getRuleContext(CheckSTRIDContext.class,0);
 		}
@@ -1165,7 +1167,7 @@ public class TJBParser extends Parser {
 				_ctx = _localctx;
 				_prevctx = _localctx;
 				setState(129);
-				calculation(0);
+				((BoolCalcContext)_localctx).calc = calculation(0);
 				}
 				break;
 			case 4:
@@ -1174,7 +1176,7 @@ public class TJBParser extends Parser {
 				_ctx = _localctx;
 				_prevctx = _localctx;
 				setState(130);
-				checkSTRID();
+				((BoolSTRIDContext)_localctx).str = checkSTRID();
 				}
 				break;
 			case 5:

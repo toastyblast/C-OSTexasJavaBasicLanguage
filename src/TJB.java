@@ -1,6 +1,7 @@
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.File;
@@ -66,8 +67,13 @@ public class TJB {
 
         // Type check then evaulate by running the visitor
         try {
-            TypeChecker typeChecker = new TypeChecker();
+            TypeCheckerV2 typeChecker = new TypeCheckerV2();
             Type type = typeChecker.visit(parseTree);  // throws on error
+            Singleton.getInstance().copyTable();
+            for (ParserRuleContext context:
+                    Singleton.getInstance().getCheckUpTable().keySet()) {
+                System.out.println(Singleton.getInstance().getCheckUpTable().get(context));
+            }
         } catch( CompilerException ce ) {
             System.err.println("ERROR: " + ce.getMessage() );
         }
@@ -78,7 +84,7 @@ public class TJB {
         String content = "";
         try
         {
-            content = new String ( Files.readAllBytes( Paths.get("./generatorTest") ) );
+            content = new String ( Files.readAllBytes( Paths.get("./code") ) );
         }
         catch (IOException e)
         {
