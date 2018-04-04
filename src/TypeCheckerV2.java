@@ -339,16 +339,16 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
             }
         }
 
-        if (left != right){
-            if ((left != Type.INT && left != Type.DOUBLE)
-                    &&(right != Type.INT && right != Type.DOUBLE)){
+        else if (left != right){
+            if (!(left == Type.INT && right == Type.DOUBLE)
+                    &&!(left == Type.DOUBLE && right == Type.INT)){
                 throw new CompilerException(ctx, "You cannot compare different types."
-                + ctx.left.getText() + " Is " + left
-                + ctx.right.getText() + "Is" + right);
+                + ctx.left.getText() + " Is " + left + " "
+                + ctx.right.getText() + " Is " + right);
             }
         }
 
-        if (left == Type.STRING && left == right){
+        else if (left == Type.STRING){
 
             if (!compToken.equals("!=") && !compToken.equals("=")){
                 throw new CompilerException(ctx, "You cannot compare strings with this comparison sign "

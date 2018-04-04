@@ -221,6 +221,18 @@ public interface TJBListener extends ParseTreeListener {
 	 */
 	void exitBoolCalc(TJBParser.BoolCalcContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code BoolCompLog}
+	 * labeled alternative in {@link TJBParser#booleanEXP}.
+	 * @param ctx the parse tree
+	 */
+	void enterBoolCompLog(TJBParser.BoolCompLogContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code BoolCompLog}
+	 * labeled alternative in {@link TJBParser#booleanEXP}.
+	 * @param ctx the parse tree
+	 */
+	void exitBoolCompLog(TJBParser.BoolCompLogContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code BoolSTR}
 	 * labeled alternative in {@link TJBParser#booleanEXP}.
 	 * @param ctx the parse tree

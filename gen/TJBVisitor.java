@@ -136,6 +136,13 @@ public interface TJBVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBoolCalc(TJBParser.BoolCalcContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code BoolCompLog}
+	 * labeled alternative in {@link TJBParser#booleanEXP}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolCompLog(TJBParser.BoolCompLogContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code BoolSTR}
 	 * labeled alternative in {@link TJBParser#booleanEXP}.
 	 * @param ctx the parse tree
