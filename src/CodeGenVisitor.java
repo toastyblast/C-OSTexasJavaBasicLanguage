@@ -179,10 +179,10 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
 
         code.addAll(visit(ctx.calculation()));
 
-        //FIXME: Maybe this has to be done as well? IF USING THIS, WE ALSO HAVE TO KNOW IF THE CALCULATION IS INT OR DBL
         //Multiply by -1 to turn the calculation from positive to negative or the other way around.
-//        code.add("\tldc\t-1");
-//        code.add("\timul");
+        //FIXME: WE ALSO HAVE TO KNOW IF THE CALCULATION IS INT OR DBL
+        code.add("\tldc\t-1");
+        code.add("\timul");
 
         return code;
     }
@@ -281,7 +281,7 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
         ArrayList<String> code = new ArrayList<>();
 
         code.addAll(visit(ctx.bool));
-        //FIXME? Do something to make the result negative here?
+        //FIXME - Make the 1 or 0 into the opposite here. (using the if statements in jasmin (as comparisons in jasmin result 1 or 0 onto the stack too))
 
         return code;
     }

@@ -6,7 +6,7 @@
 Str2 -> Str3
 Str3 --> Str1
 B --> A
-5 --> B
+-5 --> B
 <COM> "A B" </COM>
 Disp A, "Random"
 Disp B, Str1, Str2, Str3
