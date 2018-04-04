@@ -1,4 +1,4 @@
-// Generated from D:/IdeaProjects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
+// Generated from D:/School/Projects/Java Projects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -238,6 +238,18 @@ public class TJBBaseListener implements TJBListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitBoolCalc(TJBParser.BoolCalcContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBoolCompLog(TJBParser.BoolCompLogContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBoolCompLog(TJBParser.BoolCompLogContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

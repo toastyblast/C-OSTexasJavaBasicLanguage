@@ -1,4 +1,4 @@
-// Generated from D:/IdeaProjects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
+// Generated from D:/School/Projects/Java Projects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -220,6 +220,18 @@ public interface TJBListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBoolCalc(TJBParser.BoolCalcContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code BoolCompLog}
+	 * labeled alternative in {@link TJBParser#booleanEXP}.
+	 * @param ctx the parse tree
+	 */
+	void enterBoolCompLog(TJBParser.BoolCompLogContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code BoolCompLog}
+	 * labeled alternative in {@link TJBParser#booleanEXP}.
+	 * @param ctx the parse tree
+	 */
+	void exitBoolCompLog(TJBParser.BoolCompLogContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code BoolSTR}
 	 * labeled alternative in {@link TJBParser#booleanEXP}.

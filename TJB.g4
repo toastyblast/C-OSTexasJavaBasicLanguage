@@ -39,8 +39,9 @@ elseIfStatement: 'Else' ifStatement;
 booleanEXP: '(' bool=booleanEXP ')'                         #BoolParentheses
           | '!' bool=booleanEXP                             #BoolNeg
           | left=booleanEXP comp=COMPTKN right=booleanEXP   #BoolComp
-          | calculation                                     #BoolCalc
-          | checkSTRID                                      #BoolSTRID
+          | left=booleanEXP comp=LOGTKN right=booleanEXP    #BoolCompLog
+          | calc=calculation                                #BoolCalc
+          | str=checkSTRID                                  #BoolSTRID
           | STR                                             #BoolSTR
           ;
 
@@ -76,7 +77,8 @@ CPYASN: '-->';
 VAR: [A-Z]+;
 STRID: 'Str' [0-9]+;
 STR: '"' ('a'..'z' | 'A'..'Z' | ' ' | [0-9])+ '"' | '""';
-COMPTKN: '<' | '<=' | '=' | '!=' | '>' | '>=' | ('||' | 'And') | ('&&' | 'Or');
+COMPTKN: '<' | '<=' | '=' | '!=' | '>' | '>=';
+LOGTKN: ('||' | 'And') | ('&&' | 'Or');
 ARRAY: ('L' | 'l') (INT|VAR)+;
 INT: '0' | [1-9][0-9]*;
 NIN: '-' INT;

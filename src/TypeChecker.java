@@ -1,4 +1,5 @@
 
+@Deprecated
 public class TypeChecker extends TJBBaseVisitor<Type> {
 
     private Singleton singleton = Singleton.getInstance();
