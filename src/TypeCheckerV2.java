@@ -17,7 +17,9 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     public Type visitCheckVAR(TJBParser.CheckVARContext ctx) {
         String value = ctx.getText();
         if(singleton.getSymbolTable().getSymTable().get(value) != null){
-            return singleton.getSymbolTable().getSymTable().get(value).getType();
+            Type type = singleton.getSymbolTable().getSymTable().get(value).getType();
+            addCtx(ctx, type);
+            return type;
         }
         return null;
     }
@@ -135,21 +137,26 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
 
     @Override
     public Type visitExVarLiteral(TJBParser.ExVarLiteralContext ctx) {
-        return visit(ctx.val);
+        Type type = visit(ctx.val);
+        addCtx(ctx, type);
+        return type;
     }
 
     @Override
     public Type visitExDblLiteral(TJBParser.ExDblLiteralContext ctx) {
+        addCtx(ctx, Type.DOUBLE);
         return Type.DOUBLE;
     }
 
     @Override
     public Type visitExNegLiteral(TJBParser.ExNegLiteralContext ctx) {
+        addCtx(ctx, Type.INT);
         return Type.INT;
     }
 
     @Override
     public Type visitExIntLiteral(TJBParser.ExIntLiteralContext ctx) {
+        addCtx(ctx, Type.INT);
         return Type.INT;
     }
 
@@ -440,12 +447,12 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
 
     @Override
     public Type visitDisplay(TJBParser.DisplayContext ctx) {
-        for (int i = 0; i < ctx.displayOptions().size(); i++) {
-            Type type = visit(ctx.displayOptions(i));
-            if (type == null){
-                throw new CompilerException(ctx, ctx.displayOptions(i).getText() + " Is not defined");
-            }
-        }
+//        for (int i = 0; i < ctx.displayOptions().size(); i++) {
+//            Type type = visit(ctx.displayOptions(i));
+//            if (type == null){
+//                throw new CompilerException(ctx, ctx.displayOptions(i).getText() + " Is not defined");
+//            }
+//        }
         return super.visitDisplay(ctx);
     }
 }
