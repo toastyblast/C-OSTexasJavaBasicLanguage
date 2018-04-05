@@ -447,12 +447,39 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
 
     @Override
     public Type visitDisplay(TJBParser.DisplayContext ctx) {
-//        for (int i = 0; i < ctx.displayOptions().size(); i++) {
-//            Type type = visit(ctx.displayOptions(i));
-//            if (type == null){
-//                throw new CompilerException(ctx, ctx.displayOptions(i).getText() + " Is not defined");
-//            }
-//        }
+        for (int i = 0; i < ctx.displayOptions().size(); i++) {
+            Type type = visit(ctx.displayOptions(i));
+            if (type == null){
+                throw new CompilerException(ctx, ctx.displayOptions(i).getText() + " Is not defined");
+            }
+        }
         return super.visitDisplay(ctx);
+    }
+
+    @Override
+    public Type visitDispArray(TJBParser.DispArrayContext ctx) {
+        Type type = visit(ctx.name);
+        addCtx(ctx, type);
+        return type;
+    }
+
+    @Override
+    public Type visitDispSTR(TJBParser.DispSTRContext ctx) {
+        addCtx(ctx, Type.STRING);
+        return Type.STRING;
+    }
+
+    @Override
+    public Type visitDispCalc(TJBParser.DispCalcContext ctx) {
+        Type type = visit(ctx.calc);
+        addCtx(ctx,type);
+        return type;
+    }
+
+    @Override
+    public Type visitDispSTRID(TJBParser.DispSTRIDContext ctx) {
+        Type type = visit(ctx.name);
+        addCtx(ctx, type);
+        return type;
     }
 }

@@ -55,7 +55,7 @@ comment: '<COM>' STR '</COM>'                               #CommentLine;
 displayOptions:
            STR                   #DispSTR
           | name=checkSTRID      #DispSTRID
-          | calculation          #DispCalc
+          | calc=calculation     #DispCalc
           | name=checkArray      #DispArray
           ;
 
