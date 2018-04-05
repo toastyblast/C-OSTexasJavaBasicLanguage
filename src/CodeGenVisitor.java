@@ -217,7 +217,15 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
         code.addAll(visit(ctx.left));
         code.addAll(visit(ctx.right));
 
-        code.add(ctx.op.getText().equals("+") ? "\tiadd\n" : "\tisub\n");
+        Type type = Singleton.getInstance().getCheckUpTable().get(ctx);
+        switch (type) {
+            case INT:
+                code.add(ctx.op.getText().equals("+") ? "\tiadd\n" : "\tisub\n");
+                break;
+            case DOUBLE:
+                code.add(ctx.op.getText().equals("+") ? "\tfadd\n" : "\tfsub\n");
+                break;
+        }
 
         return code;
     }
@@ -229,8 +237,15 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
         code.addAll(visit(ctx.left));
         code.addAll(visit(ctx.right));
 
-        //FIXME: I HAVE TO KNOW IF IT'S A DOUBLE OR AN INT HERE
-        code.add("\tirem\n");
+        Type type = Singleton.getInstance().getCheckUpTable().get(ctx);
+        switch (type) {
+            case INT:
+                code.add("\tirem");
+                break;
+            case DOUBLE:
+                code.add("\tfrem");
+                break;
+        }
 
         return code;
     }
@@ -254,9 +269,6 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
                 code.add("\tfload\t" + indexOffset);
             } else if (valueType.equals(Type.STRING) || valueType.equals(Type.ARRAY)) {
                 code.add("\taload\t" + indexOffset);
-            } else {
-                //For some reason we know the var exists but the SymbolTable does not, so assume it's right.
-                //FIXME: Throw an exception or return 0?
             }
         }
 
