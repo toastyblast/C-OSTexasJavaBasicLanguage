@@ -82,7 +82,7 @@ LOGTKN: ('||' | 'And') | ('&&' | 'Or');
 ARRAY: ('L' | 'l') (INT|VAR)+;
 INT: '0' | [1-9][0-9]*;
 NIN: '-' INT;
-DBL: (NIN | INT) ',' INT;
+DBL: (NIN | INT) '.' INT;
 WS: [\r\t\n ]+ -> skip;
 
 checkSTRID

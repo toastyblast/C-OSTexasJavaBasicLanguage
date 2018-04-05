@@ -1,4 +1,4 @@
-// Generated from D:/School/Projects/Java Projects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
+// Generated from D:/IdeaProjects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -173,8 +173,8 @@ public class TJBLexer extends Lexer {
 		"\u00d0\3\2\2\2\u00ce\u00cc\3\2\2\2\u00cf\u00c7\3\2\2\2\u00cf\u00c8\3\2"+
 		"\2\2\u00d0<\3\2\2\2\u00d1\u00d2\7/\2\2\u00d2\u00d3\5;\36\2\u00d3>\3\2"+
 		"\2\2\u00d4\u00d7\5=\37\2\u00d5\u00d7\5;\36\2\u00d6\u00d4\3\2\2\2\u00d6"+
-		"\u00d5\3\2\2\2\u00d7\u00d8\3\2\2\2\u00d8\u00d9\7.\2\2\u00d9\u00da\5;\36"+
-		"\2\u00da@\3\2\2\2\u00db\u00dd\t\7\2\2\u00dc\u00db\3\2\2\2\u00dd\u00de"+
+		"\u00d5\3\2\2\2\u00d7\u00d8\3\2\2\2\u00d8\u00d9\7\60\2\2\u00d9\u00da\5"+
+		";\36\2\u00da@\3\2\2\2\u00db\u00dd\t\7\2\2\u00dc\u00db\3\2\2\2\u00dd\u00de"+
 		"\3\2\2\2\u00de\u00dc\3\2\2\2\u00de\u00df\3\2\2\2\u00df\u00e0\3\2\2\2\u00e0"+
 		"\u00e1\b!\2\2\u00e1B\3\2\2\2\22\2\u0090\u0099\u009d\u009f\u00a4\u00af"+
 		"\u00b6\u00bc\u00be\u00c3\u00c5\u00cc\u00cf\u00d6\u00de\3\b\2\2";

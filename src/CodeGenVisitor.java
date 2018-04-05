@@ -19,7 +19,7 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
             code.addAll(visit(expression));
         }
 
-        code.add(0, "\t.limit\tstack\t25");
+        code.add(0, "\t.limit\tstack\t40");
         code.add(1, "\t.limit\tlocals\t" + (variables.size() + 1) + "\n");
 
         return code;
@@ -42,7 +42,7 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
                 code.add("\tistore\t" + indexOffset + "\n");
                 break;
             case DOUBLE:
-                code.add("\tdstore\t" + indexOffset + "\n");
+                code.add("\tfstore\t" + indexOffset + "\n");
                 break;
         }
 
@@ -122,17 +122,15 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
 
         code.addAll(visit(ctx.calculation()));
 
-        code.add("\tistore\t" + indexOffset + "\n");
-
-//        Type type = Singleton.getInstance().getCheckUpTable().get(ctx);
-//        switch (type) {
-//            case INT:
-//                code.add("\tistore\t" + indexOffset + "\n");
-//                break;
-//            case DOUBLE:
-//                code.add("\tdstore\t" + indexOffset + "\n");
-//                break;
-//        }
+        Type type = Singleton.getInstance().getCheckUpTable().get(ctx);
+        switch (type) {
+            case INT:
+                code.add("\tistore\t" + indexOffset + "\n");
+                break;
+            case DOUBLE:
+                code.add("\tfstore\t" + indexOffset + "\n");
+                break;
+        }
 
         return code;
     }
@@ -197,20 +195,17 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
         code.addAll(visit(ctx.calculation()));
 
         //Multiply by -1 to turn the calculation from positive to negative or the other way around.
-        code.add("\tldc\t-1");
-        code.add("\timul");
-
-//        Type type = Singleton.getInstance().getCheckUpTable().get(ctx);
-//        switch (type) {
-//            case INT:
-//                code.add("\tldc\t-1");
-//                code.add("\timul");
-//                break;
-//            case DOUBLE:
-//                code.add("\tldc\t-1,0");
-//                code.add("\tdmul");
-//                break;
-//        }
+        Type type = Singleton.getInstance().getCheckUpTable().get(ctx);
+        switch (type) {
+            case INT:
+                code.add("\tldc\t-1");
+                code.add("\timul");
+                break;
+            case DOUBLE:
+                code.add("\tldc\t-1.0");
+                code.add("\tfmul");
+                break;
+        }
 
         return code;
     }
@@ -256,7 +251,7 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
             if (valueType.equals(Type.INT) || valueType.equals(Type.BOOLEAN)) {
                 code.add("\tiload\t" + indexOffset);
             } else if (valueType.equals(Type.DOUBLE)) {
-                code.add("\tdload\t" + indexOffset);
+                code.add("\tfload\t" + indexOffset);
             } else if (valueType.equals(Type.STRING) || valueType.equals(Type.ARRAY)) {
                 code.add("\taload\t" + indexOffset);
             } else {
@@ -401,8 +396,16 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
 
         code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
         code.addAll(visit(ctx.calculation()));
-        //FIXME: I HAVE TO KNOW IF THE RETURNING VALUE IS AN INT OR A DOUBLE HERE!
-        code.add("\tinvokevirtual\tjava/io/PrintStream/println(I)V\n");
+
+        Type type = Singleton.getInstance().getCheckUpTable().get(ctx);
+        switch (type) {
+            case INT:
+                code.add("\tinvokevirtual\tjava/io/PrintStream/println(I)V\n");
+                break;
+            case DOUBLE:
+                code.add("\tinvokevirtual\tjava/io/PrintStream/println(F)V\n");
+                break;
+        }
 
         return code;
     }

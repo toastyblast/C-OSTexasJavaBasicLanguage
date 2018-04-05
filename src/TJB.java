@@ -64,7 +64,6 @@ public class TJB {
     }
 
     private static void evaluateAndPrint( ParseTree parseTree ) {
-
         // Type check then evaulate by running the visitor
         try {
             TypeCheckerV2 typeChecker = new TypeCheckerV2();
@@ -77,7 +76,6 @@ public class TJB {
         } catch( CompilerException ce ) {
             System.err.println("ERROR: " + ce.getMessage() );
         }
-
     }
 
     public static void main(String[] args) {
