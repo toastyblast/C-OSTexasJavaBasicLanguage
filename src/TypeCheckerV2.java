@@ -440,12 +440,12 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
 
     @Override
     public Type visitDisplay(TJBParser.DisplayContext ctx) {
-        for (int i = 0; i < ctx.displayOptions().size(); i++) {
-            Type type = visit(ctx.displayOptions(i));
-            if (type == null){
-                throw new CompilerException(ctx, ctx.displayOptions(i).getText() + " Is not defined");
-            }
-        }
+//        for (int i = 0; i < ctx.displayOptions().size(); i++) {
+//            Type type = visit(ctx.displayOptions(i));
+//            if (type == null){
+//                throw new CompilerException(ctx, ctx.displayOptions(i).getText() + " Is not defined");
+//            }
+//        }
         return super.visitDisplay(ctx);
     }
 }

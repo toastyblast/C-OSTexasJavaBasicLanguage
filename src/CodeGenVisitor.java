@@ -1,3 +1,4 @@
+import java.security.Signature;
 import java.util.ArrayList;
 
 public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
@@ -35,8 +36,15 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
 
         code.addAll(visit(ctx.calculation()));
 
-        //FIXME: HERE I HAVE TO KNOW IF IT'S AN INTEGER OR A DOUBLE!!!
-        code.add("\tistore\t" + indexOffset + "\n");
+        Type type = Singleton.getInstance().getCheckUpTable().get(ctx);
+        switch (type) {
+            case INT:
+                code.add("\tistore\t" + indexOffset + "\n");
+                break;
+            case DOUBLE:
+                code.add("\tdstore\t" + indexOffset + "\n");
+                break;
+        }
 
         return code;
     }
@@ -114,8 +122,17 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
 
         code.addAll(visit(ctx.calculation()));
 
-        //FIXME: HERE I HAVE TO KNOW IF IT'S AN INTEGER OR A DOUBLE!!!
         code.add("\tistore\t" + indexOffset + "\n");
+
+//        Type type = Singleton.getInstance().getCheckUpTable().get(ctx);
+//        switch (type) {
+//            case INT:
+//                code.add("\tistore\t" + indexOffset + "\n");
+//                break;
+//            case DOUBLE:
+//                code.add("\tdstore\t" + indexOffset + "\n");
+//                break;
+//        }
 
         return code;
     }
@@ -180,9 +197,20 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
         code.addAll(visit(ctx.calculation()));
 
         //Multiply by -1 to turn the calculation from positive to negative or the other way around.
-        //FIXME: WE ALSO HAVE TO KNOW IF THE CALCULATION IS INT OR DBL
         code.add("\tldc\t-1");
         code.add("\timul");
+
+//        Type type = Singleton.getInstance().getCheckUpTable().get(ctx);
+//        switch (type) {
+//            case INT:
+//                code.add("\tldc\t-1");
+//                code.add("\timul");
+//                break;
+//            case DOUBLE:
+//                code.add("\tldc\t-1,0");
+//                code.add("\tdmul");
+//                break;
+//        }
 
         return code;
     }
@@ -223,7 +251,7 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
             //Var doesn't exist.
             //FIXME: Throw an exception or return 0?
         } else {
-            Type valueType = singleton.getSymbolTable().getSymTable().get(varID);
+            Type valueType = singleton.getCheckUpTable().get(ctx.val);
 
             if (valueType.equals(Type.INT) || valueType.equals(Type.BOOLEAN)) {
                 code.add("\tiload\t" + indexOffset);
