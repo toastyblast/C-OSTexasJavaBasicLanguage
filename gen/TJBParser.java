@@ -1,4 +1,4 @@
-// Generated from D:/IdeaProjects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
+// Generated from D:/School/Projects/Java Projects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -1623,6 +1623,7 @@ public class TJBParser extends Parser {
 		}
 	}
 	public static class DispCalcContext extends DisplayOptionsContext {
+		public CalculationContext calc;
 		public CalculationContext calculation() {
 			return getRuleContext(CalculationContext.class,0);
 		}
@@ -1715,7 +1716,7 @@ public class TJBParser extends Parser {
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(190);
-				calculation(0);
+				((DispCalcContext)_localctx).calc = calculation(0);
 				}
 				break;
 			case ARRAY:
