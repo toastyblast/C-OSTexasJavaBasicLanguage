@@ -30,11 +30,11 @@ calculation: '(' val=calculation ')'                                          # 
 //I defined so many things because I thought it would be easier to manage them with the parser. I don't know if it is
 //very good, tho.
 
-ifTJB: ifStatement (elseIfStatement)* (elseStatement)* 'End';
+ifTJB: ifStatement (elseIfStatement)* (elseStatement)+ 'End';
 ifStatement: 'If' bool=booleanEXP thenStatement;
 thenStatement: 'Then' (expression)*;
 elseStatement: 'Else' (expression)*;
-elseIfStatement: 'Else' ifStatement;
+elseIfStatement: 'Else if' bool=booleanEXP thenStatement;
 
 booleanEXP: '(' bool=booleanEXP ')'                         #BoolParentheses
           | '!' bool=booleanEXP                             #BoolNeg

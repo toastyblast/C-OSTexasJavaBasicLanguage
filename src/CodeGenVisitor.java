@@ -1,11 +1,10 @@
 import java.security.Signature;
 import java.util.ArrayList;
 
-public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
+public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     private Singleton singleton = Singleton.getInstance();
 
     private final ArrayList<String> variables = new ArrayList<>();
-    private int comparisonSequence = 0;
     private int forSequence = 0;
     private int whileSequence = 0;
     private int ifSequence = 0;
@@ -19,7 +18,7 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
     public ArrayList<String> visitCodeLine(TJBParser.CodeLineContext ctx) {
         ArrayList<String> code = new ArrayList<>();
 
-        for (TJBParser.ExpressionContext expression: ctx.expression()) {
+        for (TJBParser.ExpressionContext expression : ctx.expression()) {
             code.addAll(visit(expression));
         }
 
@@ -289,19 +288,14 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
         String varID = ctx.val.getText();
         int indexOffset = variables.indexOf(varID) + 1;
 
-        if (indexOffset == 0) {
-            //Var doesn't exist.
-            //FIXME: Throw an exception or return 0?
-        } else {
-            Type valueType = singleton.getCheckUpTable().get(ctx.val);
+        Type valueType = singleton.getCheckUpTable().get(ctx.val);
 
-            if (valueType.equals(Type.INT) || valueType.equals(Type.BOOLEAN)) {
-                code.add("\tiload\t" + indexOffset);
-            } else if (valueType.equals(Type.DOUBLE)) {
-                code.add("\tfload\t" + indexOffset);
-            } else if (valueType.equals(Type.STRING) || valueType.equals(Type.ARRAY)) {
-                code.add("\taload\t" + indexOffset);
-            }
+        if (valueType.equals(Type.INT) || valueType.equals(Type.BOOLEAN)) {
+            code.add("\tiload\t" + indexOffset);
+        } else if (valueType.equals(Type.DOUBLE)) {
+            code.add("\tfload\t" + indexOffset);
+        } else if (valueType.equals(Type.STRING) || valueType.equals(Type.ARRAY)) {
+            code.add("\taload\t" + indexOffset);
         }
 
         return code;
@@ -356,20 +350,90 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
     @Override
     public ArrayList<String> visitIfTJB(TJBParser.IfTJBContext ctx) {
         ArrayList<String> code = new ArrayList<>();
+        int ifNumber = ifSequence++;
 
-        //TODO: Make working if-statements!
-
+        code.add("if_" + ifNumber + ":");
         //First add the if-statement
         code.addAll(visit(ctx.ifStatement()));
 
+        int elseIfNumber = 0;
         //Then any else-if-statements
-        for (TJBParser.ElseIfStatementContext elseIfStatement: ctx.elseIfStatement()) {
+        for (TJBParser.ElseIfStatementContext elseIfStatement : ctx.elseIfStatement()) {
+            elseIfNumber++;
+
+            code.add("elseIf_" + ifNumber + "-" + elseIfNumber + ":");
+
             code.addAll(visit(elseIfStatement));
+            code.add("\tgoto\tallDone_" + ifNumber);
+
+            code.add("elseIfDone_" + elseIfNumber + ":");
         }
 
         //And finally the else-statement
-        for (TJBParser.ElseStatementContext elseStatement: ctx.elseStatement()) {
+        for (TJBParser.ElseStatementContext elseStatement : ctx.elseStatement()) {
+            code.add("else_" + ifNumber + ":");
+
             code.addAll(visit(elseStatement));
+            code.add("\tgoto\tallDone_" + ifNumber);
+
+            code.add("else_" + ifNumber + ":");
+        }
+
+        code.add("allDone_" + ifNumber + ":");
+
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitIfStatement(TJBParser.IfStatementContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+        int ifNumber = ifSequence - 1;
+
+        code.addAll(visit(ctx.bool));
+
+        //Change the comparison to have the right label to it.
+        code.set((code.size() - 1), code.get(code.size() - 1) + "ifDone_" + ifNumber);
+
+        code.addAll(visit(ctx.thenStatement()));
+        code.add("\tgoto\tallDone_" + ifNumber);
+
+        code.add("ifDone_" + ifNumber + ":");
+
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitElseIfStatement(TJBParser.ElseIfStatementContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+        int ifNumber = ifSequence;
+
+        code.addAll(visit(ctx.bool));
+
+        //Change the comparison to have the right label to it.
+        code.set((code.size() - 1), code.get(code.size() - 1) + "elseIfDone_" + ifNumber);
+
+        code.addAll(visit(ctx.thenStatement()));
+
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitElseStatement(TJBParser.ElseStatementContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        for (TJBParser.ExpressionContext expressionContext : ctx.expression()) {
+            code.addAll(visit(expressionContext));
+        }
+
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitThenStatement(TJBParser.ThenStatementContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        for (TJBParser.ExpressionContext expressionContext : ctx.expression()) {
+            code.addAll(visit(expressionContext));
         }
 
         return code;
@@ -483,7 +547,7 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
         //Change the comparison to have the right label to it.
         code.set((code.size() - 1), code.get(code.size() - 1) + "whileDone_" + whileNumber);
 
-        for (TJBParser.ExpressionContext expressionContext: ctx.expression()) {
+        for (TJBParser.ExpressionContext expressionContext : ctx.expression()) {
             code.addAll(visit(expressionContext));
         }
 
@@ -497,8 +561,26 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
     @Override
     public ArrayList<String> visitForTJB(TJBParser.ForTJBContext ctx) {
         ArrayList<String> code = new ArrayList<>();
+        int forNumber = forSequence++;
 
-        //TODO: Make the For-Loop work!
+        //TODO: If there's a new value being assigned to the given var, do it here.
+
+        code.add("for_" + forNumber + ":");
+
+        //TODO: Do the comparison here, so the var to the upper value.
+
+        //Change the comparison to have the right label to it.
+        code.set((code.size() - 1), code.get(code.size() - 1) + "forDone_" + forNumber);
+
+        for (TJBParser.ExpressionContext expressionContext : ctx.expression()) {
+            code.addAll(visit(expressionContext));
+        }
+
+        code.addAll(visit(ctx.increments));
+
+        code.add("\tgoto\tfor_" + forNumber);
+        //---
+        code.add("forDone_" + forNumber + ":");
 
         return code;
     }
@@ -516,7 +598,7 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
     public ArrayList<String> visitDisplay(TJBParser.DisplayContext ctx) {
         ArrayList<String> code = new ArrayList<>();
 
-        for (TJBParser.DisplayOptionsContext displayOptions: ctx.displayOptions()) {
+        for (TJBParser.DisplayOptionsContext displayOptions : ctx.displayOptions()) {
             code.addAll(visit(displayOptions));
         }
 
@@ -586,7 +668,8 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
         return code;
     }
 
-    //TODO STILL TO ADD:
-    // - If statements;
-    // - For loops.
+    //TODO - STILL TO ADD:
+    // - For loops;
+    // - Negative booleans (so the '!' character);
+    // - YORAN Ask teacher about Arrays in Jasmin.
 }
