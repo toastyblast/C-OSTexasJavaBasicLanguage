@@ -1,8 +1,6 @@
-((-5) + 5 + 1) * 6 -> A
--3.0 -> B
--B -> C
+10 -> A
 
-<COM> "A B" </COM>
-
-Disp A, "Random"
-Disp B, C
+While A = 10
+A + 1 --> A
+Disp A
+End

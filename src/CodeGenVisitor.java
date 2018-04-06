@@ -5,6 +5,10 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
     private Singleton singleton = Singleton.getInstance();
 
     private final ArrayList<String> variables = new ArrayList<>();
+    private int comparisonSequence = 0;
+    private int forSequence = 0;
+    private int whileSequence = 0;
+    private int ifSequence = 0;
     //Variables here...
 
     public CodeGenVisitor() {
@@ -322,6 +326,28 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
     }
 
     @Override
+    public ArrayList<String> visitIfTJB(TJBParser.IfTJBContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        //TODO: Make working if-statements!
+
+        //First add the if-statement
+        code.addAll(visit(ctx.ifStatement()));
+
+        //Then any else-if-statements
+        for (TJBParser.ElseIfStatementContext elseIfStatement: ctx.elseIfStatement()) {
+            code.addAll(visit(elseIfStatement));
+        }
+
+        //And finally the else-statement
+        for (TJBParser.ElseStatementContext elseStatement: ctx.elseStatement()) {
+            code.addAll(visit(elseStatement));
+        }
+
+        return code;
+    }
+
+    @Override
     public ArrayList<String> visitBoolComp(TJBParser.BoolCompContext ctx) {
         ArrayList<String> code = new ArrayList<>();
 
@@ -330,28 +356,113 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
 
         String comparisonToken = ctx.comp.getText();
 
-        //TODO - Yoran: Figure out comparisons.
-        if (comparisonToken.equals("<")) {
-            code.add("");
-        } else if (comparisonToken.equals("<=")) {
-            code.add("");
-        } else if (comparisonToken.equals("=")) {
-            code.add("");
-        } else if (comparisonToken.equals("!=")) {
-            code.add("");
-        } else if (comparisonToken.equals(">")) {
-            code.add("");
-        } else if (comparisonToken.equals(">=")) {
-            code.add("");
-        } else if (comparisonToken.equals("||")) {
-            code.add("");
-        } else if (comparisonToken.equals("And")) {
-            code.add("");
-        } else if (comparisonToken.equals("&&")) {
-            code.add("");
-        } else if (comparisonToken.equals("Or")) {
-            code.add("");
+        //FIXME - Also check the types of both sides, and make right the same type as left (for jasmin operations they need to be the same).
+        //TODO - MARTIN: FIX ISSUE WHERE IT ALWAYS RETURNS THAT WE ARE NOT AN INT, EVEN THOUGH EVEN IN THE COMPARISON BOTH MIGHT BE INTS!
+        Type type = Singleton.getInstance().getCheckUpTable().get(ctx);
+
+        //DEBUG: Uncomment this to test the while loop while the checker hasn't been fixed yet
+        type = Type.INT;
+
+        switch (comparisonToken) {
+            case "<":
+                if (type == Type.INT) {
+                    //We want to jump to the label if left is greater or equal to right.
+                    code.add("\tif_icmpge\t");
+                } else {
+                    //If value 1 (left) is SMALLER THAN value 2 (right) we should get int 1 as a result.
+                    code.add("\tfcmpl\n");
+                    //We want to jump to the label only if the int is -1 or 0 (meaning value 1 is BIGGER THAN or EQUAL TO value 2)
+                    code.add("\tifle\t");
+                }
+                break;
+            case "<=":
+                if (type == Type.INT) {
+                    //We want to jump to the label only if left is greater than right.
+                    code.add("\tif_icmpgt\t");
+                } else {
+                    //If value 1 (left) is SMALLER THAN value 2 (right) we should get int 1 (less) or 0 (equal) as a result.
+                    code.add("\tfcmpl\n");
+                    //We want to jump to the label only if the int is -1 (meaning value 1 is BIGGER THAN value 2)
+                    code.add("\tiflt\t");
+                }
+                break;
+            case "=":
+                if (type == Type.INT) {
+                    //We want to jump to the label if left is not equal to right.
+                    code.add("\tif_icmpne\t");
+                } else {
+                    //If value 1 (left) is EQUAL TO value 2 (right) we should get int 0 as a result.
+                    code.add("\tfcmpl\n");
+                    //We want to jump to the label only if the int is -1 or 1 (meaning value 1 is BIGGER THAN or SMALLER THAN value 2)
+                    code.add("\tifne\t");
+                }
+                break;
+            case "!=":
+                if (type == Type.INT) {
+                    //We want to jump to the label if left is not equal to right.
+                    code.add("\tif_icmpeq\t");
+                } else {
+                    //If value 1 (left) is NOT EQUAL TO value 2 (right) we should get int -1 or 1 as a result.
+                    code.add("\tfcmpl\n");
+                    //We want to jump to the label only if the int is 0 (meaning value 1 is EQUAL TO value 2)
+                    code.add("\tifeq\t");
+                }
+                break;
+            case ">":
+                if (type == Type.INT) {
+                    //We want to jump to the label if left is smaller than or equal to right.
+                    code.add("\tif_icmple\t");
+                } else {
+                    //If value 1 (left) is BIGGER THAN value 2 (right) we should get int 1 as a result.
+                    code.add("\tfcmpg\n");
+                    //We want to jump to the label only if the int is 0 or -1 (meaning value 1 is SMALLER THAN or EQUAL TO value 2)
+                    code.add("\tifle\t");
+                }
+                break;
+            case ">=":
+                if (type == Type.INT) {
+                    //We want to jump to the label if left is smaller than right.
+                    code.add("\tif_icmple\t");
+                } else {
+                    //If value 1 (left) is BIGGER THAN or EQUAL TO value 2 (right) we should get int 1 or 0 as a result.
+                    code.add("\tfcmpg\n");
+                    //We want to jump to the label only if the int is -1 (meaning value 1 is SMALLER THAN value 2)
+                    code.add("\tiflt\t");
+                }
+                break;
         }
+
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitWhileTJB(TJBParser.WhileTJBContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+        int whileNumber = whileSequence++;
+
+        code.add("while_" + whileNumber + ":");
+
+        code.addAll(visit(ctx.bool));
+
+        //Change the comparison to have the right label to it.
+        code.set((code.size() - 1), code.get(code.size() - 1) + "whileDone_" + whileNumber);
+
+        for (TJBParser.ExpressionContext expressionContext: ctx.expression()) {
+            code.addAll(visit(expressionContext));
+        }
+
+        code.add("\tgoto\twhile_" + whileNumber);
+        //---
+        code.add("whileDone_" + whileNumber + ":");
+
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitForTJB(TJBParser.ForTJBContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        //TODO: Make the For-Loop work!
 
         return code;
     }
@@ -441,8 +552,5 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
 
     //TODO STILL TO ADD:
     // - If statements;
-    // - For loops;
-    // - While loops;
-
-    //visit methods here.
+    // - For loops.
 }
