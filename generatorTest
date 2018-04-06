@@ -1,6 +1,6 @@
-10 -> A
+11 -> A
 
-While A = 10
+While A > 10
 A + 1 --> A
 Disp A
 End

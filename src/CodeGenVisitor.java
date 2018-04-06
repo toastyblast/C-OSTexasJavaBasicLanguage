@@ -218,11 +218,25 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
     public ArrayList<String> visitExAddOp(TJBParser.ExAddOpContext ctx) {
         ArrayList<String> code = new ArrayList<>();
 
-        code.addAll(visit(ctx.left));
-        code.addAll(visit(ctx.right));
+        Type leftType = singleton.getCheckUpTable().get(ctx.left);
+        Type rightType = singleton.getCheckUpTable().get(ctx.right);
 
-        Type type = Singleton.getInstance().getCheckUpTable().get(ctx);
-        switch (type) {
+        code.addAll(visit(ctx.left));
+
+        if (leftType == Type.INT && rightType == Type.DOUBLE) {
+            //Turn the left value into a float not to lose precision.
+            code.add("\ti2f");
+            leftType = Type.DOUBLE;
+            code.addAll(visit(ctx.right));
+        } else if (leftType == Type.DOUBLE && rightType == Type.INT) {
+            //Turn the right value into a float not to loose precision.
+            code.addAll(visit(ctx.right));
+            code.add("\ti2f");
+        } else {
+            code.addAll(visit(ctx.right));
+        }
+
+        switch (leftType) {
             case INT:
                 code.add(ctx.op.getText().equals("+") ? "\tiadd\n" : "\tisub\n");
                 break;
@@ -238,11 +252,25 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
     public ArrayList<String> visitExModOp(TJBParser.ExModOpContext ctx) {
         ArrayList<String> code = new ArrayList<>();
 
-        code.addAll(visit(ctx.left));
-        code.addAll(visit(ctx.right));
+        Type leftType = singleton.getCheckUpTable().get(ctx.left);
+        Type rightType = singleton.getCheckUpTable().get(ctx.right);
 
-        Type type = Singleton.getInstance().getCheckUpTable().get(ctx);
-        switch (type) {
+        code.addAll(visit(ctx.left));
+
+        if (leftType == Type.INT && rightType == Type.DOUBLE) {
+            //Turn the left value into a float not to lose precision.
+            code.add("\ti2f");
+            leftType = Type.DOUBLE;
+            code.addAll(visit(ctx.right));
+        } else if (leftType == Type.DOUBLE && rightType == Type.INT) {
+            //Turn the right value into a float not to loose precision.
+            code.addAll(visit(ctx.right));
+            code.add("\ti2f");
+        } else {
+            code.addAll(visit(ctx.right));
+        }
+
+        switch (leftType) {
             case INT:
                 code.add("\tirem");
                 break;
@@ -351,21 +379,29 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
     public ArrayList<String> visitBoolComp(TJBParser.BoolCompContext ctx) {
         ArrayList<String> code = new ArrayList<>();
 
-        code.addAll(visit(ctx.left));
-        code.addAll(visit(ctx.right));
-
         String comparisonToken = ctx.comp.getText();
 
-        //FIXME - Also check the types of both sides, and make right the same type as left (for jasmin operations they need to be the same).
-        //TODO - MARTIN: FIX ISSUE WHERE IT ALWAYS RETURNS THAT WE ARE NOT AN INT, EVEN THOUGH EVEN IN THE COMPARISON BOTH MIGHT BE INTS!
-        Type type = Singleton.getInstance().getCheckUpTable().get(ctx);
+        Type leftType = singleton.getCheckUpTable().get(ctx.left);
+        Type rightType = singleton.getCheckUpTable().get(ctx.right);
 
-        //DEBUG: Uncomment this to test the while loop while the checker hasn't been fixed yet
-        type = Type.INT;
+        code.addAll(visit(ctx.left));
+
+        if (leftType == Type.INT && rightType == Type.DOUBLE) {
+            //Turn the left value into a float not to lose precision.
+            code.add("\ti2f");
+            leftType = Type.DOUBLE;
+            code.addAll(visit(ctx.right));
+        } else if (leftType == Type.DOUBLE && rightType == Type.INT) {
+            //Turn the right value into a float not to loose precision.
+            code.addAll(visit(ctx.right));
+            code.add("\ti2f");
+        } else {
+            code.addAll(visit(ctx.right));
+        }
 
         switch (comparisonToken) {
             case "<":
-                if (type == Type.INT) {
+                if (leftType == Type.INT) {
                     //We want to jump to the label if left is greater or equal to right.
                     code.add("\tif_icmpge\t");
                 } else {
@@ -376,7 +412,7 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
                 }
                 break;
             case "<=":
-                if (type == Type.INT) {
+                if (leftType == Type.INT) {
                     //We want to jump to the label only if left is greater than right.
                     code.add("\tif_icmpgt\t");
                 } else {
@@ -387,7 +423,7 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
                 }
                 break;
             case "=":
-                if (type == Type.INT) {
+                if (leftType == Type.INT) {
                     //We want to jump to the label if left is not equal to right.
                     code.add("\tif_icmpne\t");
                 } else {
@@ -398,7 +434,7 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
                 }
                 break;
             case "!=":
-                if (type == Type.INT) {
+                if (leftType == Type.INT) {
                     //We want to jump to the label if left is not equal to right.
                     code.add("\tif_icmpeq\t");
                 } else {
@@ -409,7 +445,7 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
                 }
                 break;
             case ">":
-                if (type == Type.INT) {
+                if (leftType == Type.INT) {
                     //We want to jump to the label if left is smaller than or equal to right.
                     code.add("\tif_icmple\t");
                 } else {
@@ -420,7 +456,7 @@ public class CodeGenVisitor extends  TJBBaseVisitor<ArrayList<String>> {
                 }
                 break;
             case ">=":
-                if (type == Type.INT) {
+                if (leftType == Type.INT) {
                     //We want to jump to the label if left is smaller than right.
                     code.add("\tif_icmple\t");
                 } else {
