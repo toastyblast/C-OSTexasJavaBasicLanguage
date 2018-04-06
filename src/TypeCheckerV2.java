@@ -344,6 +344,7 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
                     (!compToken.equals("||") && !compToken.equals("And"))){
                 throw new CompilerException(ctx, "Cannot compare boolean expressions");
             }
+            addCtx(ctx, Type.BOOLEAN);
         }
 
         else if (left != right){
@@ -353,6 +354,7 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
                 + ctx.left.getText() + " Is " + left + " "
                 + ctx.right.getText() + " Is " + right);
             }
+            addCtx(ctx, Type.DOUBLE);
         }
 
         else if (left == Type.STRING){
@@ -361,8 +363,17 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
                 throw new CompilerException(ctx, "You cannot compare strings with this comparison sign "
                 + compToken);
             }
+            addCtx(ctx, Type.STRING);
         }
-        addCtx(ctx, Type.BOOLEAN);
+
+        else if (left == Type.INT){
+            addCtx(ctx, Type.INT);
+        }
+
+        else if (left == Type.DOUBLE){
+            addCtx(ctx, Type.DOUBLE);
+        }
+
         return Type.BOOLEAN;
     }
 
