@@ -12,9 +12,6 @@ expression: assignment
           | comment
           ;
 
-//...
-
-//FIXME: Allow multiple brackets (i.e. "(((5)))") and more than 2 negatives (i.e. "------2")?
 calculation: '(' val=calculation ')'                                          # ExParentheses
           | '-' val=calculation                                               # ExNegate
           | left=calculation '*' right=calculation                            # ExMulOp
@@ -30,7 +27,8 @@ calculation: '(' val=calculation ')'                                          # 
 //I defined so many things because I thought it would be easier to manage them with the parser. I don't know if it is
 //very good, tho.
 
-ifTJB: ifStatement (elseIfStatement)* (elseStatement)+ 'End';
+//TODO: Fix that only + can be used on the else, not ?.
+ifTJB: ifStatement (elseIfStatement)* (elseStatement)? 'End';
 ifStatement: 'If' bool=booleanEXP thenStatement;
 thenStatement: 'Then' (expression)*;
 elseStatement: 'Else' (expression)*;
@@ -46,8 +44,9 @@ booleanEXP: '(' bool=booleanEXP ')'                         #BoolParentheses
           ;
 
 whileTJB: 'While' bool=booleanEXP (expression)* 'End';
+
 display: 'Disp' displayOptions (',' displayOptions)*;
-//FIXME: Fix the calculation part ??
+
 forTJB: 'For' '(' iterator=checkVAR  (',' iterVal=(INT | DBL))? ',' comp=booleanEXP ',' increments=incrementEXP ')' expression* 'End';
 incrementEXP: nameVar=checkVAR '+=' calc=calculation;
 
@@ -91,6 +90,7 @@ checkSTRID
     STRID
     {
         final String strid = $STRID.text;
+        
         if (strid.length() > 4) {
             throw new RuntimeException(strid + " Cannot be more than 4 characters.");
         }
@@ -102,6 +102,7 @@ checkVAR
     VAR
     {
         final String strid = $VAR.text;
+
         if (strid.length() > 1) {
             throw new RuntimeException(strid + " Cannot be more than 1 characters.");
         }
@@ -112,8 +113,10 @@ checkArray
     : ARRAY
     {
         final String id = $ARRAY.text;
+
         if(id.charAt(0) == 'L'){
             int number = Integer.parseInt(String.valueOf(id.charAt(1)));
+
             if(id.length() > 2){
             throw new RuntimeException(id + " Cannot be more than 2 characters.");
             } else if (number > 6 || number < 1){

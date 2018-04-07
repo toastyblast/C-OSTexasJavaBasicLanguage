@@ -3,6 +3,11 @@
 
 If (A = 10)
 Then
+Disp "Random"
+End
+
+If (A = 10)
+Then
     20 --> A
     Disp A, "A was ten now 20"
     0 -> C

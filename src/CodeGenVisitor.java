@@ -456,10 +456,20 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         }
 
         //And finally the else-statement
-        for (TJBParser.ElseStatementContext elseStatement : ctx.elseStatement()) {
+//        for (TJBParser.ElseStatementContext elseStatement : ctx.elseStatement()) {
+//            code.add("else_" + ifNumber + ":");
+//            //Visit all the expressions in the else-statement.
+//            code.addAll(visit(elseStatement));
+//            code.add("\tgoto\tallDone_" + ifNumber + "\n");
+//        }
+
+        //And finally the else-statement, if there is one.
+        //TODO: Fix else statement
+        ArrayList<String> elseCode = visit(ctx.elseStatement());
+        if (elseCode != null && elseCode.size() != 0) {
             code.add("else_" + ifNumber + ":");
             //Visit all the expressions in the else-statement.
-            code.addAll(visit(elseStatement));
+            code.addAll(elseCode);
             code.add("\tgoto\tallDone_" + ifNumber + "\n");
         }
 
