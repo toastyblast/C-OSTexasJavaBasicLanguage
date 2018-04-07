@@ -566,17 +566,35 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
                     !ctx.getChild(i).getText().equals(",")){
                 ParseTree parseTree = ctx.getChild(i);
                 if (type == Type.INTARRAY){
-                    if (visit(parseTree) != Type.INT){
+                    if (parseTree instanceof TerminalNode){
+                        if (((TerminalNode) parseTree).getSymbol().getType() != TJBParser.INT){
+                            throw new CompilerException(ctx, parseTree.getText() + " Is not an integer." +
+                                    " This array should include only integers.");
+                        }
+                    }
+                    else if (visit(parseTree) != Type.INT){
                         throw new CompilerException(ctx, parseTree.getText() + " Is not an integer." +
                                 " This array should include only integers.");
                     }
                 } else if (type == Type.DOUBLEARRAY) {
-                    if (visit(parseTree) == Type.STRING) {
+                    if (parseTree instanceof TerminalNode){
+                        if (((TerminalNode) parseTree).getSymbol().getType() == TJBParser.STR){
+                            throw new CompilerException(ctx, parseTree.getText() + " Is not a float/integers." +
+                                    " This array should include only floats/integers.");
+                        }
+                    }
+                    else if (visit(parseTree) == Type.STRING) {
                         throw new CompilerException(ctx, parseTree.getText() + " Is not a float/integers." +
                                 " This array should include only floats/integers.");
                     }
                 } else if (type == Type.STRINGARRAY) {
-                    if (visit(parseTree) != Type.STRING){
+                    if (parseTree instanceof TerminalNode){
+                        if (((TerminalNode) parseTree).getSymbol().getType() != TJBParser.STR){
+                            throw new CompilerException(ctx, parseTree.getText() + " Is not a string." +
+                                    " This array should include only strings.");
+                        }
+                    }
+                    else if (visit(parseTree) != Type.STRING){
                         throw new CompilerException(ctx, parseTree.getText() + " Is not a string." +
                                 " This array should include only strings.");
                     }
