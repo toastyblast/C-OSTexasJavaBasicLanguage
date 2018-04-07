@@ -675,6 +675,7 @@ public class TJBParser extends Parser {
 	}
 
 	public static class IfTJBContext extends ParserRuleContext {
+		public ElseStatementContext elsePart;
 		public IfStatementContext ifStatement() {
 			return getRuleContext(IfStatementContext.class,0);
 		}
@@ -735,7 +736,7 @@ public class TJBParser extends Parser {
 			if (_la==T__10) {
 				{
 				setState(95);
-				elseStatement();
+				((IfTJBContext)_localctx).elsePart = elseStatement();
 				}
 			}
 
@@ -2337,6 +2338,7 @@ public class TJBParser extends Parser {
 			((CheckSTRIDContext)_localctx).STRID = match(STRID);
 
 			        final String strid = (((CheckSTRIDContext)_localctx).STRID!=null?((CheckSTRIDContext)_localctx).STRID.getText():null);
+
 			        if (strid.length() > 4) {
 			            throw new RuntimeException(strid + " Cannot be more than 4 characters.");
 			        }
@@ -2386,6 +2388,7 @@ public class TJBParser extends Parser {
 			((CheckVARContext)_localctx).VAR = match(VAR);
 
 			        final String strid = (((CheckVARContext)_localctx).VAR!=null?((CheckVARContext)_localctx).VAR.getText():null);
+
 			        if (strid.length() > 1) {
 			            throw new RuntimeException(strid + " Cannot be more than 1 characters.");
 			        }
@@ -2435,8 +2438,10 @@ public class TJBParser extends Parser {
 			((CheckArrayContext)_localctx).ARRAY = match(ARRAY);
 
 			        final String id = (((CheckArrayContext)_localctx).ARRAY!=null?((CheckArrayContext)_localctx).ARRAY.getText():null);
+
 			        if(id.charAt(0) == 'L'){
 			            int number = Integer.parseInt(String.valueOf(id.charAt(1)));
+
 			            if(id.length() > 2){
 			            throw new RuntimeException(id + " Cannot be more than 2 characters.");
 			            } else if (number > 6 || number < 1){

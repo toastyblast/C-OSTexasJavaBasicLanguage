@@ -24,11 +24,7 @@ calculation: '(' val=calculation ')'                                          # 
           | INT                                                               # ExIntLiteral
           ;
 
-//I defined so many things because I thought it would be easier to manage them with the parser. I don't know if it is
-//very good, tho.
-
-//TODO: Fix that only + can be used on the else, not ?.
-ifTJB: ifStatement (elseIfStatement)* (elseStatement)? 'End';
+ifTJB: ifStatement (elseIfStatement)* (elsePart=elseStatement)? 'End';
 ifStatement: 'If' bool=booleanEXP thenStatement;
 thenStatement: 'Then' (expression)*;
 elseStatement: 'Else' (expression)*;
@@ -90,7 +86,7 @@ checkSTRID
     STRID
     {
         final String strid = $STRID.text;
-        
+
         if (strid.length() > 4) {
             throw new RuntimeException(strid + " Cannot be more than 4 characters.");
         }

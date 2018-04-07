@@ -12,6 +12,9 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     private int forSequence = 0;
     private int whileSequence = 0;
     private int ifSequence = 0;
+
+    private int localCurrentIf = 0;
+    private int currentElseIf = 0;
     //Variables here...
 
     public CodeGenVisitor() {
@@ -437,39 +440,32 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     public ArrayList<String> visitIfTJB(TJBParser.IfTJBContext ctx) {
         ArrayList<String> code = new ArrayList<>();
         int ifNumber = ifSequence++;
+        int localIfNumber = ifNumber;
 
         code.add("if_" + ifNumber + ":");
         //First add the if-statement
         code.addAll(visit(ctx.ifStatement()));
 
-        int elseIfNumber = 0;
+        localCurrentIf = localIfNumber;
         //Then any else-if-statements
         for (TJBParser.ElseIfStatementContext elseIfStatement : ctx.elseIfStatement()) {
-            elseIfNumber++;
-
-            code.add("elseIf_" + ifNumber + "-" + elseIfNumber + ":");
+            code.add("elseIf_" + localIfNumber + "-" + currentElseIf + ":");
             //Add all the expressions within the else-if statement
             code.addAll(visit(elseIfStatement));
-            code.add("\tgoto\tallDone_" + ifNumber + "\n");
+            code.add("\tgoto\tallDone_" + localIfNumber + "\n");
 
-            code.add("elseIfDone_" + elseIfNumber + ":");
+            code.add("elseIfDone_" + localIfNumber + "-" + currentElseIf + ":");
+
+            currentElseIf++;
         }
-
-        //And finally the else-statement
-//        for (TJBParser.ElseStatementContext elseStatement : ctx.elseStatement()) {
-//            code.add("else_" + ifNumber + ":");
-//            //Visit all the expressions in the else-statement.
-//            code.addAll(visit(elseStatement));
-//            code.add("\tgoto\tallDone_" + ifNumber + "\n");
-//        }
+        //Reset the current else if again for the next generation of another else-if branch
+        currentElseIf = 0;
 
         //And finally the else-statement, if there is one.
-        //TODO: Fix else statement
-        ArrayList<String> elseCode = visit(ctx.elseStatement());
-        if (elseCode != null && elseCode.size() != 0) {
+        if (ctx.elseStatement() != null) {
             code.add("else_" + ifNumber + ":");
             //Visit all the expressions in the else-statement.
-            code.addAll(elseCode);
+            code.addAll(visit(ctx.elsePart));
             code.add("\tgoto\tallDone_" + ifNumber + "\n");
         }
 
@@ -499,12 +495,12 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     @Override
     public ArrayList<String> visitElseIfStatement(TJBParser.ElseIfStatementContext ctx) {
         ArrayList<String> code = new ArrayList<>();
-        int ifNumber = ifSequence;
+        int currentIf = localCurrentIf;
 
         code.addAll(visit(ctx.bool));
 
         //Change the comparison to have the right label to it.
-        code.set((code.size() - 1), code.get(code.size() - 1) + "elseIfDone_" + ifNumber);
+        code.set((code.size() - 1), code.get(code.size() - 1) + "elseIfDone_" + currentIf + "-" + currentElseIf);
 
         code.addAll(visit(ctx.thenStatement()));
 

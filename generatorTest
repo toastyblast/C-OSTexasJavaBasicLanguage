@@ -19,6 +19,9 @@ Then
         If (B = 5)
         Then
             Disp B, "B is five"
+        Else if (B > 5)
+        Then
+            Disp B, "B is more than five"
         Else
             <COM> "Do nothing" </COM>
         End
