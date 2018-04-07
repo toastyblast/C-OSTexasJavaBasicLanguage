@@ -48,7 +48,7 @@ booleanEXP: '(' bool=booleanEXP ')'                         #BoolParentheses
 whileTJB: 'While' bool=booleanEXP (expression)* 'End';
 display: 'Disp' displayOptions (',' displayOptions)*;
 //FIXME: Fix the calculation part ??
-forTJB: 'For' iterator=checkVAR  (',' iterVal=(INT | DBL))? ',' comp=COMPTKN ',' upper=(VAR|INT|DBL) ',' increments=calculation expression* 'End';
+forTJB: 'For' '(' iterator=checkVAR  (',' iterVal=(INT | DBL))? ',' comp=COMPTKN ',' upper=(VAR|INT|DBL) ',' increments=calculation ')' expression* 'End';
 
 comment: '<COM>' STR '</COM>'                               #CommentLine;
 

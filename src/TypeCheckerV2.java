@@ -445,12 +445,12 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
 
         Type iteratorType = visit(ctx.iterator);
         if (iteratorType != null){
-            throw new CompilerException(ctx, ctx.iterator.getText() + "Is already defined.");
+            throw new CompilerException(ctx, ctx.iterator.getText() + " is already defined.");
         }
 
         Type iteratorValueType;
 
-        if (ctx.iterVal.getText().contains(",")){
+        if (ctx.iterVal.getText().contains(".")){
             iteratorType = Type.DOUBLE;
         } else {
             iteratorType = Type.INT;
@@ -465,12 +465,12 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
 
         String upperValue = ctx.upper.getText();
         if(singleton.getSymbolTable().getSymTable().get(upperValue) == null && !upperValue.matches(".*\\d+.*")){
-            throw new CompilerException(ctx, upperValue + " Is not defined.");
+            throw new CompilerException(ctx, upperValue + " is not defined.");
         }
 
         Type incrementType = visit(ctx.increments);
-        if (incrementType != null){
-            throw new CompilerException(ctx, " Is not defined.");
+        if (incrementType == null){
+            throw new CompilerException(ctx, " is not defined.");
         }
 
         return super.visitForTJB(ctx);

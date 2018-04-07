@@ -39,7 +39,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         code.addAll(visit(ctx.calculation()));
 
-        Type type = Singleton.getInstance().getCheckUpTable().get(ctx);
+        Type type = singleton.getCheckUpTable().get(ctx);
         switch (type) {
             case INT:
                 code.add("\tistore\t" + indexOffset + "\n");
@@ -155,7 +155,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         code.addAll(visit(ctx.calculation()));
 
-        Type type = Singleton.getInstance().getCheckUpTable().get(ctx);
+        Type type = singleton.getCheckUpTable().get(ctx);
         switch (type) {
             case INT:
                 code.add("\tistore\t" + indexOffset + "\n");
@@ -228,7 +228,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.addAll(visit(ctx.calculation()));
 
         //Multiply by -1 to turn the calculation from positive to negative or the other way around.
-        Type type = Singleton.getInstance().getCheckUpTable().get(ctx);
+        Type type = singleton.getCheckUpTable().get(ctx);
         switch (type) {
             case INT:
                 code.add("\tldc\t-1");
@@ -368,16 +368,6 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     }
 
     @Override
-    public ArrayList<String> visitBoolNeg(TJBParser.BoolNegContext ctx) {
-        ArrayList<String> code = new ArrayList<>();
-
-        code.addAll(visit(ctx.bool));
-        //FIXME - Make the 1 or 0 into the opposite here. (using the if statements in jasmin (as comparisons in jasmin result 1 or 0 onto the stack too))
-
-        return code;
-    }
-
-    @Override
     public ArrayList<String> visitIfTJB(TJBParser.IfTJBContext ctx) {
         ArrayList<String> code = new ArrayList<>();
         int ifNumber = ifSequence++;
@@ -465,6 +455,17 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         for (TJBParser.ExpressionContext expressionContext : ctx.expression()) {
             code.addAll(visit(expressionContext));
         }
+
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitBoolNeg(TJBParser.BoolNegContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        code.addAll(visit(ctx.bool));
+
+        //TODO: How to do negation of booleans?
 
         return code;
     }
@@ -614,11 +615,56 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         ArrayList<String> code = new ArrayList<>();
         int forNumber = forSequence++;
 
-        //TODO: If there's a new value being assigned to the given var, do it here.
+        Type iteratorType = singleton.getCheckUpTable().get(ctx);
+        String varID = ctx.iterator.getText();
+        int indexOffset = variables.indexOf(varID) + 1;
+
+        if (indexOffset == 0) {
+            //The variable doesn't exist yet, so add it!
+            variables.add(varID);
+            indexOffset = variables.size();
+
+            code.add("\tldc\t" + ctx.iterVal.getText());
+
+            if (iteratorType == Type.INT) {
+                //Value given is an integer.
+                code.add("\tistore " + indexOffset + "\n");
+            } else {
+                //The value given is a double.
+                code.add("\tfstore " + indexOffset + "\n");
+            }
+        } else {
+            //The variable already exists, but the user wants to set a new value to it.
+            String newVal = ctx.iterVal.getText();
+
+            //If the iterVal is being left empty, we just use the value already stored on the given var.
+            if (newVal != null && !newVal.isEmpty()) {
+                //If there is a new value given, then store it onto the variable (typechecker enforces that both the var and new value are of the same type)
+                if (iteratorType == Type.INT) {
+                    //Value given is an integer.
+                    code.add("\tistore " + indexOffset + "\n");
+                } else {
+                    //The value given is a double.
+                    code.add("\tfstore " + indexOffset + "\n");
+                }
+            }
+        }
 
         code.add("for_" + forNumber + ":");
 
+        //Load the variable's value to compare it.
+        if (iteratorType == Type.INT) {
+            //Value given is an integer.
+            code.add("\tiload " + indexOffset);
+        } else {
+            //The value given is a double.
+            code.add("\tfload " + indexOffset);
+        }
+        //Then load the value to compare it to.
+        code.add("\tldc\t" + ctx.upper.getText() + "\n");
+
         //TODO: Do the comparison here, so the var to the upper value.
+        code.add("\tif_something\t");
 
         //Change the comparison to have the right label to it.
         code.set((code.size() - 1), code.get(code.size() - 1) + "forDone_" + forNumber);
@@ -627,7 +673,15 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
             code.addAll(visit(expressionContext));
         }
 
+        //Do the calculation with the var and then store the result.
         code.addAll(visit(ctx.increments));
+        if (iteratorType == Type.INT) {
+            //Value given is an integer.
+            code.add("\tistore " + indexOffset + "\n");
+        } else {
+            //The value given is a double.
+            code.add("\tfstore " + indexOffset + "\n");
+        }
 
         code.add("\tgoto\tfor_" + forNumber);
         //---
@@ -689,7 +743,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
         code.addAll(visit(ctx.calculation()));
 
-        Type type = Singleton.getInstance().getCheckUpTable().get(ctx);
+        Type type = singleton.getCheckUpTable().get(ctx);
         switch (type) {
             case INT:
                 code.add("\tinvokevirtual\tjava/io/PrintStream/println(I)V\n");

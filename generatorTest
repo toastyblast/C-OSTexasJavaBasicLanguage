@@ -1,29 +1,5 @@
-10 -> A
-5 -> B
+1 -> A
 
-If (5 + 2 && A = 10)
-Then
-20 --> A
-Disp A, "A was ten now 20"
-0 -> C
-    While (C < 2)
-        If (B = 5)
-        Then
-        Disp B, "B is five"
-        Else
-        <COM> "Do nothing" </COM>
-        End
-    C + 1 --> C
-    End
-Else if (A <= 15)
-Then
-Disp A, "A else is less than or equal to 15"
-Else if (A > 15)
-Then
-Disp A, "A else is more than 15"
-Else
-Disp A, "Not 10 or less than and or equal to 15"
+For (B, 3, <, 5, (A + B) - ((A + 1) - 1))
+    Disp B
 End
-
-15 * 2 -> D
-Disp D, "Showing D"
