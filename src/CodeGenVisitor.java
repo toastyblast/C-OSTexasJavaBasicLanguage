@@ -1,5 +1,9 @@
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
+
 import java.security.Signature;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     private Singleton singleton = Singleton.getInstance();
@@ -74,31 +78,90 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         variables.add(arrID);
         int indexOffset = variables.size();
 
-        String array = ctx.value.getText();
-        array = array.substring(1, array.length()-1);
-        String arrayParts[] = array.split(",");
+        List<ParseTree> terminalNodes = new ArrayList<>();
+
+        for (int i = 0; i < ctx.value.getChildCount(); i++) {
+            if (!ctx.value.getChild(i).getText().equals("{") &&
+                    !ctx.value.getChild(i).getText().equals("}") &&
+                    !ctx.value.getChild(i).getText().equals(",")){
+                terminalNodes.add(ctx.value.getChild(i));
+            }
+        }
 
         Type type = singleton.getCheckUpTable().get(ctx.value);
-        code.add("\tldc " + arrayParts.length + "\t");
+        code.add("\tldc " + terminalNodes.size() + "\t");
         switch (type){
             case INTARRAY:
                 code.add("\tnewarray int\t");
 
                 code.add("\tastore\t" + indexOffset);
 
-                for (int i = 0; i < arrayParts.length; i++) {
+                for (int i = 0; i < terminalNodes.size(); i++) {
 
                     code.add("\taload\t" + indexOffset);
                     code.add("\tldc " + i + "\t");
-                    code.add("\tldc " + arrayParts[i] + "\t");
+                    if (terminalNodes.get(i) instanceof TerminalNode){
+                        code.add("\tldc " + terminalNodes.get(i).getText() + "\t");
+                    } else if (terminalNodes.get(i) instanceof TJBParser.CalculationContext){
+                        if (terminalNodes.get(i).getChild(0) instanceof TJBParser.CheckVARContext){
+                            code.add("\tiload " + (variables.indexOf(terminalNodes.get(i).getChild(0).getText()) + 1) + "\t");
+                        } else {
+                            code.addAll(visit(terminalNodes.get(i)));
+                        }
+                    }
                     code.add("\tiastore\t");
                 }
                 break;
             case DOUBLEARRAY:
-                code.add("\tnewarray double\t");
+                code.add("\tnewarray float\t");
+
+                code.add("\tastore\t" + indexOffset);
+
+                for (int i = 0; i < terminalNodes.size(); i++) {
+
+                    code.add("\taload\t" + indexOffset);
+                    code.add("\tldc " + i + "\t");
+                    if (terminalNodes.get(i) instanceof TerminalNode){
+                        code.add("\tldc " + terminalNodes.get(i).getText() + "\t");
+                        if (!terminalNodes.get(i).getText().contains(".")){
+                            code.add("\ti2f\t");
+                        }
+                    } else if (terminalNodes.get(i) instanceof TJBParser.CalculationContext){
+                        if (terminalNodes.get(i).getChild(0) instanceof TJBParser.CheckVARContext){
+                            Symbol symbol = singleton.getSymbolTable().getSymTable().get(terminalNodes.get(i).getChild(0).getText());
+                            code.add("\tiload " + (variables.indexOf(terminalNodes.get(i).getChild(0).getText()) + 1) + "\t");
+                            if (symbol.getType() == Type.INT){
+                                code.add("\ti2f\t");
+                            }
+                        } else {
+                            Type type1 = singleton.getCheckUpTable().get(terminalNodes.get(i));
+                            code.addAll(visit(terminalNodes.get(i)));
+                            if (type1 == Type.INT){
+                                code.add("\ti2f\t");
+                            }
+                        }
+                    }
+
+
+                    code.add("\tfastore\t");
+                }
                 break;
             case STRINGARRAY:
-                code.add("\tnewarray char\t");
+                code.add("\tanewarray java/lang/String\t");
+
+                code.add("\tastore\t" + indexOffset);
+
+                for (int i = 0; i < terminalNodes.size(); i++) {
+
+                    code.add("\taload\t" + indexOffset);
+                    code.add("\tldc " + i + "\t");
+                    if (terminalNodes.get(i) instanceof TerminalNode){
+                        code.add("\tldc " + terminalNodes.get(i).getText() + "\t");
+                    } else if (terminalNodes.get(i) instanceof TJBParser.CheckSTRIDContext){
+                        code.add("\taload " + (variables.indexOf(terminalNodes.get(i).getChild(0).getText()) + 1) + "\t");
+                    }
+                    code.add("\taastore\t");
+                }
                 break;
         }
 

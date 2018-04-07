@@ -1,5 +1,6 @@
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.stringtemplate.v4.ST;
 
@@ -444,19 +445,29 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     public Type visitForTJB(TJBParser.ForTJBContext ctx) {
 
         Type iteratorType = visit(ctx.iterator);
-        if (iteratorType != null){
-            throw new CompilerException(ctx, ctx.iterator.getText() + " is already defined.");
-        }
+//        if (iteratorType != null){
+//            throw new CompilerException(ctx, ctx.iterator.getText() + "Is already defined.");
+//        }
 
         Type iteratorValueType;
-
-        if (ctx.iterVal.getText().contains(".")){
-            iteratorType = Type.DOUBLE;
-        } else {
-            iteratorType = Type.INT;
+        if (iteratorType == null){
+            if (ctx.iterVal.getText().isEmpty()){
+                throw new CompilerException(ctx, " Iterator value cannot be empty");
+            }
+            if (ctx.iterVal.getText().contains(",")){
+                iteratorType = Type.DOUBLE;
+            } else {
+                iteratorType = Type.INT;
+            }
+            singleton.getSymbolTable().addSymbol(ctx.iterator.getText(), new Symbol(ctx, iteratorType));
         }
 
-        singleton.getSymbolTable().addSymbol(ctx.iterator.getText(), new Symbol(ctx, iteratorType));
+        if (iteratorType == Type.INT){
+            if (ctx.iterVal.getText().contains(".")){
+                throw new CompilerException(ctx, ctx.iterVal.getText() + " Is a double and cannot be assigned to" +
+                        " an integer");
+            }
+        }
 
         if (ctx.comp.getText().equals("||") || ctx.comp.getText().equals("AND")
                 || ctx.comp.getText().equals("&&") || ctx.comp.getText().equals("Or")){
@@ -470,7 +481,10 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
 
         Type incrementType = visit(ctx.increments);
         if (incrementType == null){
-            throw new CompilerException(ctx, " is not defined.");
+            throw new CompilerException(ctx, " Is not defined.");
+        } else if (incrementType == Type.DOUBLE && iteratorType == Type.INT){
+            throw new CompilerException(ctx, ctx.increments.getText() + " Is a double and cannot be assigned to an " +
+                    "integer");
         }
 
         return super.visitForTJB(ctx);
@@ -516,34 +530,63 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
 
     @Override
     public Type visitArrayBuild(TJBParser.ArrayBuildContext ctx) {
-        Type type;
-        List<TerminalNode> terminalNodes = new ArrayList<>();
+        Type type = null;
 
-        for (int i = 0; i < ctx.getChildCount(); i++) {
-            if (ctx.getChild(i) instanceof TerminalNode) {
-                Token token = ((TerminalNode) ctx.getChild(i)).getSymbol();
-                if (token.getType() == TJBLexer.INT ||
-                        token.getType() == TJBLexer.DBL ||
-                        token.getType() == TJBLexer.STR){
-                    terminalNodes.add((TerminalNode)ctx.getChild(i));
-                }
+
+        if (ctx.getChild(1) instanceof TerminalNode){
+            TerminalNode terminalNode = (TerminalNode)ctx.getChild(1);
+            if (terminalNode.getSymbol().getType() == TJBLexer.INT){
+                type = Type.INTARRAY;
+            }
+
+            else if (terminalNode.getSymbol().getType() == TJBLexer.DBL) {
+                type = Type.DOUBLEARRAY;
+            }
+
+            else if (terminalNode.getSymbol().getType() == TJBLexer.STR) {
+                type = Type.STRINGARRAY;
+            }
+        } else if (ctx.getChild(1) instanceof TJBParser.CheckSTRIDContext){
+            type = Type.STRINGARRAY;
+        } else if (ctx.getChild(1) instanceof TJBParser.CalculationContext){
+            Type type1 = visit(ctx.getChild(1));
+            switch (type1){
+                case INT:
+                    type = Type.INTARRAY;
+                case DOUBLE:
+                    type = Type.DOUBLEARRAY;
             }
         }
 
-        System.out.println(terminalNodes);
+        List<ParseTree> terminalNodes = new ArrayList<>();
 
-        if (terminalNodes.get(0).getSymbol().getType() == TJBLexer.INT){
-            addCtx(ctx, Type.INT);
-            return Type.INT;
+        for (int i = 0; i < ctx.getChildCount(); i++) {
+            if (!ctx.getChild(i).getText().equals("{") &&
+                    !ctx.getChild(i).getText().equals("}") &&
+                    !ctx.getChild(i).getText().equals(",")){
+                ParseTree parseTree = ctx.getChild(i);
+                if (type == Type.INTARRAY){
+                    if (visit(parseTree) != Type.INT){
+                        throw new CompilerException(ctx, parseTree.getText() + " Is not an integer." +
+                                " This array should include only integers.");
+                    }
+                } else if (type == Type.DOUBLEARRAY) {
+                    if (visit(parseTree) == Type.STRING) {
+                        throw new CompilerException(ctx, parseTree.getText() + " Is not a float/integers." +
+                                " This array should include only floats/integers.");
+                    }
+                } else if (type == Type.STRINGARRAY) {
+                    if (visit(parseTree) != Type.STRING){
+                        throw new CompilerException(ctx, parseTree.getText() + " Is not a string." +
+                                " This array should include only strings.");
+                    }
+                }
+
+            }
         }
 
-        else if (terminalNodes.get(0).getSymbol().getType() == TJBLexer.DBL) {
 
-        }
-
-        else if (terminalNodes.get(0).getSymbol().getType() == TJBLexer.INT) {
-
-        }
-        return Type.INTARRAY;
+        addCtx(ctx, type);
+        return type;
     }
 }
