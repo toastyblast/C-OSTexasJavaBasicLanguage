@@ -83,91 +83,94 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         for (int i = 0; i < ctx.value.getChildCount(); i++) {
             if (!ctx.value.getChild(i).getText().equals("{") &&
                     !ctx.value.getChild(i).getText().equals("}") &&
-                    !ctx.value.getChild(i).getText().equals(",")){
+                    !ctx.value.getChild(i).getText().equals(",")) {
                 terminalNodes.add(ctx.value.getChild(i));
             }
         }
 
         Type type = singleton.getCheckUpTable().get(ctx.value);
-        code.add("\tldc " + terminalNodes.size() + "\t");
-        switch (type){
-            case INTARRAY:
-                code.add("\tnewarray int\t");
+        code.add("\tldc\t" + terminalNodes.size());
 
-                code.add("\tastore\t" + indexOffset);
+        switch (type) {
+            case INTARRAY:
+                code.add("\tnewarray\tint");
+                code.add("\tastore\t" + indexOffset + "\n");
 
                 for (int i = 0; i < terminalNodes.size(); i++) {
-
                     code.add("\taload\t" + indexOffset);
-                    code.add("\tldc " + i + "\t");
-                    if (terminalNodes.get(i) instanceof TerminalNode){
-                        code.add("\tldc " + terminalNodes.get(i).getText() + "\t");
-                    } else if (terminalNodes.get(i) instanceof TJBParser.CalculationContext){
-                        if (terminalNodes.get(i).getChild(0) instanceof TJBParser.CheckVARContext){
-                            code.add("\tiload " + (variables.indexOf(terminalNodes.get(i).getChild(0).getText()) + 1) + "\t");
+                    code.add("\tldc\t" + i);
+
+                    if (terminalNodes.get(i) instanceof TerminalNode) {
+                        code.add("\tldc\t" + terminalNodes.get(i).getText());
+                    } else if (terminalNodes.get(i) instanceof TJBParser.CalculationContext) {
+
+                        if (terminalNodes.get(i).getChild(0) instanceof TJBParser.CheckVARContext) {
+                            code.add("\tiload\t" + (variables.indexOf(terminalNodes.get(i).getChild(0).getText()) + 1));
                         } else {
                             code.addAll(visit(terminalNodes.get(i)));
                         }
                     }
-                    code.add("\tiastore\t");
+
+                    code.add("\tiastore\n");
                 }
+
                 break;
             case DOUBLEARRAY:
-                code.add("\tnewarray float\t");
-
-                code.add("\tastore\t" + indexOffset);
+                code.add("\tnewarray\tfloat");
+                code.add("\tastore\t" + indexOffset + "\n");
 
                 for (int i = 0; i < terminalNodes.size(); i++) {
-
                     code.add("\taload\t" + indexOffset);
-                    code.add("\tldc " + i + "\t");
-                    if (terminalNodes.get(i) instanceof TerminalNode){
-                        code.add("\tldc " + terminalNodes.get(i).getText() + "\t");
-                        if (!terminalNodes.get(i).getText().contains(".")){
-                            code.add("\ti2f\t");
+                    code.add("\tldc\t" + i);
+
+                    if (terminalNodes.get(i) instanceof TerminalNode) {
+                        code.add("\tldc\t" + terminalNodes.get(i).getText());
+
+                        if (!terminalNodes.get(i).getText().contains(".")) {
+                            code.add("\ti2f");
                         }
-                    } else if (terminalNodes.get(i) instanceof TJBParser.CalculationContext){
-                        if (terminalNodes.get(i).getChild(0) instanceof TJBParser.CheckVARContext){
+                    } else if (terminalNodes.get(i) instanceof TJBParser.CalculationContext) {
+
+                        if (terminalNodes.get(i).getChild(0) instanceof TJBParser.CheckVARContext) {
                             Symbol symbol = singleton.getSymbolTable().getSymTable().get(terminalNodes.get(i).getChild(0).getText());
-                            code.add("\tiload " + (variables.indexOf(terminalNodes.get(i).getChild(0).getText()) + 1) + "\t");
-                            if (symbol.getType() == Type.INT){
-                                code.add("\ti2f\t");
+                            code.add("\tiload\t" + (variables.indexOf(terminalNodes.get(i).getChild(0).getText()) + 1));
+
+                            if (symbol.getType() == Type.INT) {
+                                code.add("\ti2f");
                             }
                         } else {
                             Type type1 = singleton.getCheckUpTable().get(terminalNodes.get(i));
                             code.addAll(visit(terminalNodes.get(i)));
-                            if (type1 == Type.INT){
-                                code.add("\ti2f\t");
+
+                            if (type1 == Type.INT) {
+                                code.add("\ti2f");
                             }
                         }
                     }
 
-
-                    code.add("\tfastore\t");
+                    code.add("\tfastore\n");
                 }
+
                 break;
             case STRINGARRAY:
-                code.add("\tanewarray java/lang/String\t");
-
-                code.add("\tastore\t" + indexOffset);
+                code.add("\tanewarray\tjava/lang/String");
+                code.add("\tastore\t" + indexOffset + "\n");
 
                 for (int i = 0; i < terminalNodes.size(); i++) {
-
                     code.add("\taload\t" + indexOffset);
-                    code.add("\tldc " + i + "\t");
-                    if (terminalNodes.get(i) instanceof TerminalNode){
-                        code.add("\tldc " + terminalNodes.get(i).getText() + "\t");
-                    } else if (terminalNodes.get(i) instanceof TJBParser.CheckSTRIDContext){
-                        code.add("\taload " + (variables.indexOf(terminalNodes.get(i).getChild(0).getText()) + 1) + "\t");
+                    code.add("\tldc\t" + i);
+
+                    if (terminalNodes.get(i) instanceof TerminalNode) {
+                        code.add("\tldc\t" + terminalNodes.get(i).getText());
+                    } else if (terminalNodes.get(i) instanceof TJBParser.CheckSTRIDContext) {
+                        code.add("\taload\t" + (variables.indexOf(terminalNodes.get(i).getChild(0).getText()) + 1));
                     }
-                    code.add("\taastore\t");
+
+                    code.add("\taastore\n");
                 }
+
                 break;
         }
-
-
-
-        //TODO - Yoran: Figure out how arrays work and are made in Jasmin!
 
         return code;
     }
@@ -295,11 +298,11 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         switch (type) {
             case INT:
                 code.add("\tldc\t-1");
-                code.add("\timul");
+                code.add("\timul\n");
                 break;
             case DOUBLE:
                 code.add("\tldc\t-1.0");
-                code.add("\tfmul");
+                code.add("\tfmul\n");
                 break;
         }
 
@@ -364,10 +367,10 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         switch (leftType) {
             case INT:
-                code.add("\tirem");
+                code.add("\tirem\n");
                 break;
             case DOUBLE:
-                code.add("\tfrem");
+                code.add("\tfrem\n");
                 break;
         }
 
@@ -445,9 +448,9 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
             elseIfNumber++;
 
             code.add("elseIf_" + ifNumber + "-" + elseIfNumber + ":");
-
+            //Add all the expressions within the else-if statement
             code.addAll(visit(elseIfStatement));
-            code.add("\tgoto\tallDone_" + ifNumber);
+            code.add("\tgoto\tallDone_" + ifNumber + "\n");
 
             code.add("elseIfDone_" + elseIfNumber + ":");
         }
@@ -455,14 +458,12 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         //And finally the else-statement
         for (TJBParser.ElseStatementContext elseStatement : ctx.elseStatement()) {
             code.add("else_" + ifNumber + ":");
-
+            //Visit all the expressions in the else-statement.
             code.addAll(visit(elseStatement));
-            code.add("\tgoto\tallDone_" + ifNumber);
-
-            code.add("else_" + ifNumber + ":");
+            code.add("\tgoto\tallDone_" + ifNumber + "\n");
         }
 
-        code.add("allDone_" + ifNumber + ":");
+        code.add("allDone_" + ifNumber + ":\n");
 
         return code;
     }
@@ -679,6 +680,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         int forNumber = forSequence++;
 
         Type iteratorType = singleton.getCheckUpTable().get(ctx);
+        iteratorType = Type.INT;
         String varID = ctx.iterator.getText();
         int indexOffset = variables.indexOf(varID) + 1;
 
@@ -717,19 +719,8 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         code.add("for_" + forNumber + ":");
 
-        //Load the variable's value to compare it.
-        if (iteratorType == Type.INT) {
-            //Value given is an integer.
-            code.add("\tiload\t" + indexOffset);
-        } else {
-            //The value given is a double.
-            code.add("\tfload\t" + indexOffset);
-        }
-        //Then load the value to compare it to.
-        code.add("\tldc\t" + ctx.upper.getText() + "\n");
-
-        //TODO: Do the comparison here, so the var to the upper value.
-        code.add("\tif_something\t");
+        //Now do the comparison to see if we have to do the next loop or not.
+        code.addAll(visit(ctx.comp));
 
         //Change the comparison to have the right label to it.
         code.set((code.size() - 1), code.get(code.size() - 1) + "forDone_" + forNumber);
@@ -754,8 +745,9 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         //We don't have to check if the Var exists, as the typechecker should make sure the var given here is the same one declared earlier in the for-loop
         String varID = ctx.nameVar.getText();
-        //TODO: Once checker has been made, check if it doesn't do the "fload" and such commands, if the value of the var is an int.
+        //TODO: Once checker has been made, check if it doesn't do the "float" and such commands, if the value of the var is an int.
         Type iteratorType = singleton.getCheckUpTable().get(ctx);
+        iteratorType = Type.INT;
         int indexOffset = variables.indexOf(varID) + 1;
 
         //Load the var, as we need to add the result of the calculation to that at the end.
@@ -868,8 +860,6 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     }
 
     //TODO - STILL TO ADD:
-    // - Logic gates: '||' and '&&' (or 'Or' and 'And'))
-    // - For loops;
-    // - Negative booleans (so the '!' character);
-    // - YORAN Ask teacher about Arrays in Jasmin.
+    // - Logic gates: '||' and '&&' (or 'Or' and 'And'));
+    // - Negative booleans (the '!' character).
 }

@@ -350,10 +350,10 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
             throw new CompilerException(ctx, "Invalid comparison.");
         }
 
-        String upperValue = ctx.upper.getText();
-        if(singleton.getSymbolTable().getSymTable().get(upperValue) == null && !upperValue.matches(".*\\d+.*")){
-            throw new CompilerException(ctx, "Variable " + upperValue + " not defined");
-        }
+//        String upperValue = ctx.upper.getText();
+//        if(singleton.getSymbolTable().getSymTable().get(upperValue) == null && !upperValue.matches(".*\\d+.*")){
+//            throw new CompilerException(ctx, "Variable " + upperValue + " not defined");
+//        }
         String increment = ctx.increments.getText();
         if (increment.length() == 1 && !increment.matches(".*\\d+.*")){
             if(singleton.getSymbolTable().getSymTable().get(increment) == null){

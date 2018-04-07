@@ -48,8 +48,8 @@ booleanEXP: '(' bool=booleanEXP ')'                         #BoolParentheses
 whileTJB: 'While' bool=booleanEXP (expression)* 'End';
 display: 'Disp' displayOptions (',' displayOptions)*;
 //FIXME: Fix the calculation part ??
-forTJB: 'For' '(' iterator=checkVAR  (',' iterVal=(INT | DBL))? ',' comp=COMPTKN ',' upper=(VAR|INT|DBL) ',' increments=incrementEXP ')' expression* 'End';
-incrementEXP: nameVar=checkVAR '=' calc=calculation;
+forTJB: 'For' '(' iterator=checkVAR  (',' iterVal=(INT | DBL))? ',' comp=booleanEXP ',' increments=incrementEXP ')' expression* 'End';
+incrementEXP: nameVar=checkVAR '+=' calc=calculation;
 
 comment: '<COM>' STR '</COM>'                               #CommentLine;
 
