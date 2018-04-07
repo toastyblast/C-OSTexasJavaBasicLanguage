@@ -1,7 +1,7 @@
 10 -> A
 5 -> B
 
-If (A = 10)
+If (5 + 2 && A = 10)
 Then
 20 --> A
 Disp A, "A was ten now 20"

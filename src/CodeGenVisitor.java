@@ -536,6 +536,27 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     }
 
     @Override
+    public ArrayList<String> visitBoolCompLog(TJBParser.BoolCompLogContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        String comparisonToken = ctx.comp.getText();
+
+        code.addAll(visit(ctx.left));
+        code.addAll(visit(ctx.right));
+
+        //TODO: Do the logic gates.
+        if (comparisonToken.equalsIgnoreCase("||") || comparisonToken.equalsIgnoreCase("And")) {
+            //This is the "Or" (or "||") logic gate.
+            //...
+        } else {
+            //This is the "And" (or "&&") logic gate.
+            //...
+        }
+
+        return code;
+    }
+
+    @Override
     public ArrayList<String> visitWhileTJB(TJBParser.WhileTJBContext ctx) {
         ArrayList<String> code = new ArrayList<>();
         int whileNumber = whileSequence++;
@@ -669,6 +690,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     }
 
     //TODO - STILL TO ADD:
+    // - Logic gates: '||' and '&&' (or 'Or' and 'And'))
     // - For loops;
     // - Negative booleans (so the '!' character);
     // - YORAN Ask teacher about Arrays in Jasmin.
