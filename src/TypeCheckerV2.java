@@ -445,19 +445,29 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     public Type visitForTJB(TJBParser.ForTJBContext ctx) {
 
         Type iteratorType = visit(ctx.iterator);
-        if (iteratorType != null){
-            throw new CompilerException(ctx, ctx.iterator.getText() + "Is already defined.");
-        }
+//        if (iteratorType != null){
+//            throw new CompilerException(ctx, ctx.iterator.getText() + "Is already defined.");
+//        }
 
         Type iteratorValueType;
-
-        if (ctx.iterVal.getText().contains(",")){
-            iteratorType = Type.DOUBLE;
-        } else {
-            iteratorType = Type.INT;
+        if (iteratorType == null){
+            if (ctx.iterVal.getText().isEmpty()){
+                throw new CompilerException(ctx, " Iterator value cannot be empty");
+            }
+            if (ctx.iterVal.getText().contains(",")){
+                iteratorType = Type.DOUBLE;
+            } else {
+                iteratorType = Type.INT;
+            }
+            singleton.getSymbolTable().addSymbol(ctx.iterator.getText(), new Symbol(ctx, iteratorType));
         }
 
-        singleton.getSymbolTable().addSymbol(ctx.iterator.getText(), new Symbol(ctx, iteratorType));
+        if (iteratorType == Type.INT){
+            if (ctx.iterVal.getText().contains(".")){
+                throw new CompilerException(ctx, ctx.iterVal.getText() + " Is a double and cannot be assigned to" +
+                        " an integer");
+            }
+        }
 
         if (ctx.comp.getText().equals("||") || ctx.comp.getText().equals("AND")
                 || ctx.comp.getText().equals("&&") || ctx.comp.getText().equals("Or")){
@@ -470,8 +480,11 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         }
 
         Type incrementType = visit(ctx.increments);
-        if (incrementType != null){
+        if (incrementType == null){
             throw new CompilerException(ctx, " Is not defined.");
+        } else if (incrementType == Type.DOUBLE && iteratorType == Type.INT){
+            throw new CompilerException(ctx, ctx.increments.getText() + " Is a double and cannot be assigned to an " +
+                    "integer");
         }
 
         return super.visitForTJB(ctx);
