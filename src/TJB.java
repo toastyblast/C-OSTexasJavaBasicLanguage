@@ -4,9 +4,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -61,6 +59,23 @@ public class TJB {
         System.out.println(generatedCode.stream().collect(Collectors.joining("\n")));
         // Output footer of jasmin file
         System.out.println(endProg);
+
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter("JasminCode.j"));
+            writer.write(startProg.replaceAll("\\{\\{name\\}\\}", programName));
+            writer.write("\n");
+            writer.write(generatedCode.stream().collect(Collectors.joining("\n")));
+            writer.write(endProg);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("========COMMAND OUTPUT========");
+        executedCommand("java -jar jasmin.jar JasminCode.j");
+        System.out.println("========PROGRAM OUTPUT========");
+        executedCommand("java PLACEHOLDER");
     }
 
     private static void evaluateAndPrint( ParseTree parseTree ) {
@@ -94,6 +109,28 @@ public class TJB {
             evaluate(content);
         } catch (RuntimeException RE){
             System.err.println(RE.getMessage());
+        }
+    }
+
+    private static void executedCommand(String command){
+        try {
+            Runtime rt = Runtime.getRuntime();
+            Process pr = rt.exec(command);
+
+            BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+
+            String line1=null;
+
+            while((line1=input.readLine()) != null) {
+                System.out.println(line1);
+            }
+
+            int exitVal = pr.waitFor();
+            System.out.println("Exited with error code "+exitVal);
+
+        } catch(Exception e) {
+            System.out.println(e.toString());
+            e.printStackTrace();
         }
     }
 
