@@ -1,5 +1,10 @@
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.stringtemplate.v4.ST;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
 
@@ -378,6 +383,21 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     }
 
     @Override
+    public Type visitBoolCompLog(TJBParser.BoolCompLogContext ctx) {
+        Type left = visit(ctx.left);
+        Type right = visit(ctx.right);
+
+        if (left != Type.BOOLEAN){
+            throw new CompilerException(ctx, ctx.left.getText() + " Is not boolean");
+        } else if (right != Type.BOOLEAN){
+            throw new CompilerException(ctx, ctx.left.getText() + " Is not boolean");
+        }
+
+        addCtx(ctx, Type.BOOLEAN);
+        return Type.BOOLEAN;
+    }
+
+    @Override
     public Type visitBoolCalc(TJBParser.BoolCalcContext ctx) {
         Type type = visit(ctx.calc);
         addCtx(ctx, type);
@@ -492,5 +512,38 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         Type type = visit(ctx.name);
         addCtx(ctx, type);
         return type;
+    }
+
+    @Override
+    public Type visitArrayBuild(TJBParser.ArrayBuildContext ctx) {
+        Type type;
+        List<TerminalNode> terminalNodes = new ArrayList<>();
+
+        for (int i = 0; i < ctx.getChildCount(); i++) {
+            if (ctx.getChild(i) instanceof TerminalNode) {
+                Token token = ((TerminalNode) ctx.getChild(i)).getSymbol();
+                if (token.getType() == TJBLexer.INT ||
+                        token.getType() == TJBLexer.DBL ||
+                        token.getType() == TJBLexer.STR){
+                    terminalNodes.add((TerminalNode)ctx.getChild(i));
+                }
+            }
+        }
+
+        System.out.println(terminalNodes);
+
+        if (terminalNodes.get(0).getSymbol().getType() == TJBLexer.INT){
+            addCtx(ctx, Type.INT);
+            return Type.INT;
+        }
+
+        else if (terminalNodes.get(0).getSymbol().getType() == TJBLexer.DBL) {
+
+        }
+
+        else if (terminalNodes.get(0).getSymbol().getType() == TJBLexer.INT) {
+
+        }
+        return Type.INTARRAY;
     }
 }
