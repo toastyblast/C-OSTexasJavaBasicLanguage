@@ -691,10 +691,10 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
             if (iteratorType == Type.INT) {
                 //Value given is an integer.
-                code.add("\tistore " + indexOffset + "\n");
+                code.add("\tistore\t" + indexOffset);
             } else {
                 //The value given is a double.
-                code.add("\tfstore " + indexOffset + "\n");
+                code.add("\tfstore\t" + indexOffset);
             }
         } else {
             //The variable already exists, but the user wants to set a new value to it.
@@ -703,12 +703,14 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
             //If the iterVal is being left empty, we just use the value already stored on the given var.
             if (newVal != null && !newVal.isEmpty()) {
                 //If there is a new value given, then store it onto the variable (typechecker enforces that both the var and new value are of the same type)
+                code.add("\tldc\t" + ctx.iterVal.getText());
+
                 if (iteratorType == Type.INT) {
                     //Value given is an integer.
-                    code.add("\tistore " + indexOffset + "\n");
+                    code.add("\tistore\t" + indexOffset);
                 } else {
                     //The value given is a double.
-                    code.add("\tfstore " + indexOffset + "\n");
+                    code.add("\tfstore\t" + indexOffset);
                 }
             }
         }
@@ -718,10 +720,10 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         //Load the variable's value to compare it.
         if (iteratorType == Type.INT) {
             //Value given is an integer.
-            code.add("\tiload " + indexOffset);
+            code.add("\tiload\t" + indexOffset);
         } else {
             //The value given is a double.
-            code.add("\tfload " + indexOffset);
+            code.add("\tfload\t" + indexOffset);
         }
         //Then load the value to compare it to.
         code.add("\tldc\t" + ctx.upper.getText() + "\n");
@@ -736,19 +738,48 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
             code.addAll(visit(expressionContext));
         }
 
-        //Do the calculation with the var and then store the result.
+        //Perform the increments on the var given.
         code.addAll(visit(ctx.increments));
-        if (iteratorType == Type.INT) {
-            //Value given is an integer.
-            code.add("\tistore " + indexOffset + "\n");
-        } else {
-            //The value given is a double.
-            code.add("\tfstore " + indexOffset + "\n");
-        }
 
         code.add("\tgoto\tfor_" + forNumber);
         //---
         code.add("forDone_" + forNumber + ":");
+
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitIncrementEXP(TJBParser.IncrementEXPContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        //We don't have to check if the Var exists, as the typechecker should make sure the var given here is the same one declared earlier in the for-loop
+        String varID = ctx.nameVar.getText();
+        //TODO: Once checker has been made, check if it doesn't do the "fload" and such commands, if the value of the var is an int.
+        Type iteratorType = singleton.getCheckUpTable().get(ctx);
+        int indexOffset = variables.indexOf(varID) + 1;
+
+        //Load the var, as we need to add the result of the calculation to that at the end.
+        if (iteratorType == Type.INT) {
+            //Value given is an integer.
+            code.add("\tiload\t" + indexOffset);
+        } else {
+            //The value given is a double.
+            code.add("\tfload\t" + indexOffset);
+        }
+
+        //Do the calculation given.
+        code.addAll(visit(ctx.calc));
+
+        //Then add the result of the calculation to the var and store the result onto the var.
+        if (iteratorType == Type.INT) {
+            //Value given is an integer.
+            code.add("\tiadd");
+            code.add("\tistore\t" + indexOffset + "\n");
+        } else {
+            //The value given is a double.
+            code.add("\tfadd");
+            code.add("\tfstore\t" + indexOffset + "\n");
+        }
 
         return code;
     }
