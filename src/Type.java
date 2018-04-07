@@ -3,6 +3,9 @@ public enum  Type {
     BOOLEAN,
     STRING,
     ARRAY,
+    INTARRAY,
+    DOUBLEARRAY,
+    STRINGARRAY,
     DOUBLE,
     VAR
 }

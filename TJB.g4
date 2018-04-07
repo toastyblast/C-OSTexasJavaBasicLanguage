@@ -70,7 +70,7 @@ assignment: value=calculation ASN name=checkVAR       #NumAsn //Declaration of a
           | value=STR CPYASN name=checkSTRID          #StrAsnNEWVAR //Changing the value of an already existing string (value from user typed string).
           ;
 
-arrayBuild: '{' (NIN | INT | DBL) (',' (NIN | INT | DBL))* '}';
+arrayBuild: '{' (NIN | INT | DBL | checkSTRID | calculation | STR) (',' (NIN | INT | DBL | checkSTRID | calculation | STR))* '}';
 
 ASN: '->';
 CPYASN: '-->';

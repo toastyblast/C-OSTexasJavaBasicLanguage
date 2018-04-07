@@ -74,6 +74,36 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         variables.add(arrID);
         int indexOffset = variables.size();
 
+        String array = ctx.value.getText();
+        array = array.substring(1, array.length()-1);
+        String arrayParts[] = array.split(",");
+
+        Type type = singleton.getCheckUpTable().get(ctx.value);
+        code.add("\tldc " + arrayParts.length + "\t");
+        switch (type){
+            case INTARRAY:
+                code.add("\tnewarray int\t");
+
+                code.add("\tastore\t" + indexOffset);
+
+                for (int i = 0; i < arrayParts.length; i++) {
+
+                    code.add("\taload\t" + indexOffset);
+                    code.add("\tldc " + i + "\t");
+                    code.add("\tldc " + arrayParts[i] + "\t");
+                    code.add("\tiastore\t");
+                }
+                break;
+            case DOUBLEARRAY:
+                code.add("\tnewarray double\t");
+                break;
+            case STRINGARRAY:
+                code.add("\tnewarray char\t");
+                break;
+        }
+
+
+
         //TODO - Yoran: Figure out how arrays work and are made in Jasmin!
 
         return code;
