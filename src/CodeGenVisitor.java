@@ -865,6 +865,40 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         return code;
     }
 
+    @Override
+    public ArrayList<String> visitScannerAsn(TJBParser.ScannerAsnContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+        variables.add(ctx.name.getText());
+        int indexOffset = variables.size();
+        code.add("\tnew\t" + "\tjava/util/Scanner\t");
+        code.add("\tdup\t");
+        code.add("\tgetstatic\t" + "\tjava/lang/System/in Ljava/io/InputStream;\t");
+        code.add("\tinvokespecial\t" + "\tjava/util/Scanner/<init>(Ljava/io/InputStream;)V\t");
+        code.add("\tastore_" + indexOffset);
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitStrAsnUsrIn(TJBParser.StrAsnUsrInContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitNumAsnUsrIn(TJBParser.NumAsnUsrInContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+        variables.add(ctx.name.getText());
+        int place = variables.size();
+        int indexOffset = variables.indexOf(ctx.scnr.getText())+1;
+
+        code.add("\taload_" + indexOffset);
+        code.add("\tinvokevirtual\t" + "java/util/Scanner/nextInt()I");
+        code.add("\tistore " + place);
+        code.add("\taload_" + indexOffset);
+        code.add("\tinvokevirtual\t" + "java/util/Scanner/close()V");
+        return code;
+    }
+
     //TODO - STILL TO ADD:
     // - Logic gates: '||' and '&&' (or 'Or' and 'And'));
     // - Negative booleans (the '!' character).

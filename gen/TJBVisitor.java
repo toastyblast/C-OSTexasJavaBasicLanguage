@@ -1,4 +1,4 @@
-// Generated from D:/IdeaProjects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
+// Generated from D:/School/Projects/Java Projects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -292,6 +292,41 @@ public interface TJBVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitStrAsnNEWVAR(TJBParser.StrAsnNEWVARContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code StrAsnUsrIn}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStrAsnUsrIn(TJBParser.StrAsnUsrInContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code StrAsnUsrInVAR}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStrAsnUsrInVAR(TJBParser.StrAsnUsrInVARContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code NumAsnUsrIn}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNumAsnUsrIn(TJBParser.NumAsnUsrInContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code NumAsnUsrInVAR}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNumAsnUsrInVAR(TJBParser.NumAsnUsrInVARContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ScannerAsn}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitScannerAsn(TJBParser.ScannerAsnContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TJBParser#arrayBuild}.
 	 * @param ctx the parse tree

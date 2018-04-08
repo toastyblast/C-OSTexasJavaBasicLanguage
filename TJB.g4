@@ -64,6 +64,11 @@ assignment: value=calculation ASN name=checkVAR       #NumAsn //Declaration of a
           | value=calculation CPYASN name=checkVAR    #NumAsnVAR //Changing the value of an already existing number.
           | value=checkSTRID CPYASN name=checkSTRID   #StrAsnVAR //Changing the value of an already existing string (value from another existing string).
           | value=STR CPYASN name=checkSTRID          #StrAsnNEWVAR //Changing the value of an already existing string (value from user typed string).
+          | 'Scanner ' ASN name=checkSTRID             #StrAsnUsrIn
+          | 'Scanner ' CPYASN name=checkSTRID          #StrAsnUsrInVAR
+          | 'Scanner ' scnr=STR ASN name=checkVAR      #NumAsnUsrIn
+          | 'Scanner ' CPYASN name=checkVAR            #NumAsnUsrInVAR
+          | 'Scanner ' name=STR                        #ScannerAsn
           ;
 
 arrayBuild: '{' (NIN | INT | DBL | checkSTRID | calculation | STR) (',' (NIN | INT | DBL | checkSTRID | calculation | STR))* '}';

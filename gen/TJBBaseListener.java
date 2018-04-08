@@ -1,4 +1,4 @@
-// Generated from D:/IdeaProjects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
+// Generated from D:/School/Projects/Java Projects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -514,6 +514,66 @@ public class TJBBaseListener implements TJBListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitStrAsnNEWVAR(TJBParser.StrAsnNEWVARContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterStrAsnUsrIn(TJBParser.StrAsnUsrInContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitStrAsnUsrIn(TJBParser.StrAsnUsrInContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterStrAsnUsrInVAR(TJBParser.StrAsnUsrInVARContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitStrAsnUsrInVAR(TJBParser.StrAsnUsrInVARContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNumAsnUsrIn(TJBParser.NumAsnUsrInContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNumAsnUsrIn(TJBParser.NumAsnUsrInContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNumAsnUsrInVAR(TJBParser.NumAsnUsrInVARContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNumAsnUsrInVAR(TJBParser.NumAsnUsrInVARContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterScannerAsn(TJBParser.ScannerAsnContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitScannerAsn(TJBParser.ScannerAsnContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

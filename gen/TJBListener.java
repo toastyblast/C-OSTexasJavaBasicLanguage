@@ -1,4 +1,4 @@
-// Generated from D:/IdeaProjects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
+// Generated from D:/School/Projects/Java Projects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -488,6 +488,66 @@ public interface TJBListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStrAsnNEWVAR(TJBParser.StrAsnNEWVARContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code StrAsnUsrIn}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterStrAsnUsrIn(TJBParser.StrAsnUsrInContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code StrAsnUsrIn}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitStrAsnUsrIn(TJBParser.StrAsnUsrInContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code StrAsnUsrInVAR}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterStrAsnUsrInVAR(TJBParser.StrAsnUsrInVARContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code StrAsnUsrInVAR}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitStrAsnUsrInVAR(TJBParser.StrAsnUsrInVARContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code NumAsnUsrIn}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterNumAsnUsrIn(TJBParser.NumAsnUsrInContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code NumAsnUsrIn}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitNumAsnUsrIn(TJBParser.NumAsnUsrInContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code NumAsnUsrInVAR}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterNumAsnUsrInVAR(TJBParser.NumAsnUsrInVARContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code NumAsnUsrInVAR}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitNumAsnUsrInVAR(TJBParser.NumAsnUsrInVARContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ScannerAsn}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterScannerAsn(TJBParser.ScannerAsnContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ScannerAsn}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitScannerAsn(TJBParser.ScannerAsnContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TJBParser#arrayBuild}.
 	 * @param ctx the parse tree

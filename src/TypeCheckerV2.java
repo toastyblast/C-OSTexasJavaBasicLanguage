@@ -607,4 +607,11 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         addCtx(ctx, type);
         return type;
     }
+
+    @Override
+    public Type visitNumAsnUsrIn(TJBParser.NumAsnUsrInContext ctx) {
+        singleton.getSymbolTable().getSymTable().put(ctx.name.getText()
+                , new Symbol(ctx, Type.INT));
+        return super.visitNumAsnUsrIn(ctx);
+    }
 }
