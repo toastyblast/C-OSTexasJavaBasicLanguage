@@ -1,4 +1,4 @@
-// Generated from D:/School/Projects/Java Projects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
+// Generated from D:/IdeaProjects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
@@ -65,13 +65,6 @@ public class TJBBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements TJ
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitExMulOp(TJBParser.ExMulOpContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitExAddOp(TJBParser.ExAddOpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -86,14 +79,14 @@ public class TJBBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements TJ
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitExDivOp(TJBParser.ExDivOpContext ctx) { return visitChildren(ctx); }
+	@Override public T visitExParentheses(TJBParser.ExParenthesesContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitExParentheses(TJBParser.ExParenthesesContext ctx) { return visitChildren(ctx); }
+	@Override public T visitExMulDivOp(TJBParser.ExMulDivOpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

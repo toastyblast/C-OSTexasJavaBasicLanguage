@@ -68,21 +68,7 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
 
     @SuppressWarnings("Duplicates")
     @Override
-    public Type visitExMulOp(TJBParser.ExMulOpContext ctx) {
-        Type left = visit(ctx.left);
-        Type right = visit(ctx.right);
-        if (left == Type.INT && right == Type.INT){
-            addCtx(ctx, Type.INT);
-            return Type.INT;
-        } else {
-            addCtx(ctx, Type.DOUBLE);
-            return Type.DOUBLE;
-        }
-    }
-
-    @SuppressWarnings("Duplicates")
-    @Override
-    public Type visitExDivOp(TJBParser.ExDivOpContext ctx) {
+    public Type visitExMulDivOp(TJBParser.ExMulDivOpContext ctx) {
         Type left = visit(ctx.left);
         Type right = visit(ctx.right);
 

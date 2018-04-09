@@ -14,8 +14,7 @@ expression: assignment
 
 calculation: '(' val=calculation ')'                                          # ExParentheses
           | '-' val=calculation                                               # ExNegate
-          | left=calculation '*' right=calculation                            # ExMulOp
-          | left=calculation '/' right=calculation                            # ExDivOp
+          | left=calculation op=('*' | '/') right=calculation                 # ExMulDivOp
           | left=calculation op=('+' | '-') right=calculation                 # ExAddOp
           | left=calculation '%' right=calculation                            # ExModOp
           | val=checkVAR                                                      # ExVarLiteral

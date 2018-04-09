@@ -50,7 +50,7 @@ public class TJB {
         // Type check then evaulate by running the visitor
         evaluateAndPrint(expression); // <-- Change this to checkEvaluateAndPrint when you implemented a checker
 
-        //TODO - Yoran: Make the code generator
+        System.out.println("========CODE OUTPUT========");
         CodeGenVisitor genVisitor = new CodeGenVisitor();
         ArrayList<String> generatedCode = genVisitor.visit(expression);
 
@@ -72,9 +72,10 @@ public class TJB {
             e.printStackTrace();
         }
 
-        System.out.println("========COMMAND OUTPUT========");
+        System.out.println("\n========COMMAND OUTPUT========");
         executedCommand("java -jar jasmin.jar JasminCode.j");
-        System.out.println("========PROGRAM OUTPUT========");
+
+        System.out.println("\n========PROGRAM OUTPUT========");
         executedCommand("java PLACEHOLDER");
     }
 
@@ -126,7 +127,7 @@ public class TJB {
             }
 
             int exitVal = pr.waitFor();
-            System.out.println("Exited with error code "+exitVal);
+            System.out.println("\nExited with error code "+exitVal);
 
         } catch(Exception e) {
             System.out.println(e.toString());

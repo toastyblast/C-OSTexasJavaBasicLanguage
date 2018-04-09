@@ -210,7 +210,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         variables.add(arrID);
         int indexOffset = variables.size();
 
-        //TODO - Yoran: Figure out how arrays work and are made in Jasmin!
+        //TODO - Martin?: Figure out how arrays work and are made in Jasmin!
 
         return code;
     }
@@ -276,7 +276,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         String copyArrID = ctx.value.getText();
         int copyIndexOffset = variables.indexOf(copyArrID) + 1;
 
-        //TODO - Yoran: Figure out how arrays work and are made in Jasmin!
+        //TODO - Martin?: Figure out how arrays work and are made in Jasmin!
 
         return code;
     }
@@ -340,6 +340,40 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
                 break;
             case DOUBLE:
                 code.add(ctx.op.getText().equals("+") ? "\tfadd\n" : "\tfsub\n");
+                break;
+        }
+
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitExMulDivOp(TJBParser.ExMulDivOpContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        Type leftType = singleton.getCheckUpTable().get(ctx.left);
+        Type rightType = singleton.getCheckUpTable().get(ctx.right);
+
+        code.addAll(visit(ctx.left));
+
+        if (leftType == Type.INT && rightType == Type.DOUBLE) {
+            //Turn the left value into a float not to lose precision.
+            code.add("\ti2f");
+            leftType = Type.DOUBLE;
+            code.addAll(visit(ctx.right));
+        } else if (leftType == Type.DOUBLE && rightType == Type.INT) {
+            //Turn the right value into a float not to loose precision.
+            code.addAll(visit(ctx.right));
+            code.add("\ti2f");
+        } else {
+            code.addAll(visit(ctx.right));
+        }
+
+        switch (leftType) {
+            case INT:
+                code.add(ctx.op.getText().equals("*") ? "\timul\n" : "\tidiv\n");
+                break;
+            case DOUBLE:
+                code.add(ctx.op.getText().equals("*") ? "\tfmul\n" : "\tfdiv\n");
                 break;
         }
 
@@ -859,7 +893,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         code.add("\taload\t" + indexOffset);
 
-        //FIXME - Yoran: CHECK IF THIS IS CORRECT FOR ARRAYS!
+        //FIXME - Martin?: CHECK IF THIS IS CORRECT FOR ARRAYS!
         code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava.lang.reflect.Array;)V\n");
 
         return code;

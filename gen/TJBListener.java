@@ -1,4 +1,4 @@
-// Generated from D:/School/Projects/Java Projects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
+// Generated from D:/IdeaProjects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -87,18 +87,6 @@ public interface TJBListener extends ParseTreeListener {
 	 */
 	void exitExNegLiteral(TJBParser.ExNegLiteralContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code ExMulOp}
-	 * labeled alternative in {@link TJBParser#calculation}.
-	 * @param ctx the parse tree
-	 */
-	void enterExMulOp(TJBParser.ExMulOpContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code ExMulOp}
-	 * labeled alternative in {@link TJBParser#calculation}.
-	 * @param ctx the parse tree
-	 */
-	void exitExMulOp(TJBParser.ExMulOpContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code ExAddOp}
 	 * labeled alternative in {@link TJBParser#calculation}.
 	 * @param ctx the parse tree
@@ -123,18 +111,6 @@ public interface TJBListener extends ParseTreeListener {
 	 */
 	void exitExIntLiteral(TJBParser.ExIntLiteralContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code ExDivOp}
-	 * labeled alternative in {@link TJBParser#calculation}.
-	 * @param ctx the parse tree
-	 */
-	void enterExDivOp(TJBParser.ExDivOpContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code ExDivOp}
-	 * labeled alternative in {@link TJBParser#calculation}.
-	 * @param ctx the parse tree
-	 */
-	void exitExDivOp(TJBParser.ExDivOpContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code ExParentheses}
 	 * labeled alternative in {@link TJBParser#calculation}.
 	 * @param ctx the parse tree
@@ -146,6 +122,18 @@ public interface TJBListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExParentheses(TJBParser.ExParenthesesContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ExMulDivOp}
+	 * labeled alternative in {@link TJBParser#calculation}.
+	 * @param ctx the parse tree
+	 */
+	void enterExMulDivOp(TJBParser.ExMulDivOpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ExMulDivOp}
+	 * labeled alternative in {@link TJBParser#calculation}.
+	 * @param ctx the parse tree
+	 */
+	void exitExMulDivOp(TJBParser.ExMulDivOpContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TJBParser#ifTJB}.
 	 * @param ctx the parse tree

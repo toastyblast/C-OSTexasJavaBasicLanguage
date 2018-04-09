@@ -1,4 +1,4 @@
-// Generated from D:/School/Projects/Java Projects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
+// Generated from D:/IdeaProjects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -57,13 +57,6 @@ public interface TJBVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExNegLiteral(TJBParser.ExNegLiteralContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ExMulOp}
-	 * labeled alternative in {@link TJBParser#calculation}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExMulOp(TJBParser.ExMulOpContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code ExAddOp}
 	 * labeled alternative in {@link TJBParser#calculation}.
 	 * @param ctx the parse tree
@@ -78,19 +71,19 @@ public interface TJBVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExIntLiteral(TJBParser.ExIntLiteralContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ExDivOp}
-	 * labeled alternative in {@link TJBParser#calculation}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExDivOp(TJBParser.ExDivOpContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code ExParentheses}
 	 * labeled alternative in {@link TJBParser#calculation}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitExParentheses(TJBParser.ExParenthesesContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ExMulDivOp}
+	 * labeled alternative in {@link TJBParser#calculation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExMulDivOp(TJBParser.ExMulDivOpContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TJBParser#ifTJB}.
 	 * @param ctx the parse tree

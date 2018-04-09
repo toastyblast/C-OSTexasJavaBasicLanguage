@@ -15,42 +15,166 @@
 ;
 .method public static main([Ljava/lang/String;)V
 	.limit	stack	40
-	.limit	locals	4
+	.limit	locals	5
 
-	new		java/util/Scanner	
-	dup	
-	getstatic		java/lang/System/in Ljava/io/InputStream;	
-	invokespecial		java/util/Scanner/<init>(Ljava/io/InputStream;)V	
-	astore_1
+	ldc	10
+	istore	1
+
+	ldc	5
+	istore	2
+
+if_0:
+	iload	1
+	ldc	10
+	if_icmpne	ifDone_0
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	ldc	"Please type a number."
+	ldc	"Random"
 	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
 
-	aload_1
-	invokevirtual	java/util/Scanner/nextFloat()F
-	invokestatic	java/lang/Float/valueOf(F)Ljava/lang/Float;
-	invokevirtual java/lang/Float/floatValue()F
-	fstore 2
-	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	fload	2
-	invokevirtual	java/io/PrintStream/println(F)V
+	goto	allDone_0
+ifDone_0:
+allDone_0:
+
+if_1:
+	iload	1
+	ldc	10
+	if_icmpne	ifDone_1
+	ldc	20
+	istore	1
 
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	ldc	"Please type a string."
+	iload	1
+	invokevirtual	java/io/PrintStream/println(I)V
+
+	getstatic	java/lang/System/out	Ljava/io/PrintStream;
+	ldc	"A was ten now 20"
 	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
 
-	aload_1
-	invokevirtual	java/util/Scanner/next()Ljava/lang/String;
-	astore 3
+	ldc	0
+	istore	3
+
+while_0:
+	iload	3
+	ldc	2
+	if_icmpge	whileDone_0
+	ldc	5
+	istore	4
+for_0:
+	iload	4
+	ldc	3
+	if_icmple	forDone_0
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	fload	2
-	invokevirtual	java/io/PrintStream/println(F)V
+	iload	4
+	invokevirtual	java/io/PrintStream/println(I)V
+
+	iload	4
+	ldc	-1
+	iadd
+	istore	4
+
+	goto	for_0
+forDone_0:
+if_2:
+	iload	2
+	ldc	5
+	if_icmpne	ifDone_2
+	getstatic	java/lang/System/out	Ljava/io/PrintStream;
+	iload	2
+	invokevirtual	java/io/PrintStream/println(I)V
 
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	aload	3
+	ldc	"B is five"
 	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
 
-	aload_1
-	invokevirtual	java/util/Scanner/close()V
+	goto	allDone_2
+ifDone_2:
+elseIf_2-0:
+	iload	2
+	ldc	5
+	if_icmple	elseIfDone_2-0
+	getstatic	java/lang/System/out	Ljava/io/PrintStream;
+	iload	2
+	invokevirtual	java/io/PrintStream/println(I)V
+
+	getstatic	java/lang/System/out	Ljava/io/PrintStream;
+	ldc	"B is more than five"
+	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
+
+	goto	allDone_2
+
+elseIfDone_2-0:
+else_2:
+	;	"Do nothing"
+	goto	allDone_2
+
+allDone_2:
+
+	iload	3
+	ldc	1
+	iadd
+
+	istore	3
+
+	goto	while_0
+whileDone_0:
+	goto	allDone_1
+ifDone_1:
+elseIf_1-0:
+	iload	1
+	ldc	15
+	if_icmpgt	elseIfDone_1-0
+	getstatic	java/lang/System/out	Ljava/io/PrintStream;
+	iload	1
+	invokevirtual	java/io/PrintStream/println(I)V
+
+	getstatic	java/lang/System/out	Ljava/io/PrintStream;
+	ldc	"A else is less than or equal to 15"
+	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
+
+	goto	allDone_1
+
+elseIfDone_1-0:
+elseIf_1-1:
+	iload	1
+	ldc	15
+	if_icmple	elseIfDone_1-1
+	getstatic	java/lang/System/out	Ljava/io/PrintStream;
+	iload	1
+	invokevirtual	java/io/PrintStream/println(I)V
+
+	getstatic	java/lang/System/out	Ljava/io/PrintStream;
+	ldc	"A else is more than 15"
+	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
+
+	goto	allDone_1
+
+elseIfDone_1-1:
+else_1:
+	getstatic	java/lang/System/out	Ljava/io/PrintStream;
+	iload	1
+	invokevirtual	java/io/PrintStream/println(I)V
+
+	getstatic	java/lang/System/out	Ljava/io/PrintStream;
+	ldc	"Not 10 or less than and or equal to 15"
+	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
+
+	goto	allDone_1
+
+allDone_1:
+
+	ldc	15
+	ldc	2
+	imul
+
+	istore	4
+
+	getstatic	java/lang/System/out	Ljava/io/PrintStream;
+	iload	4
+	invokevirtual	java/io/PrintStream/println(I)V
+
+	getstatic	java/lang/System/out	Ljava/io/PrintStream;
+	ldc	"Showing D"
+	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
+
 	return
 .end method

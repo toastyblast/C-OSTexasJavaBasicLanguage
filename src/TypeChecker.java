@@ -196,22 +196,7 @@ public class TypeChecker extends TJBBaseVisitor<Type> {
     }
 
     @Override
-    public Type visitExMulOp(TJBParser.ExMulOpContext ctx) {
-        Type left = visit(ctx.left);
-        Type right = visit(ctx.right);
-        if (left == Type.INT && right == Type.INT){
-            singleton.getSymbolTable().addSymbol(String.valueOf(counter), new Symbol(ctx, Type.INT));
-            counter++;
-            return Type.INT;
-        } else {
-            singleton.getSymbolTable().addSymbol(String.valueOf(counter), new Symbol(ctx, Type.DOUBLE));
-            counter++;
-            return Type.DOUBLE;
-        }
-    }
-
-    @Override
-    public Type visitExDivOp(TJBParser.ExDivOpContext ctx) {
+    public Type visitExMulDivOp(TJBParser.ExMulDivOpContext ctx) {
         Type left = visit(ctx.left);
         Type right = visit(ctx.right);
         if (left == Type.INT && right == Type.INT){

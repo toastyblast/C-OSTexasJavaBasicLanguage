@@ -1,4 +1,4 @@
-// Generated from D:/School/Projects/Java Projects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
+// Generated from D:/IdeaProjects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -99,18 +99,6 @@ public class TJBBaseListener implements TJBListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExMulOp(TJBParser.ExMulOpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitExMulOp(TJBParser.ExMulOpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterExAddOp(TJBParser.ExAddOpContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -135,18 +123,6 @@ public class TJBBaseListener implements TJBListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExDivOp(TJBParser.ExDivOpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitExDivOp(TJBParser.ExDivOpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterExParentheses(TJBParser.ExParenthesesContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -154,6 +130,18 @@ public class TJBBaseListener implements TJBListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExParentheses(TJBParser.ExParenthesesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterExMulDivOp(TJBParser.ExMulDivOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExMulDivOp(TJBParser.ExMulDivOpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
