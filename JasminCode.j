@@ -17,7 +17,7 @@
 	.limit	stack	40
 	.limit	locals	5
 
-	ldc	10
+	ldc	11
 	istore	1
 
 	ldc	5
@@ -26,7 +26,7 @@
 if_0:
 	iload	1
 	ldc	10
-	if_icmpne	ifDone_0
+	if_icmpeq	ifDone_0
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;
 	ldc	"Random"
 	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
@@ -34,6 +34,15 @@ if_0:
 	goto	allDone_0
 ifDone_0:
 allDone_0:
+
+	;	"Prints an empty line of text"
+	getstatic	java/lang/System/out	Ljava/io/PrintStream;
+	ldc	""
+	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
+
+	;	"Put integer 10 into the already existing variable A which is also an integer previously 11"
+	ldc	10
+	istore	1
 
 if_1:
 	iload	1

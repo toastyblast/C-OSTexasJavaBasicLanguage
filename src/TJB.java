@@ -50,12 +50,13 @@ public class TJB {
         CodeGenVisitor genVisitor = new CodeGenVisitor();
         ArrayList<String> generatedCode = genVisitor.visit(expression);
 
-        System.out.println("========CODE OUTPUT========");
+        System.out.println("========CODE GENERATED========");
         System.out.println(startProg.replaceAll("\\{\\{name\\}\\}", programName));
         // Output compiled part of the jasmin file
         System.out.println(generatedCode.stream().collect(Collectors.joining("\n")));
         // Output footer of jasmin file
         System.out.println(endProg);
+        System.out.println("==============================");
 
         BufferedWriter writer;
         try {
@@ -70,10 +71,16 @@ public class TJB {
         }
 
         System.out.println("\n========COMMAND OUTPUT========");
+        //FIXME: Show the name of the file according to what the user gave as input for the name.
+        System.out.println("Generated Jasmin/Java ByteCode file: " + "JasminCode.j");
         executedCommand("java -jar jasmin.jar JasminCode.j");
+
+        System.out.println("\nNow running the generated class file, displaying its outputs afterwards...");
+        System.out.println("==============================");
 
         System.out.println("\n========PROGRAM OUTPUT========");
         executedCommand("java PLACEHOLDER");
+        System.out.println("==============================");
     }
 
     private static void evaluateAndPrint(ParseTree parseTree) {
@@ -121,8 +128,7 @@ public class TJB {
             }
 
             int exitVal = pr.waitFor();
-            System.out.println("\nExited with error code " + exitVal);
-
+            System.out.println("\nCommand execution finished with error code " + exitVal);
         } catch (Exception e) {
             System.out.println(e.toString());
             e.printStackTrace();

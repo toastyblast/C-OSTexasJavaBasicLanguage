@@ -567,7 +567,34 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         code.addAll(visit(ctx.bool));
 
-        //TODO: How to do negation of booleans?
+        int lastCodeIndex = code.size() - 1;
+        String comparison = code.get(lastCodeIndex);
+
+        if (comparison.startsWith("\tif_icmp")) {
+            if (comparison.equalsIgnoreCase("\tif_icmpge\t")) {
+                code.set(lastCodeIndex, "\tif_icmplt\t");
+            } else if (comparison.equalsIgnoreCase("\tif_icmpgt\t")) {
+                code.set(lastCodeIndex, "\tif_icmple\t");
+            } else if (comparison.equalsIgnoreCase("\tif_icmpne\t")) {
+                code.set(lastCodeIndex, "\tif_icmpeq\t");
+            } else if (comparison.equalsIgnoreCase("\tif_icmpeq\t")) {
+                code.set(lastCodeIndex, "\tif_icmpne\t");
+            } else if (comparison.equalsIgnoreCase("\tif_icmple\t")) {
+                code.set(lastCodeIndex, "\tif_icmpgt\t");
+            } else if (comparison.equalsIgnoreCase("\tif_icmplt\t")) {
+                code.set(lastCodeIndex, "\tif_icmpge\t");
+            }
+        } else {
+            if (comparison.equalsIgnoreCase("\tifle\t")) {
+                code.set(lastCodeIndex, "\tifgt\t");
+            } else if (comparison.equalsIgnoreCase("\tiflt\t")) {
+                code.set(lastCodeIndex, "\tifge\t");
+            } else if (comparison.equalsIgnoreCase("\tifne\t")) {
+                code.set(lastCodeIndex, "\tifeq\t");
+            } else if (comparison.equalsIgnoreCase("\tifeq\t")) {
+                code.set(lastCodeIndex, "\tifne\t");
+            }
+        }
 
         return code;
     }
@@ -655,7 +682,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
             case ">=":
                 if (leftType == Type.INT) {
                     //We want to jump to the label if left is smaller than right.
-                    code.add("\tif_icmple\t");
+                    code.add("\tif_icmplt\t");
                 } else {
                     //If value 1 (left) is BIGGER THAN or EQUAL TO value 2 (right) we should get int 1 or 0 as a result.
                     code.add("\tfcmpg\n");
