@@ -64,11 +64,14 @@ assignment: value=calculation ASN name=checkVAR       #NumAsn //Declaration of a
           | value=calculation CPYASN name=checkVAR    #NumAsnVAR //Changing the value of an already existing number.
           | value=checkSTRID CPYASN name=checkSTRID   #StrAsnVAR //Changing the value of an already existing string (value from another existing string).
           | value=STR CPYASN name=checkSTRID          #StrAsnNEWVAR //Changing the value of an already existing string (value from user typed string).
-          | 'Scanner ' ASN name=checkSTRID             #StrAsnUsrIn
-          | 'Scanner ' CPYASN name=checkSTRID          #StrAsnUsrInVAR
-          | 'Scanner ' scnr=STR ASN name=checkVAR      #NumAsnUsrIn
-          | 'Scanner ' CPYASN name=checkVAR            #NumAsnUsrInVAR
-          | 'Scanner ' name=STR                        #ScannerAsn
+          | scnr=checkSCNID '.nextStr' ASN name=checkSTRID   #StrAsnUsrIn
+          | scnr=checkSCNID '.nextStr' CPYASN name=checkSTRID #StrAsnUsrInVAR
+          | scnr=checkSCNID '.nextInt'  ASN name=checkVAR    #NumAsnUsrInt
+          | scnr=checkSCNID '.nextInt' CPYASN name=checkVAR  #NumAsnUsrIntVAR
+          | scnr=checkSCNID '.nextDbl'  ASN name=checkVAR    #NumAsnUsrDbl
+          | scnr=checkSCNID '.nextDbl' CPYASN name=checkVAR  #NumAsnUsrDblVAR
+          | 'Scanner ' name=checkSCNID ';'                   #ScannerAsn
+          | scnr=checkSCNID '.close'                         #ScannerCls
           ;
 
 arrayBuild: '{' (NIN | INT | DBL | checkSTRID | calculation | STR) (',' (NIN | INT | DBL | checkSTRID | calculation | STR))* '}';
@@ -77,6 +80,7 @@ ASN: '->';
 CPYASN: '-->';
 VAR: [A-Z]+;
 STRID: 'Str' [0-9]+;
+SCNID: 'Scn' [0-9]+;
 STR: '"' ('a'..'z' | 'A'..'Z' | ' ' | [0-9])+ '"' | '""';
 COMPTKN: '<' | '<=' | '=' | '!=' | '>' | '>=';
 LOGTKN: ('||' | 'And') | ('&&' | 'Or');
@@ -96,6 +100,18 @@ checkSTRID
             throw new RuntimeException(strid + " Cannot be more than 4 characters.");
         }
     }
+    ;
+
+checkSCNID
+    :
+    SCNID
+     {
+         final String strid = $SCNID.text;
+
+         if (strid.length() > 5) {
+             throw new RuntimeException(strid + " Cannot be more than 4 characters.");
+         }
+     }
     ;
 
 checkVAR

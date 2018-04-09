@@ -879,23 +879,114 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     }
 
     @Override
-    public ArrayList<String> visitStrAsnUsrIn(TJBParser.StrAsnUsrInContext ctx) {
+    public ArrayList<String> visitScannerCls(TJBParser.ScannerClsContext ctx) {
         ArrayList<String> code = new ArrayList<>();
+        int indexOffset = variables.indexOf(ctx.scnr.getText())+1;
+        code.add("\taload_" + indexOffset);
+        code.add("\tinvokevirtual\t" + "java/util/Scanner/close()V");
         return code;
     }
 
     @Override
-    public ArrayList<String> visitNumAsnUsrIn(TJBParser.NumAsnUsrInContext ctx) {
+    public ArrayList<String> visitStrAsnUsrIn(TJBParser.StrAsnUsrInContext ctx) {
         ArrayList<String> code = new ArrayList<>();
         variables.add(ctx.name.getText());
         int place = variables.size();
         int indexOffset = variables.indexOf(ctx.scnr.getText())+1;
 
+        code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
+        code.add("\tldc\t" + '"' + "Please type a string." + '"');
+        code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava/lang/String;)V\n");
+
+        code.add("\taload_" + indexOffset);
+        code.add("\tinvokevirtual\t" + "java/util/Scanner/next()Ljava/lang/String;");
+        code.add("\tastore " + place);
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitStrAsnUsrInVAR(TJBParser.StrAsnUsrInVARContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+        int indexOffset = variables.indexOf(ctx.scnr.getText()) + 1;
+        int numberIndexOffset = variables.indexOf(ctx.name.getText()) + 1;
+
+        code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
+        code.add("\tldc\t" + '"' + "Please type a string." + '"');
+        code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava/lang/String;)V\n");
+
+        code.add("\taload_" + indexOffset);
+        code.add("\tinvokevirtual\t" + "java/util/Scanner/next()Ljava/lang/String;");
+        code.add("\tastore " + numberIndexOffset);
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitNumAsnUsrInt(TJBParser.NumAsnUsrIntContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+        variables.add(ctx.name.getText());
+        int place = variables.size();
+        int indexOffset = variables.indexOf(ctx.scnr.getText())+1;
+
+        code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
+        code.add("\tldc\t" + '"' + "Please type a number." + '"');
+        code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava/lang/String;)V\n");
+
         code.add("\taload_" + indexOffset);
         code.add("\tinvokevirtual\t" + "java/util/Scanner/nextInt()I");
         code.add("\tistore " + place);
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitNumAsnUsrIntVAR(TJBParser.NumAsnUsrIntVARContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+        int indexOffset = variables.indexOf(ctx.scnr.getText()) + 1;
+        int numberIndexOffset = variables.indexOf(ctx.name.getText()) + 1;
+
+        code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
+        code.add("\tldc\t" + '"' + "Please type a number." + '"');
+        code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava/lang/String;)V\n");
+
         code.add("\taload_" + indexOffset);
-        code.add("\tinvokevirtual\t" + "java/util/Scanner/close()V");
+        code.add("\tinvokevirtual\t" + "java/util/Scanner/nextInt()I");
+        code.add("\tistore " + numberIndexOffset);
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitNumAsnUsrDbl(TJBParser.NumAsnUsrDblContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+        variables.add(ctx.name.getText());
+        int place = variables.size();
+        int indexOffset = variables.indexOf(ctx.scnr.getText())+1;
+
+        code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
+        code.add("\tldc\t" + '"' + "Please type a number." + '"');
+        code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava/lang/String;)V\n");
+
+        code.add("\taload_" + indexOffset);
+        code.add("\tinvokevirtual\t" + "java/util/Scanner/nextFloat()F");
+        code.add("\tinvokestatic\t" + "java/lang/Float/valueOf(F)Ljava/lang/Float;");
+        code.add("\tinvokevirtual " + "java/lang/Float/floatValue()F");
+        code.add("\tfstore " + place);
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitNumAsnUsrDblVAR(TJBParser.NumAsnUsrDblVARContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+        int indexOffset = variables.indexOf(ctx.scnr.getText()) + 1;
+        int numberIndexOffset = variables.indexOf(ctx.name.getText()) + 1;
+
+        code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
+        code.add("\tldc\t" + '"' + "Please type a number." + '"');
+        code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava/lang/String;)V\n");
+
+        code.add("\taload_" + indexOffset);
+        code.add("\tinvokevirtual\t" + "java/util/Scanner/nextFloat()F");
+        code.add("\tinvokestatic\t" + "java/lang/Float/valueOf(F)Ljava/lang/Float;");
+        code.add("\tinvokevirtual " + "java/lang/Float/floatValue()F");
+        code.add("\tfstore " + numberIndexOffset);
         return code;
     }
 

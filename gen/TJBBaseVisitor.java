@@ -324,14 +324,28 @@ public class TJBBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements TJ
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitNumAsnUsrIn(TJBParser.NumAsnUsrInContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNumAsnUsrInt(TJBParser.NumAsnUsrIntContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitNumAsnUsrInVAR(TJBParser.NumAsnUsrInVARContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNumAsnUsrIntVAR(TJBParser.NumAsnUsrIntVARContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitNumAsnUsrDbl(TJBParser.NumAsnUsrDblContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitNumAsnUsrDblVAR(TJBParser.NumAsnUsrDblVARContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -339,6 +353,13 @@ public class TJBBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements TJ
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitScannerAsn(TJBParser.ScannerAsnContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitScannerCls(TJBParser.ScannerClsContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -353,6 +374,13 @@ public class TJBBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements TJ
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitCheckSTRID(TJBParser.CheckSTRIDContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitCheckSCNID(TJBParser.CheckSCNIDContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

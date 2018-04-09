@@ -7,5 +7,6 @@ public enum  Type {
     DOUBLEARRAY,
     STRINGARRAY,
     DOUBLE,
+    SCANNER,
     VAR
 }

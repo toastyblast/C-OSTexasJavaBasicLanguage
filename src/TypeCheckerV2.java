@@ -34,6 +34,7 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     public Type visitCheckSTRID(TJBParser.CheckSTRIDContext ctx) {
         String value = ctx.getText();
         if(singleton.getSymbolTable().getSymTable().get(value) != null){
+            addCtx(ctx, Type.STRING);
             return Type.STRING;
         }
         return null;
@@ -43,6 +44,7 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     public Type visitCheckArray(TJBParser.CheckArrayContext ctx) {
         String value = ctx.getText();
         if(singleton.getSymbolTable().getSymTable().get(value) != null){
+            addCtx(ctx, Type.ARRAY);
             return Type.ARRAY;
         }
         return null;
@@ -609,9 +611,138 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     }
 
     @Override
-    public Type visitNumAsnUsrIn(TJBParser.NumAsnUsrInContext ctx) {
-        singleton.getSymbolTable().getSymTable().put(ctx.name.getText()
-                , new Symbol(ctx, Type.INT));
-        return super.visitNumAsnUsrIn(ctx);
+    public Type visitNumAsnUsrInt(TJBParser.NumAsnUsrIntContext ctx) {
+        Type type = visit(ctx.name);
+        Type scanner = visit(ctx.scnr);
+
+        if (scanner == null){
+            throw new CompilerException(ctx, ctx.scnr.getText() + " Is not defined");
+        }
+
+        if (type == null){
+            singleton.getSymbolTable().getSymTable().put(ctx.name.getText()
+                    , new Symbol(ctx, Type.INT));
+        } else {
+            throw new CompilerException(ctx, ctx.name.getText() + " Is already defined");
+        }
+        addCtx(ctx, Type.INT);
+        return Type.INT;
+    }
+
+    @Override
+    public Type visitNumAsnUsrIntVAR(TJBParser.NumAsnUsrIntVARContext ctx) {
+        Type type = visit(ctx.name);
+        Type scanner = visit(ctx.scnr);
+
+        if (scanner == null){
+            throw new CompilerException(ctx, ctx.scnr.getText() + " Is not defined");
+        }
+
+        if (type == null){
+            throw new CompilerException(ctx, ctx.name.getText() + " Is not defined");
+        }
+        addCtx(ctx, Type.INT);
+        return Type.INT;
+    }
+
+    @Override
+    public Type visitNumAsnUsrDbl(TJBParser.NumAsnUsrDblContext ctx) {
+        Type type = visit(ctx.name);
+        Type scanner = visit(ctx.scnr);
+
+        if (scanner == null){
+            throw new CompilerException(ctx, ctx.scnr.getText() + " Is not defined");
+        }
+
+        if (type == null){
+            singleton.getSymbolTable().getSymTable().put(ctx.name.getText()
+                    , new Symbol(ctx, Type.DOUBLE));
+        } else {
+            throw new CompilerException(ctx, ctx.name.getText() + " Is already defined");
+        }
+        addCtx(ctx, Type.DOUBLE);
+        return Type.DOUBLE;
+    }
+
+    @Override
+    public Type visitNumAsnUsrDblVAR(TJBParser.NumAsnUsrDblVARContext ctx) {
+        Type type = visit(ctx.name);
+        Type scanner = visit(ctx.scnr);
+
+        if (scanner == null){
+            throw new CompilerException(ctx, ctx.scnr.getText() + " Is not defined");
+        }
+
+        if (type == null){
+            throw new CompilerException(ctx, ctx.name.getText() + " Is not defined");
+        }
+        addCtx(ctx, Type.DOUBLE);
+        return Type.DOUBLE;
+    }
+
+    @Override
+    public Type visitStrAsnUsrIn(TJBParser.StrAsnUsrInContext ctx) {
+        Type type = visit(ctx.name);
+        Type scanner = visit(ctx.scnr);
+
+        if (scanner == null){
+            throw new CompilerException(ctx, ctx.scnr.getText() + " Is not defined");
+        }
+
+        if (type == null){
+            singleton.getSymbolTable().getSymTable().put(ctx.name.getText()
+                    , new Symbol(ctx, Type.STRING));
+        } else {
+            throw new CompilerException(ctx, ctx.name.getText() + " Is already defined");
+        }
+        addCtx(ctx, Type.STRING);
+        return Type.STRING;
+    }
+
+    @Override
+    public Type visitStrAsnUsrInVAR(TJBParser.StrAsnUsrInVARContext ctx) {
+        Type type = visit(ctx.name);
+        Type scanner = visit(ctx.scnr);
+
+        if (scanner == null){
+            throw new CompilerException(ctx, ctx.scnr.getText() + " Is not defined");
+        }
+
+        if (type != null){
+            throw new CompilerException(ctx, ctx.name.getText() + " Is not defined");
+        }
+        addCtx(ctx, Type.STRING);
+        return Type.STRING;
+    }
+
+    @Override
+    public Type visitScannerCls(TJBParser.ScannerClsContext ctx) {
+        Type type = visit(ctx.scnr);
+        if (type == null){
+            throw new CompilerException(ctx, ctx.scnr.getText() + " Is not defined");
+        }
+        return super.visitScannerCls(ctx);
+    }
+
+    @Override
+    public Type visitScannerAsn(TJBParser.ScannerAsnContext ctx) {
+        Type type = visit(ctx.name);
+        if (type == null){
+            singleton.getSymbolTable().getSymTable().put(ctx.name.getText()
+                    , new Symbol(ctx, Type.SCANNER));
+        } else {
+            throw new CompilerException(ctx, ctx.name.getText() + " Is already defined");
+        }
+        return super.visitScannerAsn(ctx);
+    }
+
+    @Override
+    public Type visitCheckSCNID(TJBParser.CheckSCNIDContext ctx) {
+        String value = ctx.getText();
+        if(singleton.getSymbolTable().getSymTable().get(value) != null){
+            addCtx(ctx, Type.SCANNER);
+            return Type.SCANNER;
+        }
+        return null;
     }
 }

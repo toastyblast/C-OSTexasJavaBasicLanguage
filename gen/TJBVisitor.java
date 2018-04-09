@@ -307,19 +307,33 @@ public interface TJBVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStrAsnUsrInVAR(TJBParser.StrAsnUsrInVARContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code NumAsnUsrIn}
+	 * Visit a parse tree produced by the {@code NumAsnUsrInt}
 	 * labeled alternative in {@link TJBParser#assignment}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNumAsnUsrIn(TJBParser.NumAsnUsrInContext ctx);
+	T visitNumAsnUsrInt(TJBParser.NumAsnUsrIntContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code NumAsnUsrInVAR}
+	 * Visit a parse tree produced by the {@code NumAsnUsrIntVAR}
 	 * labeled alternative in {@link TJBParser#assignment}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNumAsnUsrInVAR(TJBParser.NumAsnUsrInVARContext ctx);
+	T visitNumAsnUsrIntVAR(TJBParser.NumAsnUsrIntVARContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code NumAsnUsrDbl}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNumAsnUsrDbl(TJBParser.NumAsnUsrDblContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code NumAsnUsrDblVAR}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNumAsnUsrDblVAR(TJBParser.NumAsnUsrDblVARContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code ScannerAsn}
 	 * labeled alternative in {@link TJBParser#assignment}.
@@ -327,6 +341,13 @@ public interface TJBVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitScannerAsn(TJBParser.ScannerAsnContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ScannerCls}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitScannerCls(TJBParser.ScannerClsContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TJBParser#arrayBuild}.
 	 * @param ctx the parse tree
@@ -339,6 +360,12 @@ public interface TJBVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitCheckSTRID(TJBParser.CheckSTRIDContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TJBParser#checkSCNID}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCheckSCNID(TJBParser.CheckSCNIDContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TJBParser#checkVAR}.
 	 * @param ctx the parse tree

@@ -543,25 +543,49 @@ public class TJBBaseListener implements TJBListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNumAsnUsrIn(TJBParser.NumAsnUsrInContext ctx) { }
+	@Override public void enterNumAsnUsrInt(TJBParser.NumAsnUsrIntContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNumAsnUsrIn(TJBParser.NumAsnUsrInContext ctx) { }
+	@Override public void exitNumAsnUsrInt(TJBParser.NumAsnUsrIntContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNumAsnUsrInVAR(TJBParser.NumAsnUsrInVARContext ctx) { }
+	@Override public void enterNumAsnUsrIntVAR(TJBParser.NumAsnUsrIntVARContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNumAsnUsrInVAR(TJBParser.NumAsnUsrInVARContext ctx) { }
+	@Override public void exitNumAsnUsrIntVAR(TJBParser.NumAsnUsrIntVARContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNumAsnUsrDbl(TJBParser.NumAsnUsrDblContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNumAsnUsrDbl(TJBParser.NumAsnUsrDblContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNumAsnUsrDblVAR(TJBParser.NumAsnUsrDblVARContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNumAsnUsrDblVAR(TJBParser.NumAsnUsrDblVARContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -574,6 +598,18 @@ public class TJBBaseListener implements TJBListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitScannerAsn(TJBParser.ScannerAsnContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterScannerCls(TJBParser.ScannerClsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitScannerCls(TJBParser.ScannerClsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -598,6 +634,18 @@ public class TJBBaseListener implements TJBListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCheckSTRID(TJBParser.CheckSTRIDContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCheckSCNID(TJBParser.CheckSCNIDContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCheckSCNID(TJBParser.CheckSCNIDContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

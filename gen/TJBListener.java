@@ -513,29 +513,53 @@ public interface TJBListener extends ParseTreeListener {
 	 */
 	void exitStrAsnUsrInVAR(TJBParser.StrAsnUsrInVARContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code NumAsnUsrIn}
+	 * Enter a parse tree produced by the {@code NumAsnUsrInt}
 	 * labeled alternative in {@link TJBParser#assignment}.
 	 * @param ctx the parse tree
 	 */
-	void enterNumAsnUsrIn(TJBParser.NumAsnUsrInContext ctx);
+	void enterNumAsnUsrInt(TJBParser.NumAsnUsrIntContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code NumAsnUsrIn}
+	 * Exit a parse tree produced by the {@code NumAsnUsrInt}
 	 * labeled alternative in {@link TJBParser#assignment}.
 	 * @param ctx the parse tree
 	 */
-	void exitNumAsnUsrIn(TJBParser.NumAsnUsrInContext ctx);
+	void exitNumAsnUsrInt(TJBParser.NumAsnUsrIntContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code NumAsnUsrInVAR}
+	 * Enter a parse tree produced by the {@code NumAsnUsrIntVAR}
 	 * labeled alternative in {@link TJBParser#assignment}.
 	 * @param ctx the parse tree
 	 */
-	void enterNumAsnUsrInVAR(TJBParser.NumAsnUsrInVARContext ctx);
+	void enterNumAsnUsrIntVAR(TJBParser.NumAsnUsrIntVARContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code NumAsnUsrInVAR}
+	 * Exit a parse tree produced by the {@code NumAsnUsrIntVAR}
 	 * labeled alternative in {@link TJBParser#assignment}.
 	 * @param ctx the parse tree
 	 */
-	void exitNumAsnUsrInVAR(TJBParser.NumAsnUsrInVARContext ctx);
+	void exitNumAsnUsrIntVAR(TJBParser.NumAsnUsrIntVARContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code NumAsnUsrDbl}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterNumAsnUsrDbl(TJBParser.NumAsnUsrDblContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code NumAsnUsrDbl}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitNumAsnUsrDbl(TJBParser.NumAsnUsrDblContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code NumAsnUsrDblVAR}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterNumAsnUsrDblVAR(TJBParser.NumAsnUsrDblVARContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code NumAsnUsrDblVAR}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitNumAsnUsrDblVAR(TJBParser.NumAsnUsrDblVARContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code ScannerAsn}
 	 * labeled alternative in {@link TJBParser#assignment}.
@@ -548,6 +572,18 @@ public interface TJBListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitScannerAsn(TJBParser.ScannerAsnContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ScannerCls}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterScannerCls(TJBParser.ScannerClsContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ScannerCls}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitScannerCls(TJBParser.ScannerClsContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TJBParser#arrayBuild}.
 	 * @param ctx the parse tree
@@ -568,6 +604,16 @@ public interface TJBListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCheckSTRID(TJBParser.CheckSTRIDContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TJBParser#checkSCNID}.
+	 * @param ctx the parse tree
+	 */
+	void enterCheckSCNID(TJBParser.CheckSCNIDContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TJBParser#checkSCNID}.
+	 * @param ctx the parse tree
+	 */
+	void exitCheckSCNID(TJBParser.CheckSCNIDContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TJBParser#checkVAR}.
 	 * @param ctx the parse tree
