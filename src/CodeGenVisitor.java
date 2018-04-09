@@ -1,7 +1,6 @@
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-import java.security.Signature;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +14,6 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
     private int localCurrentIf = 0;
     private int currentElseIf = 0;
-    //Variables here...
 
     public CodeGenVisitor() {
         //Empty constructor, nothing needed.
@@ -915,7 +913,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     @Override
     public ArrayList<String> visitScannerCls(TJBParser.ScannerClsContext ctx) {
         ArrayList<String> code = new ArrayList<>();
-        int indexOffset = variables.indexOf(ctx.scnr.getText())+1;
+        int indexOffset = variables.indexOf(ctx.scnr.getText()) + 1;
         code.add("\taload_" + indexOffset);
         code.add("\tinvokevirtual\t" + "java/util/Scanner/close()V");
         return code;
@@ -926,7 +924,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         ArrayList<String> code = new ArrayList<>();
         variables.add(ctx.name.getText());
         int place = variables.size();
-        int indexOffset = variables.indexOf(ctx.scnr.getText())+1;
+        int indexOffset = variables.indexOf(ctx.scnr.getText()) + 1;
 
         code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
         code.add("\tldc\t" + '"' + "Please type a string." + '"');
@@ -959,7 +957,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         ArrayList<String> code = new ArrayList<>();
         variables.add(ctx.name.getText());
         int place = variables.size();
-        int indexOffset = variables.indexOf(ctx.scnr.getText())+1;
+        int indexOffset = variables.indexOf(ctx.scnr.getText()) + 1;
 
         code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
         code.add("\tldc\t" + '"' + "Please type a number." + '"');
@@ -992,7 +990,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         ArrayList<String> code = new ArrayList<>();
         variables.add(ctx.name.getText());
         int place = variables.size();
-        int indexOffset = variables.indexOf(ctx.scnr.getText())+1;
+        int indexOffset = variables.indexOf(ctx.scnr.getText()) + 1;
 
         code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
         code.add("\tldc\t" + '"' + "Please type a number." + '"');

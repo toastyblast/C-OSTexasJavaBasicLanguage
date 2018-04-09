@@ -1,8 +1,6 @@
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.stringtemplate.v4.ST;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +10,7 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     private Singleton singleton = Singleton.getInstance();
     private int counter = 0;
 
-    private void addCtx(ParserRuleContext ctx, Type type){
+    private void addCtx(ParserRuleContext ctx, Type type) {
         singleton.getSymbolTable().getSymTable().put(String.valueOf(counter), new Symbol(ctx, type));
         counter++;
     }
@@ -22,7 +20,7 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     @Override
     public Type visitCheckVAR(TJBParser.CheckVARContext ctx) {
         String value = ctx.getText();
-        if(singleton.getSymbolTable().getSymTable().get(value) != null){
+        if (singleton.getSymbolTable().getSymTable().get(value) != null) {
             Type type = singleton.getSymbolTable().getSymTable().get(value).getType();
             addCtx(ctx, type);
             return type;
@@ -33,7 +31,7 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     @Override
     public Type visitCheckSTRID(TJBParser.CheckSTRIDContext ctx) {
         String value = ctx.getText();
-        if(singleton.getSymbolTable().getSymTable().get(value) != null){
+        if (singleton.getSymbolTable().getSymTable().get(value) != null) {
             addCtx(ctx, Type.STRING);
             return Type.STRING;
         }
@@ -43,7 +41,7 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     @Override
     public Type visitCheckArray(TJBParser.CheckArrayContext ctx) {
         String value = ctx.getText();
-        if(singleton.getSymbolTable().getSymTable().get(value) != null){
+        if (singleton.getSymbolTable().getSymTable().get(value) != null) {
             addCtx(ctx, Type.ARRAY);
             return Type.ARRAY;
         }
@@ -72,13 +70,13 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         Type left = visit(ctx.left);
         Type right = visit(ctx.right);
 
-        if (left == null){
+        if (left == null) {
             throw new CompilerException(ctx, ctx.left.getText() + " Is not defined.");
-        } else if (right == null){
+        } else if (right == null) {
             throw new CompilerException(ctx, ctx.right.getText() + " Is not defined.");
         }
 
-        if (left == Type.INT && right == Type.INT){
+        if (left == Type.INT && right == Type.INT) {
             addCtx(ctx, Type.INT);
             return Type.INT;
         } else {
@@ -93,13 +91,13 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         Type left = visit(ctx.left);
         Type right = visit(ctx.right);
 
-        if (left == null){
+        if (left == null) {
             throw new CompilerException(ctx, ctx.left.getText() + " Is not defined.");
-        } else if (right == null){
+        } else if (right == null) {
             throw new CompilerException(ctx, ctx.right.getText() + " Is not defined.");
         }
 
-        if (left == Type.INT && right == Type.INT){
+        if (left == Type.INT && right == Type.INT) {
             addCtx(ctx, Type.INT);
             return Type.INT;
         } else {
@@ -114,13 +112,13 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         Type left = visit(ctx.left);
         Type right = visit(ctx.right);
 
-        if (left == null){
+        if (left == null) {
             throw new CompilerException(ctx, ctx.left.getText() + " Is not defined.");
-        } else if (right == null){
+        } else if (right == null) {
             throw new CompilerException(ctx, ctx.right.getText() + " Is not defined.");
         }
 
-        if (left == Type.INT && right == Type.INT){
+        if (left == Type.INT && right == Type.INT) {
             addCtx(ctx, Type.INT);
             return Type.INT;
         } else {
@@ -162,11 +160,11 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         Type value = visit(ctx.value);
         Type name = visit(ctx.name);
 
-        if (name != null){
+        if (name != null) {
             throw new CompilerException(ctx, ctx.name.getText() + " Is already defined.");
         }
 
-        if (value == null){
+        if (value == null) {
             throw new CompilerException(ctx, ctx.name.getText() + " Is not defined.");
         }
 
@@ -180,7 +178,7 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     public Type visitStrAsn(TJBParser.StrAsnContext ctx) {
         Type name = visit(ctx.name);
 
-        if (name != null){
+        if (name != null) {
             throw new CompilerException(ctx, ctx.name.getText() + " Is already defined.");
         }
         singleton.getSymbolTable().getSymTable().put(ctx.name.getText()
@@ -194,11 +192,11 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         Type value = visit(ctx.value);
         Type name = visit(ctx.name);
 
-        if (name != null){
+        if (name != null) {
             throw new CompilerException(ctx, ctx.name.getText() + " Is already defined.");
         }
 
-        if (value == null){
+        if (value == null) {
             throw new CompilerException(ctx, ctx.name.getText() + " Is not defined.");
         }
         singleton.getSymbolTable().getSymTable().put(ctx.name.getText()
@@ -211,7 +209,7 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     public Type visitArrAsn(TJBParser.ArrAsnContext ctx) {
         Type name = visit(ctx.name);
 
-        if (name != null){
+        if (name != null) {
             throw new CompilerException(ctx, ctx.name.getText() + " Is already defined.");
         }
         singleton.getSymbolTable().getSymTable().put(ctx.name.getText()
@@ -225,11 +223,11 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         Type value = visit(ctx.value);
         Type name = visit(ctx.name);
 
-        if (name != null){
+        if (name != null) {
             throw new CompilerException(ctx, ctx.name.getText() + " Is already defined.");
         }
 
-        if (value == null){
+        if (value == null) {
             throw new CompilerException(ctx, ctx.name.getText() + " Is not defined.");
         }
 
@@ -244,11 +242,11 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         Type value = visit(ctx.value);
         Type name = visit(ctx.name);
 
-        if (name == null){
+        if (name == null) {
             throw new CompilerException(ctx, ctx.name.getText() + " Is not defined.");
         }
 
-        if (value == null){
+        if (value == null) {
             throw new CompilerException(ctx, ctx.name.getText() + " Is not defined.");
         }
         addCtx(ctx, Type.ARRAY);
@@ -260,12 +258,12 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         Type value = visit(ctx.value);
         Type name = visit(ctx.name);
 
-        if (name == null){
+        if (name == null) {
             throw new CompilerException(ctx, ctx.name.getText() + " Is not defined.");
-        } else if (value == null){
+        } else if (value == null) {
             throw new CompilerException(ctx, ctx.name.getText() + " Is not defined.");
         } else {
-            if (value == Type.DOUBLE && name == Type.INT){
+            if (value == Type.DOUBLE && name == Type.INT) {
                 throw new CompilerException(ctx, "Double cannot be assigned to an integer."
                         + ctx.value.getText() + " Is a double." + ctx.name.getText() + " Is an integer.");
             }
@@ -279,11 +277,11 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         Type value = visit(ctx.value);
         Type name = visit(ctx.name);
 
-        if (name == null){
+        if (name == null) {
             throw new CompilerException(ctx, ctx.name.getText() + " Is not defined.");
         }
 
-        if (value == null){
+        if (value == null) {
             throw new CompilerException(ctx, ctx.name.getText() + " Is not defined.");
         }
         addCtx(ctx, Type.STRING);
@@ -294,7 +292,7 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     public Type visitStrAsnNEWVAR(TJBParser.StrAsnNEWVARContext ctx) {
         Type name = visit(ctx.name);
 
-        if (name == null){
+        if (name == null) {
             throw new CompilerException(ctx, ctx.name.getText() + " Is not defined.");
         }
         addCtx(ctx, Type.STRING);
@@ -323,48 +321,40 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         Type left = visit(ctx.left);
         Type right = visit(ctx.right);
 
-        if (left == null){
+        if (left == null) {
             throw new CompilerException(ctx, ctx.left.getText() + "Is not defined.");
         }
 
-        if (right == null){
+        if (right == null) {
             throw new CompilerException(ctx, ctx.right.getText() + "Is not defined.");
         }
 
         String compToken = ctx.comp.getText();
 
-        if (left == Type.BOOLEAN && left == right){
+        if (left == Type.BOOLEAN && left == right) {
             if ((!compToken.equals("||") && !compToken.equals("And")) &&
-                    (!compToken.equals("||") && !compToken.equals("And"))){
+                    (!compToken.equals("||") && !compToken.equals("And"))) {
                 throw new CompilerException(ctx, "Cannot compare boolean expressions");
             }
             addCtx(ctx, Type.BOOLEAN);
-        }
-
-        else if (left != right){
+        } else if (left != right) {
             if (!(left == Type.INT && right == Type.DOUBLE)
-                    &&!(left == Type.DOUBLE && right == Type.INT)){
+                    && !(left == Type.DOUBLE && right == Type.INT)) {
                 throw new CompilerException(ctx, "You cannot compare different types."
-                + ctx.left.getText() + " Is " + left + " "
-                + ctx.right.getText() + " Is " + right);
+                        + ctx.left.getText() + " Is " + left + " "
+                        + ctx.right.getText() + " Is " + right);
             }
             addCtx(ctx, Type.DOUBLE);
-        }
+        } else if (left == Type.STRING) {
 
-        else if (left == Type.STRING){
-
-            if (!compToken.equals("!=") && !compToken.equals("=")){
+            if (!compToken.equals("!=") && !compToken.equals("=")) {
                 throw new CompilerException(ctx, "You cannot compare strings with this comparison sign "
-                + compToken);
+                        + compToken);
             }
             addCtx(ctx, Type.STRING);
-        }
-
-        else if (left == Type.INT){
+        } else if (left == Type.INT) {
             addCtx(ctx, Type.INT);
-        }
-
-        else if (left == Type.DOUBLE){
+        } else if (left == Type.DOUBLE) {
             addCtx(ctx, Type.DOUBLE);
         }
 
@@ -376,9 +366,9 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         Type left = visit(ctx.left);
         Type right = visit(ctx.right);
 
-        if (left != Type.BOOLEAN){
+        if (left != Type.BOOLEAN) {
             throw new CompilerException(ctx, ctx.left.getText() + " Is not boolean");
-        } else if (right != Type.BOOLEAN){
+        } else if (right != Type.BOOLEAN) {
             throw new CompilerException(ctx, ctx.left.getText() + " Is not boolean");
         }
 
@@ -410,7 +400,7 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
 
     @Override
     public Type visitWhileTJB(TJBParser.WhileTJBContext ctx) {
-        if (visit(ctx.bool) != Type.BOOLEAN){
+        if (visit(ctx.bool) != Type.BOOLEAN) {
             throw new CompilerException(ctx, ctx.bool.getText() + "Is not a boolean statement");
         }
         return super.visitWhileTJB(ctx);
@@ -420,7 +410,7 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
 
     @Override
     public Type visitIfStatement(TJBParser.IfStatementContext ctx) {
-        if (visit(ctx.bool) != Type.BOOLEAN){
+        if (visit(ctx.bool) != Type.BOOLEAN) {
             throw new CompilerException(ctx, ctx.bool.getText() + "Is not a boolean statement");
         }
         return super.visitIfStatement(ctx);
@@ -438,11 +428,11 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
 //        }
 
         Type iteratorValueType;
-        if (iteratorType == null){
-            if (ctx.iterVal.getText().isEmpty()){
+        if (iteratorType == null) {
+            if (ctx.iterVal.getText().isEmpty()) {
                 throw new CompilerException(ctx, " Iterator value cannot be empty");
             }
-            if (ctx.iterVal.getText().contains(",")){
+            if (ctx.iterVal.getText().contains(",")) {
                 iteratorType = Type.DOUBLE;
             } else {
                 iteratorType = Type.INT;
@@ -450,15 +440,15 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
             singleton.getSymbolTable().addSymbol(ctx.iterator.getText(), new Symbol(ctx, iteratorType));
         }
 
-        if (iteratorType == Type.INT){
-            if (ctx.iterVal.getText().contains(".")){
+        if (iteratorType == Type.INT) {
+            if (ctx.iterVal.getText().contains(".")) {
                 throw new CompilerException(ctx, ctx.iterVal.getText() + " Is a double and cannot be assigned to" +
                         " an integer");
             }
         }
 
         if (ctx.comp.getText().equals("||") || ctx.comp.getText().equals("AND")
-                || ctx.comp.getText().equals("&&") || ctx.comp.getText().equals("Or")){
+                || ctx.comp.getText().equals("&&") || ctx.comp.getText().equals("Or")) {
             throw new CompilerException(ctx, "Invalid comparison.");
         }
 
@@ -468,9 +458,9 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
 //        }
 
         Type incrementType = visit(ctx.increments);
-        if (incrementType == null){
+        if (incrementType == null) {
             throw new CompilerException(ctx, " Is not defined.");
-        } else if (incrementType == Type.DOUBLE && iteratorType == Type.INT){
+        } else if (incrementType == Type.DOUBLE && iteratorType == Type.INT) {
             throw new CompilerException(ctx, ctx.increments.getText() + " Is a double and cannot be assigned to an " +
                     "integer");
         }
@@ -482,7 +472,7 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     public Type visitDisplay(TJBParser.DisplayContext ctx) {
         for (int i = 0; i < ctx.displayOptions().size(); i++) {
             Type type = visit(ctx.displayOptions(i));
-            if (type == null){
+            if (type == null) {
                 throw new CompilerException(ctx, ctx.displayOptions(i).getText() + " Is not defined");
             }
         }
@@ -505,7 +495,7 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     @Override
     public Type visitDispCalc(TJBParser.DispCalcContext ctx) {
         Type type = visit(ctx.calc);
-        addCtx(ctx,type);
+        addCtx(ctx, type);
         return type;
     }
 
@@ -521,24 +511,20 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         Type type = null;
 
 
-        if (ctx.getChild(1) instanceof TerminalNode){
-            TerminalNode terminalNode = (TerminalNode)ctx.getChild(1);
-            if (terminalNode.getSymbol().getType() == TJBLexer.INT){
+        if (ctx.getChild(1) instanceof TerminalNode) {
+            TerminalNode terminalNode = (TerminalNode) ctx.getChild(1);
+            if (terminalNode.getSymbol().getType() == TJBLexer.INT) {
                 type = Type.INTARRAY;
-            }
-
-            else if (terminalNode.getSymbol().getType() == TJBLexer.DBL) {
+            } else if (terminalNode.getSymbol().getType() == TJBLexer.DBL) {
                 type = Type.DOUBLEARRAY;
-            }
-
-            else if (terminalNode.getSymbol().getType() == TJBLexer.STR) {
+            } else if (terminalNode.getSymbol().getType() == TJBLexer.STR) {
                 type = Type.STRINGARRAY;
             }
-        } else if (ctx.getChild(1) instanceof TJBParser.CheckSTRIDContext){
+        } else if (ctx.getChild(1) instanceof TJBParser.CheckSTRIDContext) {
             type = Type.STRINGARRAY;
-        } else if (ctx.getChild(1) instanceof TJBParser.CalculationContext){
+        } else if (ctx.getChild(1) instanceof TJBParser.CalculationContext) {
             Type type1 = visit(ctx.getChild(1));
-            switch (type1){
+            switch (type1) {
                 case INT:
                     type = Type.INTARRAY;
                 case DOUBLE:
@@ -551,38 +537,35 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         for (int i = 0; i < ctx.getChildCount(); i++) {
             if (!ctx.getChild(i).getText().equals("{") &&
                     !ctx.getChild(i).getText().equals("}") &&
-                    !ctx.getChild(i).getText().equals(",")){
+                    !ctx.getChild(i).getText().equals(",")) {
                 ParseTree parseTree = ctx.getChild(i);
-                if (type == Type.INTARRAY){
-                    if (parseTree instanceof TerminalNode){
-                        if (((TerminalNode) parseTree).getSymbol().getType() != TJBParser.INT){
+                if (type == Type.INTARRAY) {
+                    if (parseTree instanceof TerminalNode) {
+                        if (((TerminalNode) parseTree).getSymbol().getType() != TJBParser.INT) {
                             throw new CompilerException(ctx, parseTree.getText() + " Is not an integer." +
                                     " This array should include only integers.");
                         }
-                    }
-                    else if (visit(parseTree) != Type.INT){
+                    } else if (visit(parseTree) != Type.INT) {
                         throw new CompilerException(ctx, parseTree.getText() + " Is not an integer." +
                                 " This array should include only integers.");
                     }
                 } else if (type == Type.DOUBLEARRAY) {
-                    if (parseTree instanceof TerminalNode){
-                        if (((TerminalNode) parseTree).getSymbol().getType() == TJBParser.STR){
+                    if (parseTree instanceof TerminalNode) {
+                        if (((TerminalNode) parseTree).getSymbol().getType() == TJBParser.STR) {
                             throw new CompilerException(ctx, parseTree.getText() + " Is not a float/integers." +
                                     " This array should include only floats/integers.");
                         }
-                    }
-                    else if (visit(parseTree) == Type.STRING) {
+                    } else if (visit(parseTree) == Type.STRING) {
                         throw new CompilerException(ctx, parseTree.getText() + " Is not a float/integers." +
                                 " This array should include only floats/integers.");
                     }
                 } else if (type == Type.STRINGARRAY) {
-                    if (parseTree instanceof TerminalNode){
-                        if (((TerminalNode) parseTree).getSymbol().getType() != TJBParser.STR){
+                    if (parseTree instanceof TerminalNode) {
+                        if (((TerminalNode) parseTree).getSymbol().getType() != TJBParser.STR) {
                             throw new CompilerException(ctx, parseTree.getText() + " Is not a string." +
                                     " This array should include only strings.");
                         }
-                    }
-                    else if (visit(parseTree) != Type.STRING){
+                    } else if (visit(parseTree) != Type.STRING) {
                         throw new CompilerException(ctx, parseTree.getText() + " Is not a string." +
                                 " This array should include only strings.");
                     }
@@ -601,11 +584,11 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         Type type = visit(ctx.name);
         Type scanner = visit(ctx.scnr);
 
-        if (scanner == null){
+        if (scanner == null) {
             throw new CompilerException(ctx, ctx.scnr.getText() + " Is not defined");
         }
 
-        if (type == null){
+        if (type == null) {
             singleton.getSymbolTable().getSymTable().put(ctx.name.getText()
                     , new Symbol(ctx, Type.INT));
         } else {
@@ -620,11 +603,11 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         Type type = visit(ctx.name);
         Type scanner = visit(ctx.scnr);
 
-        if (scanner == null){
+        if (scanner == null) {
             throw new CompilerException(ctx, ctx.scnr.getText() + " Is not defined");
         }
 
-        if (type == null){
+        if (type == null) {
             throw new CompilerException(ctx, ctx.name.getText() + " Is not defined");
         }
         addCtx(ctx, Type.INT);
@@ -636,11 +619,11 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         Type type = visit(ctx.name);
         Type scanner = visit(ctx.scnr);
 
-        if (scanner == null){
+        if (scanner == null) {
             throw new CompilerException(ctx, ctx.scnr.getText() + " Is not defined");
         }
 
-        if (type == null){
+        if (type == null) {
             singleton.getSymbolTable().getSymTable().put(ctx.name.getText()
                     , new Symbol(ctx, Type.DOUBLE));
         } else {
@@ -655,11 +638,11 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         Type type = visit(ctx.name);
         Type scanner = visit(ctx.scnr);
 
-        if (scanner == null){
+        if (scanner == null) {
             throw new CompilerException(ctx, ctx.scnr.getText() + " Is not defined");
         }
 
-        if (type == null){
+        if (type == null) {
             throw new CompilerException(ctx, ctx.name.getText() + " Is not defined");
         }
         addCtx(ctx, Type.DOUBLE);
@@ -671,11 +654,11 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         Type type = visit(ctx.name);
         Type scanner = visit(ctx.scnr);
 
-        if (scanner == null){
+        if (scanner == null) {
             throw new CompilerException(ctx, ctx.scnr.getText() + " Is not defined");
         }
 
-        if (type == null){
+        if (type == null) {
             singleton.getSymbolTable().getSymTable().put(ctx.name.getText()
                     , new Symbol(ctx, Type.STRING));
         } else {
@@ -690,11 +673,11 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         Type type = visit(ctx.name);
         Type scanner = visit(ctx.scnr);
 
-        if (scanner == null){
+        if (scanner == null) {
             throw new CompilerException(ctx, ctx.scnr.getText() + " Is not defined");
         }
 
-        if (type != null){
+        if (type != null) {
             throw new CompilerException(ctx, ctx.name.getText() + " Is not defined");
         }
         addCtx(ctx, Type.STRING);
@@ -704,7 +687,7 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     @Override
     public Type visitScannerCls(TJBParser.ScannerClsContext ctx) {
         Type type = visit(ctx.scnr);
-        if (type == null){
+        if (type == null) {
             throw new CompilerException(ctx, ctx.scnr.getText() + " Is not defined");
         }
         return super.visitScannerCls(ctx);
@@ -713,7 +696,7 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     @Override
     public Type visitScannerAsn(TJBParser.ScannerAsnContext ctx) {
         Type type = visit(ctx.name);
-        if (type == null){
+        if (type == null) {
             singleton.getSymbolTable().getSymTable().put(ctx.name.getText()
                     , new Symbol(ctx, Type.SCANNER));
         } else {
@@ -725,7 +708,7 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     @Override
     public Type visitCheckSCNID(TJBParser.CheckSCNIDContext ctx) {
         String value = ctx.getText();
-        if(singleton.getSymbolTable().getSymTable().get(value) != null){
+        if (singleton.getSymbolTable().getSymTable().get(value) != null) {
             addCtx(ctx, Type.SCANNER);
             return Type.SCANNER;
         }

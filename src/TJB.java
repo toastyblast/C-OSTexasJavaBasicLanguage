@@ -1,18 +1,13 @@
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class TJB {
     private static String startProg = ".class public {{name}}\n" +
@@ -34,8 +29,10 @@ public class TJB {
 
     private static String endProg = "\n\treturn\n.end method";
 
-    private static void evaluate(String line){
-        //FIXME: Get a name for the program from the user in some way (will replace the "{{name}}" at the start of the startProg variable)
+    private static void evaluate(String line) {
+        //TODO 1: Ask user for what file to read the code from.
+        //TODO 2: Then, ask the user for a name to output the generated Jasmin code into.
+        //TODO 3: Finally, ask them for a name for the .class file OR give that the same name as the jasmin code file they gave, with "CLASS" added at the end of it (to have one less name to ask for).
         String programName = "PLACEHOLDER";
 
         // Create lexer and run scanner to create stream of tokens
@@ -50,17 +47,17 @@ public class TJB {
         // Type check then evaulate by running the visitor
         evaluateAndPrint(expression); // <-- Change this to checkEvaluateAndPrint when you implemented a checker
 
-        System.out.println("========CODE OUTPUT========");
         CodeGenVisitor genVisitor = new CodeGenVisitor();
         ArrayList<String> generatedCode = genVisitor.visit(expression);
 
+        System.out.println("========CODE OUTPUT========");
         System.out.println(startProg.replaceAll("\\{\\{name\\}\\}", programName));
         // Output compiled part of the jasmin file
         System.out.println(generatedCode.stream().collect(Collectors.joining("\n")));
         // Output footer of jasmin file
         System.out.println(endProg);
 
-        BufferedWriter writer = null;
+        BufferedWriter writer;
         try {
             writer = new BufferedWriter(new FileWriter("JasminCode.j"));
             writer.write(startProg.replaceAll("\\{\\{name\\}\\}", programName));
@@ -79,7 +76,7 @@ public class TJB {
         executedCommand("java PLACEHOLDER");
     }
 
-    private static void evaluateAndPrint( ParseTree parseTree ) {
+    private static void evaluateAndPrint(ParseTree parseTree) {
         // Type check then evaulate by running the visitor
         try {
             TypeCheckerV2 typeChecker = new TypeCheckerV2();
@@ -89,47 +86,44 @@ public class TJB {
 //                    Singleton.getInstance().getCheckUpTable().keySet()) {
 //                System.out.println(Singleton.getInstance().getCheckUpTable().get(context));
 //            }
-        } catch( CompilerException ce ) {
-            System.err.println("ERROR: " + ce.getMessage() );
+        } catch (CompilerException ce) {
+            System.err.println("ERROR: " + ce.getMessage());
         }
     }
 
     public static void main(String[] args) {
         String content = "";
-        try
-        {
-            content = new String ( Files.readAllBytes( Paths.get("./generatorTest") ) );
-        }
-        catch (IOException e)
-        {
+        try {
+            content = new String(Files.readAllBytes(Paths.get("./generatorTest")));
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
         // Eval
         try {
             evaluate(content);
-        } catch (RuntimeException RE){
+        } catch (RuntimeException RE) {
             System.err.println(RE.getMessage());
         }
     }
 
-    private static void executedCommand(String command){
+    private static void executedCommand(String command) {
         try {
             Runtime rt = Runtime.getRuntime();
             Process pr = rt.exec(command);
 
             BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
 
-            String line1=null;
+            String line1;
 
-            while((line1=input.readLine()) != null) {
+            while ((line1 = input.readLine()) != null) {
                 System.out.println(line1);
             }
 
             int exitVal = pr.waitFor();
-            System.out.println("\nExited with error code "+exitVal);
+            System.out.println("\nExited with error code " + exitVal);
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println(e.toString());
             e.printStackTrace();
         }
