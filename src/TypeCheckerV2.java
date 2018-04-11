@@ -8,6 +8,9 @@ import java.util.List;
 public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
 
     private Singleton singleton = Singleton.getInstance();
+    private ArrayList<SymbolTable> scopes = new ArrayList<>();
+    private SymbolTable currentScope;
+
     private int counter = 0;
 
     private void addCtx(ParserRuleContext ctx, Type type) {
@@ -15,14 +18,51 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         counter++;
     }
 
+    private boolean ifVariableExists(String value, SymbolTable symbolTable){
+        for (int i = 0; i < symbolTable.getSymTable().size(); i++) {
+            if (symbolTable.getSymTable().get(value) != null){
+                return true;
+            }
+        }
+        if (symbolTable.getParent() != null) {
+            return ifVariableExists(value, symbolTable.getParent());
+        }
+        return false;
+    }
+
+    private Type getVariableType(String value, SymbolTable symbolTable){
+        for (int i = 0; i < symbolTable.getSymTable().size(); i++) {
+            if (symbolTable.getSymTable().get(value) != null){
+                return symbolTable.getSymTable().get(value).getType();
+            }
+        }
+        if (symbolTable.getParent() != null) {
+            return getVariableType(value, symbolTable.getParent());
+        }
+        return null;
+    }
+
+    @Override
+    public Type visitCodeLine(TJBParser.CodeLineContext ctx) {
+        currentScope = new SymbolTable();
+        currentScope.setParent(null);
+        scopes.add(currentScope);
+        return super.visitCodeLine(ctx);
+    }
+
     //checkVAR/STRID/ARRAY
 
     @Override
     public Type visitCheckVAR(TJBParser.CheckVARContext ctx) {
         String value = ctx.getText();
-        if (singleton.getSymbolTable().getSymTable().get(value) != null) {
-            Type type = singleton.getSymbolTable().getSymTable().get(value).getType();
-            addCtx(ctx, type);
+//        if (singleton.getSymbolTable().getSymTable().get(value) != null) {
+//            Type type = singleton.getSymbolTable().getSymTable().get(value).getType();
+//            addCtx(ctx, type);
+//            return type;
+//        }
+        if (ifVariableExists(value, currentScope)){
+            Type type = getVariableType(value, currentScope);
+            addCtx(ctx,type);
             return type;
         }
         return null;
@@ -31,7 +71,11 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     @Override
     public Type visitCheckSTRID(TJBParser.CheckSTRIDContext ctx) {
         String value = ctx.getText();
-        if (singleton.getSymbolTable().getSymTable().get(value) != null) {
+//        if (singleton.getSymbolTable().getSymTable().get(value) != null) {
+//            addCtx(ctx, Type.STRING);
+//            return Type.STRING;
+//        }
+        if (ifVariableExists(value, currentScope)){
             addCtx(ctx, Type.STRING);
             return Type.STRING;
         }
@@ -41,7 +85,11 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     @Override
     public Type visitCheckArray(TJBParser.CheckArrayContext ctx) {
         String value = ctx.getText();
-        if (singleton.getSymbolTable().getSymTable().get(value) != null) {
+//        if (singleton.getSymbolTable().getSymTable().get(value) != null) {
+//            addCtx(ctx, Type.ARRAY);
+//            return Type.ARRAY;
+//        }
+        if (ifVariableExists(value, currentScope)){
             addCtx(ctx, Type.ARRAY);
             return Type.ARRAY;
         }
@@ -161,15 +209,17 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         Type name = visit(ctx.name);
 
         if (name != null) {
-            throw new CompilerException(ctx, ctx.name.getText() + " Is already defined.");
+            throw new CompilerException(ctx, ctx.name.getText() + " Is already defined in this scope.");
         }
 
         if (value == null) {
-            throw new CompilerException(ctx, ctx.name.getText() + " Is not defined.");
+            throw new CompilerException(ctx, ctx.value.getText() + " Is not defined in this scope.");
         }
 
-        singleton.getSymbolTable().getSymTable().put(ctx.name.getText()
-                , new Symbol(ctx, value));
+//        singleton.getSymbolTable().getSymTable().put(ctx.name.getText()
+//                , new Symbol(ctx, value));
+        currentScope.getSymTable().put(ctx.name.getText(),
+                new Symbol(ctx,value));
         addCtx(ctx, value);
         return super.visitNumAsn(ctx);
     }
@@ -407,6 +457,23 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     }
 
     //If statement
+
+
+    @Override
+    public Type visitIfTJB(TJBParser.IfTJBContext ctx) {
+        //Create a new scope.
+        SymbolTable newScope = new SymbolTable();
+        newScope.setParent(currentScope);
+        //Make it the current scope.
+        currentScope = newScope;
+        //Visit everything.
+        Type type = super.visitIfTJB(ctx);
+        //Add the scope to the list so you can use it later.
+        scopes.add(currentScope);
+        //After the visit is done make the parent the current scope again.
+        currentScope = currentScope.getParent();
+        return type;
+    }
 
     @Override
     public Type visitIfStatement(TJBParser.IfStatementContext ctx) {
