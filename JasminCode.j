@@ -15,18 +15,36 @@
 ;
 .method public static main([Ljava/lang/String;)V
 	.limit	stack	40
-	.limit	locals	5
+	.limit	locals	6
 
 	ldc	11
 	istore	1
 
+	ldc	10.5
+	fstore	2
+
 	ldc	5
-	istore	2
+	istore	3
 
 if_0:
-	iload	1
-	ldc	10
-	if_icmpeq	ifDone_0
+	fload	2
+	ldc	10.0
+	fcmpl
+	ifne	compNeg_0
+	ldc	1
+	goto	compDone_0
+compNeg_0:
+	ldc	0
+compDone_0:
+
+	ifeq	negPos_0
+	ldc	0
+	goto	negDone_0
+negPos_0:
+	ldc	1
+negDone_0:
+
+	ifeq	ifDone_0
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;
 	ldc	"Random"
 	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
@@ -47,7 +65,14 @@ allDone_0:
 if_1:
 	iload	1
 	ldc	10
-	if_icmpne	ifDone_1
+	if_icmpne	compNeg_1
+	ldc	1
+	goto	compDone_1
+compNeg_1:
+	ldc	0
+compDone_1:
+
+	ifeq	ifDone_1
 	ldc	20
 	istore	1
 
@@ -60,35 +85,57 @@ if_1:
 	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
 
 	ldc	0
-	istore	3
+	istore	4
 
 while_0:
-	iload	3
+	iload	4
 	ldc	2
-	if_icmpge	whileDone_0
+	if_icmpge	compNeg_2
+	ldc	1
+	goto	compDone_2
+compNeg_2:
+	ldc	0
+compDone_2:
+
+	ifeq	whileDone_0
 	ldc	5
-	istore	4
+	istore	5
 for_0:
-	iload	4
+	iload	5
 	ldc	3
-	if_icmple	forDone_0
+	if_icmple	compNeg_3
+	ldc	1
+	goto	compDone_3
+compNeg_3:
+	ldc	0
+compDone_3:
+
+	ifeq	forDone_0
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	iload	4
+	iload	5
 	invokevirtual	java/io/PrintStream/println(I)V
 
-	iload	4
+	iload	5
 	ldc	-1
 	iadd
-	istore	4
+	istore	5
 
 	goto	for_0
 forDone_0:
+
 if_2:
-	iload	2
+	iload	3
 	ldc	5
-	if_icmpne	ifDone_2
+	if_icmpne	compNeg_4
+	ldc	1
+	goto	compDone_4
+compNeg_4:
+	ldc	0
+compDone_4:
+
+	ifeq	ifDone_2
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	iload	2
+	iload	3
 	invokevirtual	java/io/PrintStream/println(I)V
 
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;
@@ -98,11 +145,18 @@ if_2:
 	goto	allDone_2
 ifDone_2:
 elseIf_2-0:
-	iload	2
+	iload	3
 	ldc	5
-	if_icmple	elseIfDone_2-0
+	if_icmple	compNeg_5
+	ldc	1
+	goto	compDone_5
+compNeg_5:
+	ldc	0
+compDone_5:
+
+	ifeq	elseIfDone_2-0
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	iload	2
+	iload	3
 	invokevirtual	java/io/PrintStream/println(I)V
 
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;
@@ -110,19 +164,17 @@ elseIf_2-0:
 	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
 
 	goto	allDone_2
-
 elseIfDone_2-0:
 else_2:
 	;	"Do nothing"
 	goto	allDone_2
-
 allDone_2:
 
-	iload	3
+	iload	4
 	ldc	1
 	iadd
 
-	istore	3
+	istore	4
 
 	goto	while_0
 whileDone_0:
@@ -131,7 +183,14 @@ ifDone_1:
 elseIf_1-0:
 	iload	1
 	ldc	15
-	if_icmpgt	elseIfDone_1-0
+	if_icmpgt	compNeg_6
+	ldc	1
+	goto	compDone_6
+compNeg_6:
+	ldc	0
+compDone_6:
+
+	ifeq	elseIfDone_1-0
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;
 	iload	1
 	invokevirtual	java/io/PrintStream/println(I)V
@@ -141,12 +200,18 @@ elseIf_1-0:
 	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
 
 	goto	allDone_1
-
 elseIfDone_1-0:
 elseIf_1-1:
 	iload	1
 	ldc	15
-	if_icmple	elseIfDone_1-1
+	if_icmple	compNeg_7
+	ldc	1
+	goto	compDone_7
+compNeg_7:
+	ldc	0
+compDone_7:
+
+	ifeq	elseIfDone_1-1
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;
 	iload	1
 	invokevirtual	java/io/PrintStream/println(I)V
@@ -156,7 +221,6 @@ elseIf_1-1:
 	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
 
 	goto	allDone_1
-
 elseIfDone_1-1:
 else_1:
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;
@@ -168,17 +232,16 @@ else_1:
 	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
 
 	goto	allDone_1
-
 allDone_1:
 
 	ldc	15
 	ldc	2
 	imul
 
-	istore	4
+	istore	5
 
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	iload	4
+	iload	5
 	invokevirtual	java/io/PrintStream/println(I)V
 
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;

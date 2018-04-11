@@ -8,6 +8,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     private Singleton singleton = Singleton.getInstance();
 
     private final ArrayList<String> variables = new ArrayList<>();
+    private int compSequence = 0;
     private int forSequence = 0;
     private int whileSequence = 0;
     private int ifSequence = 0;
@@ -484,7 +485,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
             code.add("elseIf_" + localIfNumber + "-" + currentElseIf + ":");
             //Add all the expressions within the else-if statement
             code.addAll(visit(elseIfStatement));
-            code.add("\tgoto\tallDone_" + localIfNumber + "\n");
+            code.add("\tgoto\tallDone_" + localIfNumber);
 
             code.add("elseIfDone_" + localIfNumber + "-" + currentElseIf + ":");
 
@@ -498,7 +499,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
             code.add("else_" + ifNumber + ":");
             //Visit all the expressions in the else-statement.
             code.addAll(visit(ctx.elsePart));
-            code.add("\tgoto\tallDone_" + ifNumber + "\n");
+            code.add("\tgoto\tallDone_" + ifNumber);
         }
 
         code.add("allDone_" + ifNumber + ":\n");
@@ -514,7 +515,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.addAll(visit(ctx.bool));
 
         //Change the comparison to have the right label to it.
-        code.set((code.size() - 1), code.get(code.size() - 1) + "ifDone_" + ifNumber);
+        code.add("\tifeq\tifDone_" + ifNumber);
 
         code.addAll(visit(ctx.thenStatement()));
         code.add("\tgoto\tallDone_" + ifNumber);
@@ -532,7 +533,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.addAll(visit(ctx.bool));
 
         //Change the comparison to have the right label to it.
-        code.set((code.size() - 1), code.get(code.size() - 1) + "elseIfDone_" + currentIf + "-" + currentElseIf);
+        code.add("\tifeq\telseIfDone_" + currentIf + "-" + currentElseIf);
 
         code.addAll(visit(ctx.thenStatement()));
 
@@ -564,37 +565,22 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     @Override
     public ArrayList<String> visitBoolNeg(TJBParser.BoolNegContext ctx) {
         ArrayList<String> code = new ArrayList<>();
+        //We want the negation to have the same number for the labels as the actual comparison, just to make the reading of the Jasmin a bit easier.
+        int negCompNumber = compSequence;
 
         code.addAll(visit(ctx.bool));
 
-        int lastCodeIndex = code.size() - 1;
-        String comparison = code.get(lastCodeIndex);
+        code.add("\tifeq\tnegPos_" + negCompNumber);
+        //If the number is not 0 (which means it's 1 (true), since we're negating a boolean), we need to make it 0 (false).
+        code.add("\tldc\t0");
+        code.add("\tgoto\tnegDone_" + negCompNumber);
 
-        if (comparison.startsWith("\tif_icmp")) {
-            if (comparison.equalsIgnoreCase("\tif_icmpge\t")) {
-                code.set(lastCodeIndex, "\tif_icmplt\t");
-            } else if (comparison.equalsIgnoreCase("\tif_icmpgt\t")) {
-                code.set(lastCodeIndex, "\tif_icmple\t");
-            } else if (comparison.equalsIgnoreCase("\tif_icmpne\t")) {
-                code.set(lastCodeIndex, "\tif_icmpeq\t");
-            } else if (comparison.equalsIgnoreCase("\tif_icmpeq\t")) {
-                code.set(lastCodeIndex, "\tif_icmpne\t");
-            } else if (comparison.equalsIgnoreCase("\tif_icmple\t")) {
-                code.set(lastCodeIndex, "\tif_icmpgt\t");
-            } else if (comparison.equalsIgnoreCase("\tif_icmplt\t")) {
-                code.set(lastCodeIndex, "\tif_icmpge\t");
-            }
-        } else {
-            if (comparison.equalsIgnoreCase("\tifle\t")) {
-                code.set(lastCodeIndex, "\tifgt\t");
-            } else if (comparison.equalsIgnoreCase("\tiflt\t")) {
-                code.set(lastCodeIndex, "\tifge\t");
-            } else if (comparison.equalsIgnoreCase("\tifne\t")) {
-                code.set(lastCodeIndex, "\tifeq\t");
-            } else if (comparison.equalsIgnoreCase("\tifeq\t")) {
-                code.set(lastCodeIndex, "\tifne\t");
-            }
-        }
+        //In this case, the number on the stack is 0 (false), and we need to make it 1 (true).
+        code.add("negPos_" + negCompNumber + ":");
+        code.add("\tldc\t1");
+
+        //This is so that in the true to false case, we do not perform the false to true case too.
+        code.add("negDone_" + negCompNumber + ":\n");
 
         return code;
     }
@@ -602,6 +588,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     @Override
     public ArrayList<String> visitBoolComp(TJBParser.BoolCompContext ctx) {
         ArrayList<String> code = new ArrayList<>();
+        int compNumber = compSequence++;
 
         String comparisonToken = ctx.comp.getText();
 
@@ -630,7 +617,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
                     code.add("\tif_icmpge\t");
                 } else {
                     //If value 1 (left) is SMALLER THAN value 2 (right) we should get int 1 as a result.
-                    code.add("\tfcmpl\n");
+                    code.add("\tfcmpl");
                     //We want to jump to the label only if the int is -1 or 0 (meaning value 1 is BIGGER THAN or EQUAL TO value 2)
                     code.add("\tifle\t");
                 }
@@ -641,7 +628,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
                     code.add("\tif_icmpgt\t");
                 } else {
                     //If value 1 (left) is SMALLER THAN value 2 (right) we should get int 1 (less) or 0 (equal) as a result.
-                    code.add("\tfcmpl\n");
+                    code.add("\tfcmpl");
                     //We want to jump to the label only if the int is -1 (meaning value 1 is BIGGER THAN value 2)
                     code.add("\tiflt\t");
                 }
@@ -652,7 +639,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
                     code.add("\tif_icmpne\t");
                 } else {
                     //If value 1 (left) is EQUAL TO value 2 (right) we should get int 0 as a result.
-                    code.add("\tfcmpl\n");
+                    code.add("\tfcmpl");
                     //We want to jump to the label only if the int is -1 or 1 (meaning value 1 is BIGGER THAN or SMALLER THAN value 2)
                     code.add("\tifne\t");
                 }
@@ -663,7 +650,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
                     code.add("\tif_icmpeq\t");
                 } else {
                     //If value 1 (left) is NOT EQUAL TO value 2 (right) we should get int -1 or 1 as a result.
-                    code.add("\tfcmpl\n");
+                    code.add("\tfcmpl");
                     //We want to jump to the label only if the int is 0 (meaning value 1 is EQUAL TO value 2)
                     code.add("\tifeq\t");
                 }
@@ -674,7 +661,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
                     code.add("\tif_icmple\t");
                 } else {
                     //If value 1 (left) is BIGGER THAN value 2 (right) we should get int 1 as a result.
-                    code.add("\tfcmpg\n");
+                    code.add("\tfcmpg");
                     //We want to jump to the label only if the int is 0 or -1 (meaning value 1 is SMALLER THAN or EQUAL TO value 2)
                     code.add("\tifle\t");
                 }
@@ -685,12 +672,25 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
                     code.add("\tif_icmplt\t");
                 } else {
                     //If value 1 (left) is BIGGER THAN or EQUAL TO value 2 (right) we should get int 1 or 0 as a result.
-                    code.add("\tfcmpg\n");
+                    code.add("\tfcmpg");
                     //We want to jump to the label only if the int is -1 (meaning value 1 is SMALLER THAN value 2)
                     code.add("\tiflt\t");
                 }
                 break;
         }
+
+        //Add the label for the comparison to jump to if it is false.
+        code.set((code.size() - 1), code.get(code.size() - 1) + "compNeg_" + compNumber);
+        //We'll end up here and add a one if the comparison is true.
+        code.add("\tldc\t1");
+        code.add("\tgoto\tcompDone_" + compNumber);
+
+        //The comparison is false, so return a 0.
+        code.add("compNeg_" + compNumber + ":");
+        code.add("\tldc\t0");
+
+        //End statement for the true to jump to, as to not perform the false code.
+        code.add("compDone_" + compNumber + ":\n");
 
         return code;
     }
@@ -726,7 +726,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.addAll(visit(ctx.bool));
 
         //Change the comparison to have the right label to it.
-        code.set((code.size() - 1), code.get(code.size() - 1) + "whileDone_" + whileNumber);
+        code.add("\tifeq\twhileDone_" + whileNumber);
 
         for (TJBParser.ExpressionContext expressionContext : ctx.expression()) {
             code.addAll(visit(expressionContext));
@@ -745,6 +745,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         int forNumber = forSequence++;
 
         Type iteratorType = singleton.getCheckUpTable().get(ctx);
+        //FIXME: Remove this once floats are working right.
         iteratorType = Type.INT;
         String varID = ctx.iterator.getText();
         int indexOffset = variables.indexOf(varID) + 1;
@@ -788,7 +789,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.addAll(visit(ctx.comp));
 
         //Change the comparison to have the right label to it.
-        code.set((code.size() - 1), code.get(code.size() - 1) + "forDone_" + forNumber);
+        code.add("\tifeq\tforDone_" + forNumber);
 
         for (TJBParser.ExpressionContext expressionContext : ctx.expression()) {
             code.addAll(visit(expressionContext));
@@ -799,7 +800,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         code.add("\tgoto\tfor_" + forNumber);
         //---
-        code.add("forDone_" + forNumber + ":");
+        code.add("forDone_" + forNumber + ":\n");
 
         return code;
     }
@@ -810,8 +811,8 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         //We don't have to check if the Var exists, as the typechecker should make sure the var given here is the same one declared earlier in the for-loop
         String varID = ctx.nameVar.getText();
-        //TODO: Once checker has been made, check if it doesn't do the "float" and such commands, if the value of the var is an int.
         Type iteratorType = singleton.getCheckUpTable().get(ctx);
+        //TODO: Once checker has been made, check if it doesn't do the "float" and such commands, if the value of the var is an int.
         iteratorType = Type.INT;
         int indexOffset = variables.indexOf(varID) + 1;
 
@@ -1051,5 +1052,4 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
     //TODO - STILL TO ADD:
     // - Logic gates: '||' and '&&' (or 'Or' and 'And'));
-    // - Negative booleans (the '!' character).
 }

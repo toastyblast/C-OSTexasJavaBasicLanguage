@@ -1,7 +1,8 @@
 11 -> A
+10.5 -> Y
 5 -> B
 
-If !(A = 10)
+If !(Y = 10.0)
 Then
 Disp "Random"
 End
