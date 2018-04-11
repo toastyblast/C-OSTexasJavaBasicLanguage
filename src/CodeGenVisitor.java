@@ -34,6 +34,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         return code;
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public ArrayList<String> visitNumAsn(TJBParser.NumAsnContext ctx) {
         ArrayList<String> code = new ArrayList<>();
@@ -214,6 +215,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         return code;
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public ArrayList<String> visitNumAsnVAR(TJBParser.NumAsnVARContext ctx) {
         ArrayList<String> code = new ArrayList<>();
@@ -311,6 +313,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         return code;
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public ArrayList<String> visitExAddOp(TJBParser.ExAddOpContext ctx) {
         ArrayList<String> code = new ArrayList<>();
@@ -345,6 +348,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         return code;
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public ArrayList<String> visitExMulDivOp(TJBParser.ExMulDivOpContext ctx) {
         ArrayList<String> code = new ArrayList<>();
@@ -379,6 +383,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         return code;
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public ArrayList<String> visitExModOp(TJBParser.ExModOpContext ctx) {
         ArrayList<String> code = new ArrayList<>();
@@ -585,6 +590,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         return code;
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public ArrayList<String> visitBoolComp(TJBParser.BoolCompContext ctx) {
         ArrayList<String> code = new ArrayList<>();
@@ -704,7 +710,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.addAll(visit(ctx.left));
         code.addAll(visit(ctx.right));
 
-        //TODO: Do the logic gates.
+        //TODO - YORAN: Do the logic gates.
         if (comparisonToken.equalsIgnoreCase("||") || comparisonToken.equalsIgnoreCase("And")) {
             //This is the "Or" (or "||") logic gate.
             //...
@@ -1051,5 +1057,5 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     }
 
     //TODO - STILL TO ADD:
-    // - Logic gates: '||' and '&&' (or 'Or' and 'And'));
+    // - YORAN - Logic gates: '||' and '&&' (or 'Or' and 'And'));
 }
