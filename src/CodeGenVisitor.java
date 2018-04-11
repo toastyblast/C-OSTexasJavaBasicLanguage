@@ -707,16 +707,17 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         String comparisonToken = ctx.comp.getText();
 
+        //Add all the code of the left and right comparison, this should leave two integers of either 1 or 0 each on top of the operand stack right before here.
         code.addAll(visit(ctx.left));
         code.addAll(visit(ctx.right));
 
         //TODO - YORAN: Do the logic gates.
         if (comparisonToken.equalsIgnoreCase("||") || comparisonToken.equalsIgnoreCase("And")) {
             //This is the "Or" (or "||") logic gate.
-            //...
+            code.add("\tior");
         } else {
             //This is the "And" (or "&&") logic gate.
-            //...
+            code.add("\tiand");
         }
 
         return code;

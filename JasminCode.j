@@ -37,6 +37,16 @@ compNeg_0:
 	ldc	0
 compDone_0:
 
+	iload	1
+	ldc	10
+	if_icmpne	compNeg_1
+	ldc	1
+	goto	compDone_1
+compNeg_1:
+	ldc	0
+compDone_1:
+
+	iand
 	ifeq	negPos_0
 	ldc	0
 	goto	negDone_0
@@ -65,12 +75,12 @@ allDone_0:
 if_1:
 	iload	1
 	ldc	10
-	if_icmpne	compNeg_1
+	if_icmpne	compNeg_2
 	ldc	1
-	goto	compDone_1
-compNeg_1:
+	goto	compDone_2
+compNeg_2:
 	ldc	0
-compDone_1:
+compDone_2:
 
 	ifeq	ifDone_1
 	ldc	20
@@ -90,12 +100,12 @@ compDone_1:
 while_0:
 	iload	4
 	ldc	2
-	if_icmpge	compNeg_2
+	if_icmpge	compNeg_3
 	ldc	1
-	goto	compDone_2
-compNeg_2:
+	goto	compDone_3
+compNeg_3:
 	ldc	0
-compDone_2:
+compDone_3:
 
 	ifeq	whileDone_0
 	ldc	5
@@ -103,12 +113,12 @@ compDone_2:
 for_0:
 	iload	5
 	ldc	3
-	if_icmple	compNeg_3
+	if_icmple	compNeg_4
 	ldc	1
-	goto	compDone_3
-compNeg_3:
+	goto	compDone_4
+compNeg_4:
 	ldc	0
-compDone_3:
+compDone_4:
 
 	ifeq	forDone_0
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;
@@ -126,12 +136,12 @@ forDone_0:
 if_2:
 	iload	3
 	ldc	5
-	if_icmpne	compNeg_4
+	if_icmpne	compNeg_5
 	ldc	1
-	goto	compDone_4
-compNeg_4:
+	goto	compDone_5
+compNeg_5:
 	ldc	0
-compDone_4:
+compDone_5:
 
 	ifeq	ifDone_2
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;
@@ -147,12 +157,12 @@ ifDone_2:
 elseIf_2-0:
 	iload	3
 	ldc	5
-	if_icmple	compNeg_5
+	if_icmple	compNeg_6
 	ldc	1
-	goto	compDone_5
-compNeg_5:
+	goto	compDone_6
+compNeg_6:
 	ldc	0
-compDone_5:
+compDone_6:
 
 	ifeq	elseIfDone_2-0
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;
@@ -183,12 +193,12 @@ ifDone_1:
 elseIf_1-0:
 	iload	1
 	ldc	15
-	if_icmpgt	compNeg_6
+	if_icmpgt	compNeg_7
 	ldc	1
-	goto	compDone_6
-compNeg_6:
+	goto	compDone_7
+compNeg_7:
 	ldc	0
-compDone_6:
+compDone_7:
 
 	ifeq	elseIfDone_1-0
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;
@@ -204,12 +214,12 @@ elseIfDone_1-0:
 elseIf_1-1:
 	iload	1
 	ldc	15
-	if_icmple	compNeg_7
+	if_icmple	compNeg_8
 	ldc	1
-	goto	compDone_7
-compNeg_7:
+	goto	compDone_8
+compNeg_8:
 	ldc	0
-compDone_7:
+compDone_8:
 
 	ifeq	elseIfDone_1-1
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;
