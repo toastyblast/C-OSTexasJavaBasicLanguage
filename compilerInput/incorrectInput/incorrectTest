@@ -1,0 +1,7 @@
+11 -> A
+10.5 -> Y
+5 -> B
+
+If !(Y = 10.0 && A = 10)
+Then
+Disp "Random"

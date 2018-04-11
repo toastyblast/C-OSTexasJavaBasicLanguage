@@ -711,7 +711,6 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.addAll(visit(ctx.left));
         code.addAll(visit(ctx.right));
 
-        //TODO - YORAN: Do the logic gates.
         if (comparisonToken.equalsIgnoreCase("||") || comparisonToken.equalsIgnoreCase("And")) {
             //This is the "Or" (or "||") logic gate.
             code.add("\tior");
@@ -1056,7 +1055,4 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.add("\tfstore " + numberIndexOffset);
         return code;
     }
-
-    //TODO - STILL TO ADD:
-    // - YORAN - Logic gates: '||' and '&&' (or 'Or' and 'And'));
 }

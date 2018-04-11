@@ -7,6 +7,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class TJB {
@@ -30,10 +31,17 @@ public class TJB {
     private static String endProg = "\n\treturn\n.end method";
 
     private static void evaluate(String line) {
-        //TODO 1: Ask user for what file to read the code from.
-        //TODO 2: Then, ask the user for a name to output the generated Jasmin code into.
-        //TODO 3: Finally, ask them for a name for the .class file OR give that the same name as the jasmin code file they gave, with "CLASS" added at the end of it (to have one less name to ask for).
-        String programName = "PLACEHOLDER";
+        Scanner inputScanner = new Scanner(System.in);
+        String programName = "CLASS_PLACEHOLDER";
+        String jasminFileName = "JASMIN_PLACEHOLDER";
+
+        System.out.println("\nPlease enter a name for your program's generated Java Bytecode/Class file.");
+        System.out.print("Enter class name: ");
+        programName = inputScanner.nextLine();
+        //Remove any spaces and/or forward slashes, as we do not allow these (this can confuse the OS).
+        programName = programName.replaceAll(" ", "_");
+        programName = programName.replaceAll("/", "_");
+        jasminFileName = programName + "-JASMIN.j";
 
         // Create lexer and run scanner to create stream of tokens
         CharStream charStream = CharStreams.fromString(line);
@@ -50,17 +58,9 @@ public class TJB {
         CodeGenVisitor genVisitor = new CodeGenVisitor();
         ArrayList<String> generatedCode = genVisitor.visit(expression);
 
-        System.out.println("========CODE GENERATED========");
-        System.out.println(startProg.replaceAll("\\{\\{name\\}\\}", programName));
-        // Output compiled part of the jasmin file
-        System.out.println(generatedCode.stream().collect(Collectors.joining("\n")));
-        // Output footer of jasmin file
-        System.out.println(endProg);
-        System.out.println("==============================");
-
         BufferedWriter writer;
         try {
-            writer = new BufferedWriter(new FileWriter("JasminCode.j"));
+            writer = new BufferedWriter(new FileWriter("./compilerOutput/jasminCode/" + jasminFileName));
             writer.write(startProg.replaceAll("\\{\\{name\\}\\}", programName));
             writer.write("\n");
             writer.write(generatedCode.stream().collect(Collectors.joining("\n")));
@@ -70,16 +70,22 @@ public class TJB {
             e.printStackTrace();
         }
 
+        System.out.println("\nCreating files with desired names in folder [./compilerOutput/]...");
+        System.out.println("Running UI outputs while compiling...");
+
         System.out.println("\n========COMMAND OUTPUT========");
-        //FIXME: Show the name of the file according to what the user gave as input for the name.
-        System.out.println("Generated Jasmin/Java ByteCode file: " + "JasminCode.j");
-        executedCommand("java -jar jasmin.jar JasminCode.j");
+        System.out.println("Generated Jasmin/Java ByteCode file: " + jasminFileName);
+        executedCommand("java -jar jasmin.jar ./compilerOutput/jasminCode/" + jasminFileName);
 
         System.out.println("\nNow running the generated class file, displaying its outputs afterwards...");
         System.out.println("==============================");
 
         System.out.println("\n========PROGRAM OUTPUT========");
-        executedCommand("java PLACEHOLDER");
+        executedCommand("java " + programName);
+        System.out.println("==============================");
+
+        System.out.println("\n========ARCHIVE OUTPUT========");
+        executedCommand("cmd /c move ./" + programName + ".class ./compilerOutput/");
         System.out.println("==============================");
     }
 
@@ -99,9 +105,16 @@ public class TJB {
     }
 
     public static void main(String[] args) {
+        Scanner inputScanner = new Scanner(System.in);
+        String pathToCodeFile = "CODE_PLACEHOLDER";
+
+        System.out.println("Please enter the name of the text file with your TJ-B code to compile (please give the exact path from project package).");
+        System.out.print("Enter file name: ");
+        pathToCodeFile = inputScanner.nextLine();
+
         String content = "";
         try {
-            content = new String(Files.readAllBytes(Paths.get("./generatorTest")));
+            content = new String(Files.readAllBytes(Paths.get(pathToCodeFile)));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
-
     private Singleton singleton = Singleton.getInstance();
     private int counter = 0;
 
@@ -16,7 +15,6 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     }
 
     //checkVAR/STRID/ARRAY
-
     @Override
     public Type visitCheckVAR(TJBParser.CheckVARContext ctx) {
         String value = ctx.getText();
@@ -49,7 +47,6 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     }
 
     //Calculation.
-
     @Override
     public Type visitExParentheses(TJBParser.ExParenthesesContext ctx) {
         Type type = visit(ctx.val);
@@ -153,8 +150,6 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     }
 
     //Assignment.
-
-
     @Override
     public Type visitNumAsn(TJBParser.NumAsnContext ctx) {
         Type value = visit(ctx.value);
@@ -300,8 +295,6 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     }
 
     //Boolean expressions
-
-
     @Override
     public Type visitBoolParentheses(TJBParser.BoolParenthesesContext ctx) {
         Type type = visit(ctx.bool);
@@ -397,7 +390,6 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     }
 
     //While loop
-
     @Override
     public Type visitWhileTJB(TJBParser.WhileTJBContext ctx) {
         if (visit(ctx.bool) != Type.BOOLEAN) {
@@ -418,7 +410,6 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
 
 
     //For loop
-
     @Override
     public Type visitForTJB(TJBParser.ForTJBContext ctx) {
 
@@ -510,7 +501,6 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     public Type visitArrayBuild(TJBParser.ArrayBuildContext ctx) {
         Type type = null;
 
-
         if (ctx.getChild(1) instanceof TerminalNode) {
             TerminalNode terminalNode = (TerminalNode) ctx.getChild(1);
             if (terminalNode.getSymbol().getType() == TJBLexer.INT) {
@@ -573,7 +563,6 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
 
             }
         }
-
 
         addCtx(ctx, type);
         return type;
