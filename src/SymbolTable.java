@@ -14,6 +14,14 @@ public class SymbolTable {
         symTable.put(string, Symbol);
     }
 
+    public SymbolTable getParent() {
+        return parent;
+    }
+
+    public void setParent(SymbolTable parent) {
+        this.parent = parent;
+    }
+
     public Map<String, Symbol> getSymTable() {
         return symTable;
     }

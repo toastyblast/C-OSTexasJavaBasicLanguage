@@ -94,7 +94,7 @@ public class TJB {
         try {
             TypeCheckerV2 typeChecker = new TypeCheckerV2();
             Type type = typeChecker.visit(parseTree);  // throws on error
-            Singleton.getInstance().copyTable();
+//            Singleton.getInstance().copyTable();
 //            for (ParserRuleContext context:
 //                    Singleton.getInstance().getCheckUpTable().keySet()) {
 //                System.out.println(Singleton.getInstance().getCheckUpTable().get(context));
