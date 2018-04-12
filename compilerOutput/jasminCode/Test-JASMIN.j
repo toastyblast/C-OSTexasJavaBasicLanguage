@@ -23,7 +23,7 @@
 	ldc	10.5
 	fstore	2
 
-	ldc	5
+	ldc	8
 	istore	3
 
 if_0:
@@ -135,7 +135,7 @@ forDone_0:
 
 if_2:
 	iload	3
-	ldc	5
+	ldc	8
 	if_icmpne	compNeg_5
 	ldc	1
 	goto	compDone_5
@@ -243,20 +243,6 @@ else_1:
 
 	goto	allDone_1
 allDone_1:
-
-	ldc	15
-	ldc	2
-	imul
-
-	istore	5
-
-	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	iload	5
-	invokevirtual	java/io/PrintStream/println(I)V
-
-	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	ldc	"Showing D"
-	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
 
 	return
 .end method

@@ -46,7 +46,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         code.addAll(visit(ctx.calculation()));
 
-        Type type = singleton.getCheckUpTable().get(ctx);
+        Type type = singleton.getCheckUpTable().get(ctx).getType();
         switch (type) {
             case INT:
                 code.add("\tistore\t" + indexOffset + "\n");
@@ -91,7 +91,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
             }
         }
 
-        Type type = singleton.getCheckUpTable().get(ctx.value);
+        Type type = singleton.getCheckUpTable().get(ctx.value).getType();
         code.add("\tldc\t" + terminalNodes.size());
 
         switch (type) {
@@ -142,7 +142,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
                                 code.add("\ti2f");
                             }
                         } else {
-                            Type type1 = singleton.getCheckUpTable().get(terminalNodes.get(i));
+                            Type type1 = singleton.getCheckUpTable().get(terminalNodes.get(i)).getType();
                             code.addAll(visit(terminalNodes.get(i)));
 
                             if (type1 == Type.INT) {
@@ -183,9 +183,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         ArrayList<String> code = new ArrayList<>();
 
         String strID = ctx.name.getText();
-
-        String copyStrID = ctx.value.getText();
-        int copyOffset = variables.indexOf(copyStrID) + 1;
+        int copyOffset = singleton.getCheckUpTable().get(ctx.value).getNumberOnStack();
 
         variables.add(strID);
         int indexOffset = variables.size();
@@ -220,12 +218,11 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     public ArrayList<String> visitNumAsnVAR(TJBParser.NumAsnVARContext ctx) {
         ArrayList<String> code = new ArrayList<>();
 
-        String numID = ctx.name.getText();
-        int indexOffset = variables.indexOf(numID) + 1;
+        int indexOffset = singleton.getCheckUpTable().get(ctx.name).getNumberOnStack();
 
         code.addAll(visit(ctx.calculation()));
 
-        Type type = singleton.getCheckUpTable().get(ctx);
+        Type type = singleton.getCheckUpTable().get(ctx).getType();
         switch (type) {
             case INT:
                 code.add("\tistore\t" + indexOffset + "\n");
@@ -242,8 +239,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     public ArrayList<String> visitStrAsnNEWVAR(TJBParser.StrAsnNEWVARContext ctx) {
         ArrayList<String> code = new ArrayList<>();
 
-        String strID = ctx.name.getText();
-        int indexOffset = variables.indexOf(strID) + 1;
+        int indexOffset = singleton.getCheckUpTable().get(ctx.name).getNumberOnStack();
 
         code.add("\tldc\t" + ctx.value.getText());
         code.add("\tastore\t" + indexOffset + "\n");
@@ -255,11 +251,9 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     public ArrayList<String> visitStrAsnVAR(TJBParser.StrAsnVARContext ctx) {
         ArrayList<String> code = new ArrayList<>();
 
-        String strID = ctx.name.getText();
-        int indexOffset = variables.indexOf(strID) + 1;
+        int indexOffset = singleton.getCheckUpTable().get(ctx.name).getNumberOnStack();
 
-        String copyStrID = ctx.value.getText();
-        int copyIndexOffset = variables.indexOf(copyStrID) + 1;
+        int copyIndexOffset = singleton.getCheckUpTable().get(ctx.value).getNumberOnStack();
 
         code.add("\taload\t" + copyIndexOffset);
         code.add("\tastore\t" + indexOffset + "\n");
@@ -298,7 +292,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.addAll(visit(ctx.calculation()));
 
         //Multiply by -1 to turn the calculation from positive to negative or the other way around.
-        Type type = singleton.getCheckUpTable().get(ctx);
+        Type type = singleton.getCheckUpTable().get(ctx).getType();
         switch (type) {
             case INT:
                 code.add("\tldc\t-1");
@@ -318,8 +312,8 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     public ArrayList<String> visitExAddOp(TJBParser.ExAddOpContext ctx) {
         ArrayList<String> code = new ArrayList<>();
 
-        Type leftType = singleton.getCheckUpTable().get(ctx.left);
-        Type rightType = singleton.getCheckUpTable().get(ctx.right);
+        Type leftType = singleton.getCheckUpTable().get(ctx.left).getType();
+        Type rightType = singleton.getCheckUpTable().get(ctx.right).getType();
 
         code.addAll(visit(ctx.left));
 
@@ -353,8 +347,8 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     public ArrayList<String> visitExMulDivOp(TJBParser.ExMulDivOpContext ctx) {
         ArrayList<String> code = new ArrayList<>();
 
-        Type leftType = singleton.getCheckUpTable().get(ctx.left);
-        Type rightType = singleton.getCheckUpTable().get(ctx.right);
+        Type leftType = singleton.getCheckUpTable().get(ctx.left).getType();
+        Type rightType = singleton.getCheckUpTable().get(ctx.right).getType();
 
         code.addAll(visit(ctx.left));
 
@@ -388,8 +382,8 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     public ArrayList<String> visitExModOp(TJBParser.ExModOpContext ctx) {
         ArrayList<String> code = new ArrayList<>();
 
-        Type leftType = singleton.getCheckUpTable().get(ctx.left);
-        Type rightType = singleton.getCheckUpTable().get(ctx.right);
+        Type leftType = singleton.getCheckUpTable().get(ctx.left).getType();
+        Type rightType = singleton.getCheckUpTable().get(ctx.right).getType();
 
         code.addAll(visit(ctx.left));
 
@@ -422,10 +416,9 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     public ArrayList<String> visitExVarLiteral(TJBParser.ExVarLiteralContext ctx) {
         ArrayList<String> code = new ArrayList<>();
 
-        String varID = ctx.val.getText();
-        int indexOffset = variables.indexOf(varID) + 1;
+        int indexOffset = singleton.getCheckUpTable().get(ctx.val).getNumberOnStack();
 
-        Type valueType = singleton.getCheckUpTable().get(ctx.val);
+        Type valueType = singleton.getCheckUpTable().get(ctx.val).getType();
 
         if (valueType.equals(Type.INT) || valueType.equals(Type.BOOLEAN)) {
             code.add("\tiload\t" + indexOffset);
@@ -477,6 +470,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     @Override
     public ArrayList<String> visitIfTJB(TJBParser.IfTJBContext ctx) {
         ArrayList<String> code = new ArrayList<>();
+
         int ifNumber = ifSequence++;
         int localIfNumber = ifNumber;
 
@@ -598,8 +592,8 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         String comparisonToken = ctx.comp.getText();
 
-        Type leftType = singleton.getCheckUpTable().get(ctx.left);
-        Type rightType = singleton.getCheckUpTable().get(ctx.right);
+        Type leftType = singleton.getCheckUpTable().get(ctx.left).getType();
+        Type rightType = singleton.getCheckUpTable().get(ctx.right).getType();
 
         code.addAll(visit(ctx.left));
 
@@ -711,7 +705,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.addAll(visit(ctx.left));
         code.addAll(visit(ctx.right));
 
-        if (comparisonToken.equalsIgnoreCase("||") || comparisonToken.equalsIgnoreCase("And")) {
+        if (comparisonToken.equalsIgnoreCase("||") || comparisonToken.equalsIgnoreCase("Or")) {
             //This is the "Or" (or "||") logic gate.
             code.add("\tior");
         } else {
@@ -750,13 +744,11 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         ArrayList<String> code = new ArrayList<>();
         int forNumber = forSequence++;
 
-        Type iteratorType = singleton.getCheckUpTable().get(ctx);
-        //FIXME: Remove this once floats are working right.
-        iteratorType = Type.INT;
+        Type iteratorType = singleton.getCheckUpTable().get(ctx.iterator).getType();
         String varID = ctx.iterator.getText();
-        int indexOffset = variables.indexOf(varID) + 1;
+        int indexOffset = singleton.getCheckUpTable().get(ctx.iterator).getNumberOnStack();
 
-        if (indexOffset == 0) {
+        if (indexOffset > variables.size()) {
             //The variable doesn't exist yet, so add it!
             variables.add(varID);
             indexOffset = variables.size();
@@ -816,11 +808,8 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         ArrayList<String> code = new ArrayList<>();
 
         //We don't have to check if the Var exists, as the typechecker should make sure the var given here is the same one declared earlier in the for-loop
-        String varID = ctx.nameVar.getText();
-        Type iteratorType = singleton.getCheckUpTable().get(ctx);
-        //TODO: Once checker has been made, check if it doesn't do the "float" and such commands, if the value of the var is an int.
-        iteratorType = Type.INT;
-        int indexOffset = variables.indexOf(varID) + 1;
+        Type iteratorType = singleton.getCheckUpTable().get(ctx.nameVar).getType();
+        int indexOffset = singleton.getCheckUpTable().get(ctx.nameVar).getNumberOnStack();
 
         //Load the var, as we need to add the result of the calculation to that at the end.
         if (iteratorType == Type.INT) {
@@ -885,8 +874,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
 
-        String strID = ctx.name.getText();
-        int indexOffset = variables.indexOf(strID) + 1;
+        int indexOffset = singleton.getCheckUpTable().get(ctx.name).getNumberOnStack();
 
         code.add("\taload\t" + indexOffset);
         code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava/lang/String;)V\n");
@@ -901,7 +889,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
         code.addAll(visit(ctx.calculation()));
 
-        Type type = singleton.getCheckUpTable().get(ctx);
+        Type type = singleton.getCheckUpTable().get(ctx).getType();
         switch (type) {
             case INT:
                 code.add("\tinvokevirtual\tjava/io/PrintStream/println(I)V\n");
@@ -919,10 +907,9 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         ArrayList<String> code = new ArrayList<>();
 
         String arrID = ctx.name.getText();
-        int indexOffset = variables.indexOf(arrID) + 1;
+        int indexOffset = singleton.getCheckUpTable().get(ctx.name).getNumberOnStack();
 
         code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
-
         code.add("\taload\t" + indexOffset);
 
         //FIXME - Martin?: CHECK IF THIS IS CORRECT FOR ARRAYS!
@@ -934,31 +921,40 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     @Override
     public ArrayList<String> visitScannerAsn(TJBParser.ScannerAsnContext ctx) {
         ArrayList<String> code = new ArrayList<>();
+
         variables.add(ctx.name.getText());
+
         int indexOffset = variables.size();
+
         code.add("\tnew\t" + "\tjava/util/Scanner\t");
         code.add("\tdup\t");
         code.add("\tgetstatic\t" + "\tjava/lang/System/in Ljava/io/InputStream;\t");
         code.add("\tinvokespecial\t" + "\tjava/util/Scanner/<init>(Ljava/io/InputStream;)V\t");
         code.add("\tastore_" + indexOffset);
+
         return code;
     }
 
     @Override
     public ArrayList<String> visitScannerCls(TJBParser.ScannerClsContext ctx) {
         ArrayList<String> code = new ArrayList<>();
-        int indexOffset = variables.indexOf(ctx.scnr.getText()) + 1;
+
+        int indexOffset = singleton.getCheckUpTable().get(ctx.scnr).getNumberOnStack();
+
         code.add("\taload_" + indexOffset);
         code.add("\tinvokevirtual\t" + "java/util/Scanner/close()V");
+
         return code;
     }
 
     @Override
     public ArrayList<String> visitStrAsnUsrIn(TJBParser.StrAsnUsrInContext ctx) {
         ArrayList<String> code = new ArrayList<>();
+
         variables.add(ctx.name.getText());
+
         int place = variables.size();
-        int indexOffset = variables.indexOf(ctx.scnr.getText()) + 1;
+        int indexOffset = singleton.getCheckUpTable().get(ctx.scnr).getNumberOnStack();
 
         code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
         code.add("\tldc\t" + '"' + "Please type a string." + '"');
@@ -967,14 +963,16 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.add("\taload_" + indexOffset);
         code.add("\tinvokevirtual\t" + "java/util/Scanner/next()Ljava/lang/String;");
         code.add("\tastore " + place);
+
         return code;
     }
 
     @Override
     public ArrayList<String> visitStrAsnUsrInVAR(TJBParser.StrAsnUsrInVARContext ctx) {
         ArrayList<String> code = new ArrayList<>();
-        int indexOffset = variables.indexOf(ctx.scnr.getText()) + 1;
-        int numberIndexOffset = variables.indexOf(ctx.name.getText()) + 1;
+
+        int indexOffset = singleton.getCheckUpTable().get(ctx.scnr).getNumberOnStack();
+        int numberIndexOffset = singleton.getCheckUpTable().get(ctx.name).getNumberOnStack();
 
         code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
         code.add("\tldc\t" + '"' + "Please type a string." + '"');
@@ -983,15 +981,18 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.add("\taload_" + indexOffset);
         code.add("\tinvokevirtual\t" + "java/util/Scanner/next()Ljava/lang/String;");
         code.add("\tastore " + numberIndexOffset);
+
         return code;
     }
 
     @Override
     public ArrayList<String> visitNumAsnUsrInt(TJBParser.NumAsnUsrIntContext ctx) {
         ArrayList<String> code = new ArrayList<>();
+
         variables.add(ctx.name.getText());
+
         int place = variables.size();
-        int indexOffset = variables.indexOf(ctx.scnr.getText()) + 1;
+        int indexOffset = singleton.getCheckUpTable().get(ctx.scnr).getNumberOnStack();
 
         code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
         code.add("\tldc\t" + '"' + "Please type a number." + '"');
@@ -1000,14 +1001,16 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.add("\taload_" + indexOffset);
         code.add("\tinvokevirtual\t" + "java/util/Scanner/nextInt()I");
         code.add("\tistore " + place);
+
         return code;
     }
 
     @Override
     public ArrayList<String> visitNumAsnUsrIntVAR(TJBParser.NumAsnUsrIntVARContext ctx) {
         ArrayList<String> code = new ArrayList<>();
-        int indexOffset = variables.indexOf(ctx.scnr.getText()) + 1;
-        int numberIndexOffset = variables.indexOf(ctx.name.getText()) + 1;
+
+        int indexOffset = singleton.getCheckUpTable().get(ctx.scnr).getNumberOnStack();
+        int numberIndexOffset = singleton.getCheckUpTable().get(ctx.name).getNumberOnStack();
 
         code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
         code.add("\tldc\t" + '"' + "Please type a number." + '"');
@@ -1016,15 +1019,18 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.add("\taload_" + indexOffset);
         code.add("\tinvokevirtual\t" + "java/util/Scanner/nextInt()I");
         code.add("\tistore " + numberIndexOffset);
+
         return code;
     }
 
     @Override
     public ArrayList<String> visitNumAsnUsrDbl(TJBParser.NumAsnUsrDblContext ctx) {
         ArrayList<String> code = new ArrayList<>();
+
         variables.add(ctx.name.getText());
+
         int place = variables.size();
-        int indexOffset = variables.indexOf(ctx.scnr.getText()) + 1;
+        int indexOffset = singleton.getCheckUpTable().get(ctx.scnr).getNumberOnStack();
 
         code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
         code.add("\tldc\t" + '"' + "Please type a number." + '"');
@@ -1035,14 +1041,16 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.add("\tinvokestatic\t" + "java/lang/Float/valueOf(F)Ljava/lang/Float;");
         code.add("\tinvokevirtual " + "java/lang/Float/floatValue()F");
         code.add("\tfstore " + place);
+
         return code;
     }
 
     @Override
     public ArrayList<String> visitNumAsnUsrDblVAR(TJBParser.NumAsnUsrDblVARContext ctx) {
         ArrayList<String> code = new ArrayList<>();
-        int indexOffset = variables.indexOf(ctx.scnr.getText()) + 1;
-        int numberIndexOffset = variables.indexOf(ctx.name.getText()) + 1;
+
+        int indexOffset = singleton.getCheckUpTable().get(ctx.scnr).getNumberOnStack();
+        int numberIndexOffset = singleton.getCheckUpTable().get(ctx.name).getNumberOnStack();
 
         code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
         code.add("\tldc\t" + '"' + "Please type a number." + '"');
@@ -1053,6 +1061,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.add("\tinvokestatic\t" + "java/lang/Float/valueOf(F)Ljava/lang/Float;");
         code.add("\tinvokevirtual " + "java/lang/Float/floatValue()F");
         code.add("\tfstore " + numberIndexOffset);
+
         return code;
     }
 }

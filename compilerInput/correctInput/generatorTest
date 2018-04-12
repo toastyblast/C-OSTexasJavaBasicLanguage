@@ -1,6 +1,6 @@
 11 -> A
 10.5 -> Y
-5 -> B
+8 -> B
 
 If !(Y = 10.0 && A = 10)
 Then
@@ -23,7 +23,7 @@ Then
             Disp D
         End
 
-        If (B = 5)
+        If (B = 8)
         Then
             Disp B, "B is five"
         Else if (B > 5)
@@ -43,6 +43,3 @@ Then
 Else
     Disp A, "Not 10 or less than and or equal to 15"
 End
-
-15 * 2 --> D
-Disp D, "Showing D"
