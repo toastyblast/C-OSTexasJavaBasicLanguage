@@ -15,7 +15,7 @@
 ;
 .method public static main([Ljava/lang/String;)V
 	.limit	stack	40
-	.limit	locals	3
+	.limit	locals	2
 
 	;	"This while loop will run twice after which it leaves the loop"
 	ldc	0
@@ -53,32 +53,5 @@ compDone_0:
 	goto	while_0
 whileDone_0:
 	;	"Endless while loops are also possible by giving something like 2 equals 2 or a var that always equals one value up until that might be changed in some branch"
-	;	"This for loop declares the new variable D"
-	ldc	5
-	istore	2
-for_0:
-	iload	2
-	ldc	3
-	if_icmple	compNeg_1
-	ldc	1
-	goto	compDone_1
-compNeg_1:
-	ldc	0
-compDone_1:
-
-	ifeq	forDone_0
-	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	iload	2
-	invokevirtual	java/io/PrintStream/println(I)V
-
-	iload	2
-	ldc	-1
-	iadd
-	istore	2
-
-	goto	for_0
-forDone_0:
-
-	;	"As side note D will only be available within the for loop as it was declared within said scope"
 	return
 .end method
