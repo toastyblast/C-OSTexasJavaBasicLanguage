@@ -703,14 +703,40 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         //Add all the code of the left and right comparison, this should leave two integers of either 1 or 0 each on top of the operand stack right before here.
         code.addAll(visit(ctx.left));
-        code.addAll(visit(ctx.right));
+//        code.addAll(visit(ctx.right));
+
+//        if (comparisonToken.equalsIgnoreCase("||") || comparisonToken.equalsIgnoreCase("Or")) {
+//            //This is the "Or" (or "||") logic gate.
+//            code.add("\tior");
+//        } else {
+//            //This is the "And" (or "&&") logic gate.
+//            code.add("\tiand");
+//        }
 
         if (comparisonToken.equalsIgnoreCase("||") || comparisonToken.equalsIgnoreCase("Or")) {
             //This is the "Or" (or "||") logic gate.
-            code.add("\tior");
+            //If the number on the stack from the first boolean is 1 or more (true), go to label. If 0 or less (false), go to the right code, as that might still be true.
+            code.add("\tifgt\tlogicOr_" + 999999999);
+            code.addAll(visit(ctx.right));
+            code.add("\tgoto\tlogicOrEnd_" + 999999999);
+
+            //If left is true though, we can just immediately push true on the stack (short circuit) so that the branch or loop can do an iteration.
+            code.add("logicOr_" + 999999999 + ":");
+            code.add("\tldc\t1");
+
+            code.add("logicOrEnd_" + 999999999 + ":");
         } else {
             //This is the "And" (or "&&") logic gate.
-            code.add("\tiand");
+            //If the number on the stack from the first boolean is 1 or more (true), go to label. If 0 or less (false), put 0 on the stack, as the right comparison doesn't even have to be looked at (short circuit).
+            code.add("\tifgt\tlogicAnd_" + 999999999);
+            code.add("\tldc\t0");
+            code.add("\tgoto\tlogicAndEnd_" + 999999999);
+
+            //If left is true, then right also has to be run, and if that returns true or false will dictate if the loop or branch will run.
+            code.add("logicAnd_" + 999999999 + ":");
+            code.addAll(visit(ctx.right));
+
+            code.add("logicAndEnd_" + 999999999 + ":");
         }
 
         return code;

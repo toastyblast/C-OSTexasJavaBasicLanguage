@@ -30,7 +30,30 @@ public class TJB {
 
     private static String endProg = "\n\treturn\n.end method";
 
-    private static void evaluate(String line) {
+    public static void main(String[] args) {
+        Scanner inputScanner = new Scanner(System.in);
+        String pathToCodeFile = "CODE_PLACEHOLDER";
+
+        System.out.println("Please enter the name of the text file with your TJ-B code to compile (please give the exact path from project package).");
+        System.out.print("Enter file name: ");
+        pathToCodeFile = inputScanner.nextLine();
+
+        String content = "";
+        try {
+            content = new String(Files.readAllBytes(Paths.get(pathToCodeFile)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Eval
+        try {
+            runTJBCompiler(content);
+        } catch (RuntimeException RE) {
+            System.err.println(RE.getMessage());
+        }
+    }
+
+    private static void runTJBCompiler(String line) {
         Scanner inputScanner = new Scanner(System.in);
         String programName = "CLASS_PLACEHOLDER";
         String jasminFileName = "JASMIN_PLACEHOLDER";
@@ -52,78 +75,54 @@ public class TJB {
         TJBParser parser = new TJBParser(tokens);
         ParseTree expression = parser.codeLine();
 
-        // Type check then evaulate by running the visitor
-        evaluateAndPrint(expression); // <-- Change this to checkEvaluateAndPrint when you implemented a checker
-
-        CodeGenVisitor genVisitor = new CodeGenVisitor();
-        ArrayList<String> generatedCode = genVisitor.visit(expression);
-
-        BufferedWriter writer;
-        try {
-            writer = new BufferedWriter(new FileWriter("./compilerOutput/jasminCode/" + jasminFileName));
-            writer.write(startProg.replaceAll("\\{\\{name\\}\\}", programName));
-            writer.write("\n");
-            writer.write(generatedCode.stream().collect(Collectors.joining("\n")));
-            writer.write(endProg);
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("\nCreating files with desired names in folder [./compilerOutput/]...");
-        System.out.println("Running UI outputs while compiling...");
-
-        System.out.println("\n========COMMAND OUTPUT========");
-        System.out.println("Generated Jasmin/Java ByteCode file: " + jasminFileName);
-        executedCommand("java -jar jasmin.jar ./compilerOutput/jasminCode/" + jasminFileName);
-
-        System.out.println("\nNow running the generated class file, displaying its outputs afterwards...");
-        System.out.println("==============================");
-
-        System.out.println("\n========PROGRAM OUTPUT========");
-        executedCommand("java " + programName);
-        System.out.println("==============================");
-
-        System.out.println("\n========ARCHIVE OUTPUT========");
-        executedCommand("cmd /c move ./" + programName + ".class ./compilerOutput/");
-        System.out.println("==============================");
-    }
-
-    private static void evaluateAndPrint(ParseTree parseTree) {
-        // Type check then evaulate by running the visitor
+        // Type check then runTJBCompiler by running the visitor
         try {
             TypeCheckerV2 typeChecker = new TypeCheckerV2();
-            Type type = typeChecker.visit(parseTree);  // throws on error
+            Type type = typeChecker.visit(expression);  // throws on error
+
 //            Singleton.getInstance().copyTable();
 //            for (ParserRuleContext context:
 //                    Singleton.getInstance().getCheckUpTable().keySet()) {
 //                System.out.println(Singleton.getInstance().getCheckUpTable().get(context));
 //            }
+
+            //If the typechecker did not throw an exception, then run the code generator.
+            CodeGenVisitor genVisitor = new CodeGenVisitor();
+            ArrayList<String> generatedCode = genVisitor.visit(expression);
+
+            BufferedWriter writer;
+            writer = new BufferedWriter(new FileWriter("./compilerOutput/jasminCode/" + jasminFileName));
+
+            writer.write(startProg.replaceAll("\\{\\{name\\}\\}", programName));
+            writer.write("\n");
+            writer.write(generatedCode.stream().collect(Collectors.joining("\n")));
+            writer.write(endProg);
+
+            writer.close();
+
+            //Show UI output on run terminal so the user knows what is happening.
+            System.out.println("\nCreating files with desired names in folder [./compilerOutput/]...");
+            System.out.println("Running UI outputs while compiling...");
+
+            //This shows what commands the system is doing, as to give insight for the user on what files were generated.
+            System.out.println("\n========COMMAND OUTPUT========");
+            System.out.println("Generated Jasmin/Java ByteCode file: " + jasminFileName);
+            executedCommand("java -jar jasmin.jar ./compilerOutput/jasminCode/" + jasminFileName);
+            System.out.println("==============================");
+
+            //This runs the .class file generated and prints out the output, along with the error code given.
+            System.out.println("\n========PROGRAM OUTPUT========");
+            executedCommand("java " + programName);
+            System.out.println("==============================");
+
+            //This is the final output of moving the class file to the compilerOutput folder. Java can only run files from the current directory, so that's why it is moved after said running.
+            System.out.println("\n========ARCHIVE OUTPUT========");
+            executedCommand("cmd /c move ./" + programName + ".class ./compilerOutput/");
+            System.out.println("==============================");
         } catch (CompilerException ce) {
             System.err.println("ERROR: " + ce.getMessage());
-        }
-    }
-
-    public static void main(String[] args) {
-        Scanner inputScanner = new Scanner(System.in);
-        String pathToCodeFile = "CODE_PLACEHOLDER";
-
-        System.out.println("Please enter the name of the text file with your TJ-B code to compile (please give the exact path from project package).");
-        System.out.print("Enter file name: ");
-        pathToCodeFile = inputScanner.nextLine();
-
-        String content = "";
-        try {
-            content = new String(Files.readAllBytes(Paths.get(pathToCodeFile)));
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        // Eval
-        try {
-            evaluate(content);
-        } catch (RuntimeException RE) {
-            System.err.println(RE.getMessage());
         }
     }
 
@@ -141,7 +140,7 @@ public class TJB {
             }
 
             int exitVal = pr.waitFor();
-            System.out.println("\nCommand execution finished with error code " + exitVal);
+            System.out.println("\nSYSTEM - Command execution finished with error code " + exitVal);
         } catch (Exception e) {
             System.out.println(e.toString());
             e.printStackTrace();
