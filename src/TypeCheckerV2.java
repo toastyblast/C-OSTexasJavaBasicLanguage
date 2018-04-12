@@ -527,22 +527,28 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
 
         Type iteratorValueType;
         if (iteratorType == null) {
-            if (ctx.iterVal.getText().isEmpty()) {
+            if (ctx.iterVal == null) {
+                if (ctx.iterVal.getText().isEmpty()) {
+                    throw new CompilerException(ctx, " Iterator value cannot be empty");
+                }
+                if (ctx.iterVal.getText().contains(",")) {
+                    iteratorType = Type.DOUBLE;
+                } else {
+                    iteratorType = Type.INT;
+                }
+                currentScope.addSymbol(ctx.iterator.getText(), new Symbol(ctx, iteratorType, numberOnStack));
+                numberOnStack++;
+            } else {
                 throw new CompilerException(ctx, " Iterator value cannot be empty");
             }
-            if (ctx.iterVal.getText().contains(",")) {
-                iteratorType = Type.DOUBLE;
-            } else {
-                iteratorType = Type.INT;
-            }
-            currentScope.addSymbol(ctx.iterator.getText(), new Symbol(ctx, iteratorType, numberOnStack));
-            numberOnStack++;
         }
 
         if (iteratorType == Type.INT) {
-            if (ctx.iterVal.getText().contains(".")) {
-                throw new CompilerException(ctx, ctx.iterVal.getText() + " Is a double and cannot be assigned to" +
-                        " an integer");
+            if(ctx.iterVal != null) {
+                if (ctx.iterVal.getText().contains(".")) {
+                    throw new CompilerException(ctx, ctx.iterVal.getText() + " Is a double and cannot be assigned to" +
+                            " an integer");
+                }
             }
         }
 
