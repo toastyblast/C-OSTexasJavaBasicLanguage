@@ -796,10 +796,8 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
             }
         } else {
             //The variable already exists, but the user wants to set a new value to it.
-            String newVal = ctx.iterVal.getText();
-
             //If the iterVal is being left empty, we just use the value already stored on the given var.
-            if (newVal != null && !newVal.isEmpty()) {
+            if (ctx.iterVal != null && !ctx.iterVal.getText().isEmpty()) {
                 //If there is a new value given, then store it onto the variable (typechecker enforces that both the var and new value are of the same type)
                 code.add("\tldc\t" + ctx.iterVal.getText());
 

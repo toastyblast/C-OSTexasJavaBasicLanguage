@@ -527,7 +527,7 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
 
         Type iteratorValueType;
         if (iteratorType == null) {
-            if (ctx.iterVal == null) {
+            if (ctx.iterVal != null) {
                 if (ctx.iterVal.getText().isEmpty()) {
                     throw new CompilerException(ctx, " Iterator value cannot be empty");
                 }
