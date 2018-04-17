@@ -1,7 +1,9 @@
 <COM> "This while loop will run twice after which it leaves the loop" </COM>
 0 -> A
 
-While (A < 2)
+<COM> "The comparison used in a while loop can be surrounded by brackets although this is not necessary" </COM>
+<COM> "However for for loops this is necessary" </COM>
+While A < 2
     A + 1 --> A
     Disp "While loop run done number", A, ""
 End
@@ -9,6 +11,7 @@ End
 <COM> "Endless while loops are also possible by giving something like 2 equals 2 or a var that always equals one value up until that might be changed in some branch" </COM>
 
 <COM> "This for loop declares the new variable D" </COM>
+<COM> "And as seen the for loop does need its whole loop statement surrounded by brackets" </COM>
 For (B, 5, B > 3, B += -1)
     Disp B
 End

@@ -1,0 +1,50 @@
+10 -> A
+
+<COM> "Any loop or branch has its own scope" </COM>
+<COM> "Only they and their children can access variables declared within their scope" </COM>
+<COM> "But children can access variables declared by any of their parents as seen here" </COM>
+If 1 = 1
+Then
+    <COM> "We initialize B here by using the value of A" </COM>
+    2 * A -> B
+    Disp "Value of A", A, "Value of B", B
+
+    If B = 20
+    Then
+        <COM> "Assign C and also give A the same value as C plus 1" </COM>
+        B / 4 -> C
+        C + 1 --> A
+        Disp "New value of A", A, "Value of C", C, "B remains the same"
+    End
+
+    For (B, B > 10, B += -5)
+        <COM> "Do nothing" </COM>
+    End
+
+    Disp "Value of B after internal loop", B
+End
+<COM> "Of course each else if and else branch also has its own scope just like the if" </COM>
+<COM> "So a variable declared in the if branch cannot be used by an else if or if from the same branch" </COM>
+<COM> "However it can be used by any loops or branches within said if branch as one would expect" </COM>
+
+<COM> "Seen here is that the value of A has indeed been changed by the child scopes" </COM>
+Disp "Still value of A", A, ""
+
+<COM> "Any variable declared in a while loop just like for branches has its own scope" </COM>
+While A > 3
+    A - 1 --> A
+End
+
+<COM> "Again seen here is that children can edit variables from parent scopes" </COM>
+Disp "New value of A after while loop", A, ""
+
+<COM> "Since B was declared in branches before it will not conflict here as in the main scope B does not exist yet" </COM>
+For (B, 5, B > 3, B += -1)
+    Disp B
+End
+Disp ""
+
+<COM> "To demonstrate this further we can assign B like its empty here because it was not added in this scope yet" </COM>
+15 -> B
+Disp "Declared B with value in main", B
+

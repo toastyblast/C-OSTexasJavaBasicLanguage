@@ -1,0 +1,62 @@
+10 -> A
+
+<COM> "Lets start off simple with a single comparison" </COM>
+<COM> "Change A to a different value to trigger the else branch" </COM>
+If A = 10
+Then
+    Disp "A is 10", ""
+Else
+    Disp "A is NOT 10", A, ""
+End
+
+<COM> "This is a double negation and shows that comparisons can be negated" </COM>
+If !(A != 10)
+Then
+    Disp "A is still 10", ""
+End
+
+5 -> B
+15 -> C
+
+<COM> "This shows the ability to use logic statements for branching" </COM>
+<COM> "Alternatively And and Or can be used instead" </COM>
+If (A <= 9 && B >= 6) || C > 14
+Then
+    Disp "A is less than or equal to 9 and B is more than or equal to 6 OR C is more than 14", A, B, C, ""
+End
+
+<COM> "Else if statements can also be used as many times as desired as well as including or not including an else at the end" </COM>
+If B < 5
+Then
+    Disp "B is less than 5", B, ""
+Else if A > 10
+Then
+    Disp "A is more than 10", A, ""
+Else if C = 15
+Then
+    Disp "C is 15". ""
+End
+
+1 -> D
+
+<COM> "Of course branches can be nested within branches as well and so can loops as many times as desired" </COM>
+<COM> "Also comparisons can be surrounded by brackets but this is not necessary" </COM>
+If (D = 1)
+Then
+    If A = 10
+    Then
+        Disp "A is still as ever 10"
+    Else
+        Disp "A is once more not 10", A
+    End
+Else
+    Disp "D is not 1", D
+End
+
+<COM> "To make an always true branch compare 1 to 1 and to make an always negative compare 1 to 0 for instance" </COM>
+<COM> "Everything is comparisons so terms like true and false are not supported" </COM>
+<COM> "Likewise strings and arrays cannot be compared although individual array items can be" </COM>
+
+<COM> "Of course within branches any code can be run so not only displays as shown here for educational purposes" </COM>
+<COM> "Do remember that like loops branches can only access variables from their scope or the ones of all their parents and not their children" </COM>
+<COM> "Examples on scoping can be found in the scopes file" </COM>
