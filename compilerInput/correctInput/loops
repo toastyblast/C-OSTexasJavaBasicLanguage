@@ -23,7 +23,13 @@ For (C, C < 2, C += 1)
     Disp C
 End
 
+0 -> D
+
 <COM> "Or reassign said already declared variables and increment using calculations or other vars" </COM>
+<COM> "And of course the iterator for the for loop can also be used or changed inside of the for loop" </COM>
 For (C, 10, C <= 17, C += (3 * A) + 1)
     Disp C
+    (C * 10) / 5 --> D
 End
+
+Disp D

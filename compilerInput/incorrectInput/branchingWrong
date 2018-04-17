@@ -1,0 +1,42 @@
+10 -> A
+
+<COM> "Not using a Then after an if or else if will not work" </COM>
+If A = 10
+    Disp "A is 10"
+Else if A = 15
+    Disp "A is 15"
+Else
+Then
+    <COM> "Using Then after an else is also wrong" </COM>
+    Disp "A is any other value", A, ""
+End
+
+<COM> "You cannot compare strings or arrays" </COM>
+If "Hello" = "Hello"
+Then
+    Disp "This cannot happen"
+End
+
+<COM> "There cannot be an else or else if without there being an if first" </COM>
+Else if A = 20
+Then
+    Disp "Cannot happen either"
+End
+
+Else
+    Disp "Not happening as well"
+End
+
+<COM> "Branches are only closed at the very end, and not inbetween" </COM>
+If A = 10
+Then
+    Disp "A is 10"
+End
+Else if A = 15
+Then
+    Disp "A is 15"
+End
+Else
+    <COM> "Using Then after an else is also wrong" </COM>
+    Disp "A is any other value", A, ""
+End

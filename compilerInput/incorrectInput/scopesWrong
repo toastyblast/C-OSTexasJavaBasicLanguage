@@ -1,0 +1,23 @@
+A -> 10
+
+If (A = 10)
+Then
+    20 -> B
+
+    If (B < 25 && A = 10)
+        (B * 6) / 2 -> D
+    End
+
+    <COM> "D cannot be used here as it is part of the for loop scope and not the current scope" </COM>
+    2 * D -> E
+
+    For (C, 5, C <= 9, C += 1)
+        Disp C
+    End
+End
+
+<COM> "B cannot be displayed as it is not part of this scope" </COM>
+Disp B
+
+<COM> "The rule scoping has is that whatever is declared in your scope or that of any of your parents you can access" </COM>
+<COM> "However you cannot access any of the variables of your children as their scope is under yours" </COM>

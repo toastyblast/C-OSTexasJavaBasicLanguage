@@ -1,0 +1,43 @@
+A -> 10
+
+<COM> "A value used for the while loop has to exist and must be a valid number comparison" </COM>
+While B > 5
+    A - 1 --> B
+End
+
+<COM> "Just how it cannot use a value first declared within it or by any children in it" </COM>
+While C > 50
+    100 -> C
+    C - 1 --> C
+End
+
+<COM> "Since A is already an integer you cannot reassign a double to it" </COM>
+For (A, 0.1, A < 0.9, A += 0.1)
+    Disp A
+End
+
+<COM> "Just like how a variable not existing or defined within the for loop cannot be used as its iterator condition" </COM>
+<COM> "To use a new variable right after giving its name the second optional value has to be its starting number" </COM>
+For (B, B > 15, B += -5)
+    Disp B
+End
+
+<COM> "You also cannot increment the iterator with a comparison or a value of a different type than the iterator or any other wrong variable or value type like a string" </COM>
+For (B, 10, B < 20, B += 15 < B)
+    Disp B
+End
+
+<COM> "In the increments a different variable than the one declared to be used as the iterator here A has to be B" </COM>
+For (B, 15, B < 30, A += 5)
+    Disp B
+End
+
+<COM> "While and for loops must not start with a Then statement like you would with branching" </COM>
+While A = 10
+Then
+    A - 1 --> A
+End
+
+<COM> "While and for loops have to be closed with an End statement" </COM>
+For (B, 5, B < 10, B += 10 / 10)
+    Disp B

@@ -26,7 +26,8 @@ Then
 End
 
 <COM> "Else if statements can also be used as many times as desired as well as including or not including an else at the end" </COM>
-If B < 5
+<COM> "And calculations with or without variables can also be used in the comparisons" </COM>
+If B < 2 * 3
 Then
     Disp "B is less than 5", B, ""
 Else if A > 10

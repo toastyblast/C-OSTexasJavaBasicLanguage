@@ -15,217 +15,148 @@
 ;
 .method public static main([Ljava/lang/String;)V
 	.limit	stack	40
-	.limit	locals	6
+	.limit	locals	5
 
-	ldc	10
+	;	"This while loop will run twice after which it leaves the loop"
+	ldc	0
 	istore	1
 
-	;	"Any loop or branch has its own scope"
-	;	"Only they and their children can access variables declared within their scope"
-	;	"But children can access variables declared by any of their parents as seen here"
-if_0:
-	ldc	1
-	ldc	1
-	if_icmpne	compNeg_0
+	;	"The comparison used in a while loop can be surrounded by brackets although this is not necessary"
+	;	"However for for loops this is necessary"
+while_0:
+	iload	1
+	ldc	2
+	if_icmpge	compNeg_0
 	ldc	1
 	goto	compDone_0
 compNeg_0:
 	ldc	0
 compDone_0:
 
-	ifeq	ifDone_0
-	;	"We initialize B here by using the value of A"
-	ldc	2
+	ifeq	whileDone_0
 	iload	1
-	imul
+	ldc	1
+	iadd
 
+	istore	1
+
+	getstatic	java/lang/System/out	Ljava/io/PrintStream;
+	ldc	"While loop run done number"
+	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
+
+	getstatic	java/lang/System/out	Ljava/io/PrintStream;
+	iload	1
+	invokevirtual	java/io/PrintStream/println(I)V
+
+	getstatic	java/lang/System/out	Ljava/io/PrintStream;
+	ldc	""
+	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
+
+	goto	while_0
+whileDone_0:
+	;	"Endless while loops are also possible by giving something like 2 equals 2 or a var that always equals one value up until that might be changed in some branch"
+	;	"This for loop declares the new variable D"
+	;	"And as seen the for loop does need its whole loop statement surrounded by brackets"
+	ldc	5
 	istore	2
-
-	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	ldc	"Value of A"
-	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
-
-	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	iload	1
-	invokevirtual	java/io/PrintStream/println(I)V
-
-	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	ldc	"Value of B"
-	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
-
-	getstatic	java/lang/System/out	Ljava/io/PrintStream;
+for_0:
 	iload	2
-	invokevirtual	java/io/PrintStream/println(I)V
-
-if_1:
-	iload	2
-	ldc	20
-	if_icmpne	compNeg_1
+	ldc	3
+	if_icmple	compNeg_1
 	ldc	1
 	goto	compDone_1
 compNeg_1:
 	ldc	0
 compDone_1:
 
-	ifeq	ifDone_1
-	;	"Assign C and also give A the same value as C plus 1"
-	iload	2
-	ldc	4
-	idiv
-
-	istore	3
-
-	iload	3
-	ldc	1
-	iadd
-
-	istore	1
-
-	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	ldc	"New value of A"
-	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
-
-	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	iload	1
-	invokevirtual	java/io/PrintStream/println(I)V
-
-	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	ldc	"Value of C"
-	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
-
-	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	iload	3
-	invokevirtual	java/io/PrintStream/println(I)V
-
-	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	ldc	"B remains the same"
-	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
-
-	goto	allDone_1
-ifDone_1:
-allDone_1:
-
-for_0:
-	iload	2
-	ldc	10
-	if_icmple	compNeg_2
-	ldc	1
-	goto	compDone_2
-compNeg_2:
-	ldc	0
-compDone_2:
-
 	ifeq	forDone_0
-	;	"Do nothing"
+	getstatic	java/lang/System/out	Ljava/io/PrintStream;
 	iload	2
-	ldc	-5
+	invokevirtual	java/io/PrintStream/println(I)V
+
+	iload	2
+	ldc	-1
 	iadd
 	istore	2
 
 	goto	for_0
 forDone_0:
 
-	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	ldc	"Value of B after internal loop"
-	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
+	;	"As side note B will only be available within the for loop as it was declared within said scope"
+	;	"But for loops can also use variables already declared"
+	ldc	0
+	istore	3
 
+for_1:
+	iload	3
+	ldc	2
+	if_icmpge	compNeg_2
+	ldc	1
+	goto	compDone_2
+compNeg_2:
+	ldc	0
+compDone_2:
+
+	ifeq	forDone_1
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	iload	2
+	iload	3
 	invokevirtual	java/io/PrintStream/println(I)V
 
-	goto	allDone_0
-ifDone_0:
-allDone_0:
+	iload	3
+	ldc	1
+	iadd
+	istore	3
 
-	;	"Of course each else if and else branch also has its own scope just like the if"
-	;	"So a variable declared in the if branch cannot be used by an else if or if from the same branch"
-	;	"However it can be used by any loops or branches within said if branch as one would expect"
-	;	"Seen here is that the value of A has indeed been changed by the child scopes"
-	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	ldc	"Still value of A"
-	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
+	goto	for_1
+forDone_1:
 
-	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	iload	1
-	invokevirtual	java/io/PrintStream/println(I)V
+	ldc	0
+	istore	4
 
-	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	ldc	""
-	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
-
-	;	"Any variable declared in a while loop just like for branches has its own scope"
-while_0:
-	iload	1
-	ldc	3
-	if_icmple	compNeg_3
+	;	"Or reassign said already declared variables and increment using calculations or other vars"
+	;	"And of course the iterator for the for loop can also be used or changed inside of the for loop"
+	ldc	10
+	istore	3
+for_2:
+	iload	3
+	ldc	17
+	if_icmpgt	compNeg_3
 	ldc	1
 	goto	compDone_3
 compNeg_3:
 	ldc	0
 compDone_3:
 
-	ifeq	whileDone_0
-	iload	1
-	ldc	1
-	isub
-
-	istore	1
-
-	goto	while_0
-whileDone_0:
-	;	"Again seen here is that children can edit variables from parent scopes"
+	ifeq	forDone_2
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	ldc	"New value of A after while loop"
-	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
-
-	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	iload	1
+	iload	3
 	invokevirtual	java/io/PrintStream/println(I)V
 
-	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	ldc	""
-	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
+	iload	3
+	ldc	10
+	imul
 
-	;	"Since B was declared in branches before it will not conflict here as in the main scope B does not exist yet"
 	ldc	5
+	idiv
+
 	istore	4
-for_1:
-	iload	4
+
+	iload	3
 	ldc	3
-	if_icmple	compNeg_4
+	iload	1
+	imul
+
 	ldc	1
-	goto	compDone_4
-compNeg_4:
-	ldc	0
-compDone_4:
-
-	ifeq	forDone_1
-	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	iload	4
-	invokevirtual	java/io/PrintStream/println(I)V
-
-	iload	4
-	ldc	-1
 	iadd
-	istore	4
 
-	goto	for_1
-forDone_1:
+	iadd
+	istore	3
 
-	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	ldc	""
-	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
-
-	;	"To demonstrate this further we can assign B like its empty here because it was not added in this scope yet"
-	ldc	15
-	istore	5
+	goto	for_2
+forDone_2:
 
 	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	ldc	"Declared B with value in main"
-	invokevirtual	java/io/PrintStream/println(Ljava/lang/String;)V
-
-	getstatic	java/lang/System/out	Ljava/io/PrintStream;
-	iload	5
+	iload	4
 	invokevirtual	java/io/PrintStream/println(I)V
 
 	return

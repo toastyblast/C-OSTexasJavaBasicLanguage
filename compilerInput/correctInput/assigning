@@ -7,6 +7,11 @@ Disp "Value of A should be 10", A
 2 * 3 --> A
 Disp "", "New value of A should be 6", A
 
+<COM> "Likewise if a calculation is done with two integers the result will always be a rounded integer" </COM>
+<COM> "And due to the way Java runs calculations 2 and a half from a calculation is rounded down due to precision" </COM>
+5 / 2 --> A
+Disp "", "New new value of a should be 2", A
+
 <COM> "Float assignment and reassignment" </COM>
 15.75 -> B
 Disp "", "Value of B should be 15 75", B
@@ -21,3 +26,4 @@ Disp "", "Ouput string 1", Str1
 
 <COM> "Also do some array assignments the arrays available are L1 to L6" </COM>
 <COM> "However new lists can be made with variables starting with l     small L     followed by up to five characters or numbers" </COM>
+<COM> "MARTIN DO SOME ARRAY ASSIGNMENTS HERE" </COM>

@@ -1,0 +1,22 @@
+10 -> A
+0.1 -> B
+"Spam egg" -> Str1
+
+<COM> "This cannot be done as the arrow needs two dashes to reassign an already existing value" </COM>
+15 -> A
+0.5 -> B
+"Shazbot" -> Str1
+
+<COM> "You can also not assign a different type to an already existing variable" </COM>
+5.7 --> A
+9 --> B
+"Hello world" --> A
+50 --> Str1
+
+<COM> "Calculations that result in a value of a different type can also not be put into already existing variables of a different type" </COM>
+5 / 2.0 --> A
+Disp A
+7.5 * 2 --> B
+5.5 % 5 --> A
+
+<COM> "MARTIN DO SOME WRONG ARRAY STUFF HERE" </COM>

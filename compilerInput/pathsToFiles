@@ -1,0 +1,16 @@
+This file includes the paths to all the files in the "compilerInput" folder to test the programming language.
+Use these when running the TJB main class when it prompts for a text file, which is the first thing it will ask for when running.
+
+CORRECT FILES:
+- ./compilerInput/correctInput/assigning
+- ./compilerInput/correctInput/branching
+- ./compilerInput/correctInput/loops
+- ./compilerInput/correctInput/scanners
+- ./compilerInput/correctInput/scopes
+
+INCORRECT FILES:
+- ./compilerInput/incorrectInput/assigningWrong
+- ./compilerInput/incorrectInput/branchingWrong
+- ./compilerInput/incorrectInput/loopsWrong
+- ./compilerInput/incorrectInput/scannersWrong
+- ./compilerInput/incorrectInput/scopesWrong
