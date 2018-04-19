@@ -76,6 +76,8 @@ assignment:
           | scnr=checkSCNID '.close'                            #ScannerCls
 
           | value=calculation ASN name=arrayGetValue            #AsnArrVal //Assign a value to an array position.
+          | value=STR ASN name=arrayGetValue                    #StrArrAsn
+          | value=checkSTRID CPYASN name=arrayGetValue          #StrArrAsnVar
 
           | scnr=checkSCNID '.nextStr' ASN name=arrayGetValue   #StrArrValUsrIn //Take user input and assign the given string to the array position.
           | scnr=checkSCNID '.nextInt'  ASN name=arrayGetValue  #IntArrValUsrIn //Take user input and assign the int to the array position.
@@ -93,7 +95,7 @@ CPYASN: '-->';
 VAR: [A-Z]+;
 STRID: 'Str' [0-9]+;
 SCNID: 'Scn' [0-9]+;
-STR: '"' ('a'..'z' | 'A'..'Z' | ' ' | [0-9])+ '"' | '""';
+STR: '"' ('a'..'z' | 'A'..'Z' | ' ' | [0-9] | '#' )+ '"' | '""';
 COMPTKN: '<' | '<=' | '=' | '!=' | '>' | '>=';
 LOGTKN: ('||' | 'And') | ('&&' | 'Or');
 ARRAY: ('L' | 'l') (INT|VAR)+;

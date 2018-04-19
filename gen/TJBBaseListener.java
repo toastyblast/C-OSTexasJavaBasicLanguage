@@ -627,6 +627,30 @@ public class TJBBaseListener implements TJBListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterStrArrAsn(TJBParser.StrArrAsnContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitStrArrAsn(TJBParser.StrArrAsnContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterStrArrAsnVar(TJBParser.StrArrAsnVarContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitStrArrAsnVar(TJBParser.StrArrAsnVarContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterStrArrValUsrIn(TJBParser.StrArrValUsrInContext ctx) { }
 	/**
 	 * {@inheritDoc}

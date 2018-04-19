@@ -356,6 +356,20 @@ public interface TJBVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAsnArrVal(TJBParser.AsnArrValContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code StrArrAsn}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStrArrAsn(TJBParser.StrArrAsnContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code StrArrAsnVar}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStrArrAsnVar(TJBParser.StrArrAsnVarContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code StrArrValUsrIn}
 	 * labeled alternative in {@link TJBParser#assignment}.
 	 * @param ctx the parse tree

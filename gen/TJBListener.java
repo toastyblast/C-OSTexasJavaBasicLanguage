@@ -597,6 +597,30 @@ public interface TJBListener extends ParseTreeListener {
 	 */
 	void exitAsnArrVal(TJBParser.AsnArrValContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code StrArrAsn}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterStrArrAsn(TJBParser.StrArrAsnContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code StrArrAsn}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitStrArrAsn(TJBParser.StrArrAsnContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code StrArrAsnVar}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterStrArrAsnVar(TJBParser.StrArrAsnVarContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code StrArrAsnVar}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitStrArrAsnVar(TJBParser.StrArrAsnVarContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code StrArrValUsrIn}
 	 * labeled alternative in {@link TJBParser#assignment}.
 	 * @param ctx the parse tree

@@ -797,6 +797,10 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         if (type == null) {
             throw new CompilerException(ctx, ctx.name.getText() + " Is not defined");
         }
+
+        if (type != Type.DOUBLE){
+            throw new CompilerException(ctx, ctx.name.getText() + " Cannot assign double to an int");
+        }
         addCtx(ctx, Type.DOUBLE);
         return Type.DOUBLE;
     }
@@ -939,5 +943,46 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         }
         addCtx(ctx, Type.STRING);
         return super.visitCpyAsnStrFromArr(ctx);
+    }
+
+    @Override
+    public Type visitStrArrAsn(TJBParser.StrArrAsnContext ctx) {
+        return super.visitStrArrAsn(ctx);
+    }
+
+    @Override
+    public Type visitStrArrAsnVar(TJBParser.StrArrAsnVarContext ctx) {
+        Type type = visit(ctx.value);
+        if (type == null){
+            throw new CompilerException(ctx, ctx.value.getText() + " Is not defined.");
+        }
+        return super.visitStrArrAsnVar(ctx);
+    }
+
+    @Override
+    public Type visitStrArrValUsrIn(TJBParser.StrArrValUsrInContext ctx) {
+        Type type = visit(ctx.name);
+        if (type != Type.STRING){
+            throw new CompilerException(ctx, ctx.name.getText() + " Array type does not match type of the value.");
+        }
+        return super.visitStrArrValUsrIn(ctx);
+    }
+
+    @Override
+    public Type visitIntArrValUsrIn(TJBParser.IntArrValUsrInContext ctx) {
+        Type type = visit(ctx.name);
+        if (type == Type.STRING){
+            throw new CompilerException(ctx, ctx.name.getText() + " Array type does not match type of the value");
+        }
+        return super.visitIntArrValUsrIn(ctx);
+    }
+
+    @Override
+    public Type visitDblArrValUsrIn(TJBParser.DblArrValUsrInContext ctx) {
+        Type type = visit(ctx.name);
+        if (type != Type.DOUBLE){
+            throw new CompilerException(ctx, ctx.name.getText() + " Array type does not match type of the value.");
+        }
+        return super.visitDblArrValUsrIn(ctx);
     }
 }

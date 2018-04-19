@@ -1060,7 +1060,6 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.add("\taload_" + indexOffset);
         code.add("\tinvokevirtual\t" + "java/util/Scanner/nextInt()I");
         code.add("\tistore " + place);
-
         return code;
     }
 
@@ -1077,7 +1076,12 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         code.add("\taload_" + indexOffset);
         code.add("\tinvokevirtual\t" + "java/util/Scanner/nextInt()I");
-        code.add("\tistore " + numberIndexOffset);
+        if (singleton.getCheckUpTable().get(ctx.name).getType() == Type.DOUBLE){
+            code.add("\ti2f\t");
+            code.add("\tfastore " + numberIndexOffset);
+        } else {
+            code.add("\tistore " + numberIndexOffset);
+        }
 
         return code;
     }
@@ -1239,9 +1243,12 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         code.add("\taload_" + indexOffset);
         code.add("\tinvokevirtual\t" + "java/util/Scanner/nextInt()I");
-
-        code.add("\tiastore\t");
-
+        if (singleton.getCheckUpTable().get(ctx.name).getType() == Type.DOUBLE){
+            code.add("\ti2f\t");
+            code.add("\tfastore\t");
+        } else {
+            code.add("\tiastore\t");
+        }
         return code;
     }
 
@@ -1265,6 +1272,27 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         code.add("\tfastore\t");
 
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitStrArrAsnVar(TJBParser.StrArrAsnVarContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+        int copyIndexOffset = singleton.getCheckUpTable().get(ctx.value).getNumberOnStack();
+
+        code.addAll(visit(ctx.name));
+        code.add("\taload\t" + copyIndexOffset);
+        code.add("\taastore\t");
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitStrArrAsn(TJBParser.StrArrAsnContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        code.addAll(visit(ctx.name));
+        code.add("\tldc\t" + ctx.value.getText());
+        code.add("\taastore\t");
         return code;
     }
 }
