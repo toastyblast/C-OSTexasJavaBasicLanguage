@@ -90,14 +90,17 @@ public class TJB {
             CodeGenVisitor genVisitor = new CodeGenVisitor();
             ArrayList<String> generatedCode = genVisitor.visit(expression);
 
+            //This is here to write the generated jasmin code array made by the code generator to an actual text file.
+            //The text file is then used by the Java library to build the class file and run that.
             BufferedWriter writer;
             writer = new BufferedWriter(new FileWriter("./compilerOutput/jasminCode/" + jasminFileName));
 
+            //Take the header defined at the top of this class, then turn the string into actual text and finally add
+            // the end program string from the top of this class as well.
             writer.write(startProg.replaceAll("\\{\\{name\\}\\}", programName));
             writer.write("\n");
             writer.write(generatedCode.stream().collect(Collectors.joining("\n")));
             writer.write(endProg);
-
             writer.close();
 
             //Show UI output on run terminal so the user knows what is happening.
