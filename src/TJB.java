@@ -32,7 +32,7 @@ public class TJB {
 
     public static void main(String[] args) {
         Scanner inputScanner = new Scanner(System.in);
-        String pathToCodeFile = "CODE_PLACEHOLDER";
+        String pathToCodeFile;
 
         System.out.println("Please enter the name of the text file with your TJ-B code to compile (please give the exact path from project package).");
         System.out.print("Enter file name: ");
@@ -55,8 +55,7 @@ public class TJB {
 
     private static void runTJBCompiler(String line) {
         Scanner inputScanner = new Scanner(System.in);
-        String programName = "CLASS_PLACEHOLDER";
-        String jasminFileName = "JASMIN_PLACEHOLDER";
+        String programName, jasminFileName;
 
         System.out.println("\nPlease enter a name for your program's generated Java Bytecode/Class file.");
         System.out.print("Enter class name: ");
