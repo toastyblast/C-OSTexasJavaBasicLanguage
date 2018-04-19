@@ -1,4 +1,4 @@
-// Generated from D:/IdeaProjects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
+// Generated from D:/School/Projects/Java Projects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -26,6 +26,18 @@ public interface TJBListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExpression(TJBParser.ExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ExArrLiteral}
+	 * labeled alternative in {@link TJBParser#calculation}.
+	 * @param ctx the parse tree
+	 */
+	void enterExArrLiteral(TJBParser.ExArrLiteralContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ExArrLiteral}
+	 * labeled alternative in {@link TJBParser#calculation}.
+	 * @param ctx the parse tree
+	 */
+	void exitExArrLiteral(TJBParser.ExArrLiteralContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code ExNegate}
 	 * labeled alternative in {@link TJBParser#calculation}.
@@ -573,6 +585,78 @@ public interface TJBListener extends ParseTreeListener {
 	 */
 	void exitScannerCls(TJBParser.ScannerClsContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code AsnArrVal}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterAsnArrVal(TJBParser.AsnArrValContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code AsnArrVal}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitAsnArrVal(TJBParser.AsnArrValContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code StrArrValUsrIn}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterStrArrValUsrIn(TJBParser.StrArrValUsrInContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code StrArrValUsrIn}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitStrArrValUsrIn(TJBParser.StrArrValUsrInContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code IntArrValUsrIn}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterIntArrValUsrIn(TJBParser.IntArrValUsrInContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code IntArrValUsrIn}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitIntArrValUsrIn(TJBParser.IntArrValUsrInContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code DblArrValUsrIn}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterDblArrValUsrIn(TJBParser.DblArrValUsrInContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code DblArrValUsrIn}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitDblArrValUsrIn(TJBParser.DblArrValUsrInContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code AsnStrFromArr}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterAsnStrFromArr(TJBParser.AsnStrFromArrContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code AsnStrFromArr}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitAsnStrFromArr(TJBParser.AsnStrFromArrContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code CpyAsnStrFromArr}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterCpyAsnStrFromArr(TJBParser.CpyAsnStrFromArrContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code CpyAsnStrFromArr}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitCpyAsnStrFromArr(TJBParser.CpyAsnStrFromArrContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link TJBParser#arrayBuild}.
 	 * @param ctx the parse tree
 	 */
@@ -582,6 +666,16 @@ public interface TJBListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitArrayBuild(TJBParser.ArrayBuildContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TJBParser#arrayGetValue}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrayGetValue(TJBParser.ArrayGetValueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TJBParser#arrayGetValue}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrayGetValue(TJBParser.ArrayGetValueContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TJBParser#checkSTRID}.
 	 * @param ctx the parse tree

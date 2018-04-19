@@ -21,6 +21,7 @@ calculation: '(' val=calculation ')'                                          # 
           | DBL                                                               # ExDblLiteral
           | NIN                                                               # ExNegLiteral
           | INT                                                               # ExIntLiteral
+          | arrayGetValue                                                     # ExArrLiteral
           ;
 
 ifTJB: ifStatement (elseIfStatement)* (elsePart=elseStatement)? 'End';
@@ -40,7 +41,7 @@ booleanEXP: '(' bool=booleanEXP ')'                         #BoolParentheses
 
 whileTJB: 'While' bool=booleanEXP (expression)* 'End';
 
-display: 'Disp' displayOptions (',' displayOptions)*;
+display: line=('Dispn' | 'Displn') displayOptions (',' displayOptions)*;
 
 forTJB: 'For' '(' iterator=checkVAR  (',' iterVal=(INT | DBL))? ',' comp=booleanEXP ',' increments=incrementEXP ')' expression* 'End';
 incrementEXP: nameVar=checkVAR '+=' calc=calculation;
@@ -54,7 +55,8 @@ displayOptions:
           | name=checkArray      #DispArray
           ;
 
-assignment: value=calculation ASN name=checkVAR       #NumAsn //Declaration of a number + inital assign.
+assignment:
+            value=calculation ASN name=checkVAR       #NumAsn //Declaration of a number + inital assign.
           | value=STR ASN name=checkSTRID             #StrAsn //Declaration of a string + inital assign.
           | value=checkSTRID ASN name=checkSTRID      #StrCpyAsn //Declaration of a string + copying the value of another string variable.
           | value=arrayBuild ASN name=checkArray      #ArrAsn //Declaration of an array + inital assign.
@@ -63,17 +65,28 @@ assignment: value=calculation ASN name=checkVAR       #NumAsn //Declaration of a
           | value=calculation CPYASN name=checkVAR    #NumAsnVAR //Changing the value of an already existing number.
           | value=checkSTRID CPYASN name=checkSTRID   #StrAsnVAR //Changing the value of an already existing string (value from another existing string).
           | value=STR CPYASN name=checkSTRID          #StrAsnNEWVAR //Changing the value of an already existing string (value from user typed string).
-          | scnr=checkSCNID '.nextStr' ASN name=checkSTRID   #StrAsnUsrIn
-          | scnr=checkSCNID '.nextStr' CPYASN name=checkSTRID #StrAsnUsrInVAR
-          | scnr=checkSCNID '.nextInt'  ASN name=checkVAR    #NumAsnUsrInt
-          | scnr=checkSCNID '.nextInt' CPYASN name=checkVAR  #NumAsnUsrIntVAR
-          | scnr=checkSCNID '.nextDbl'  ASN name=checkVAR    #NumAsnUsrDbl
-          | scnr=checkSCNID '.nextDbl' CPYASN name=checkVAR  #NumAsnUsrDblVAR
-          | 'Scanner ' name=checkSCNID ';'                   #ScannerAsn
-          | scnr=checkSCNID '.close'                         #ScannerCls
+
+          | scnr=checkSCNID '.nextStr' ASN name=checkSTRID      #StrAsnUsrIn
+          | scnr=checkSCNID '.nextStr' CPYASN name=checkSTRID   #StrAsnUsrInVAR
+          | scnr=checkSCNID '.nextInt'  ASN name=checkVAR       #NumAsnUsrInt
+          | scnr=checkSCNID '.nextInt' CPYASN name=checkVAR     #NumAsnUsrIntVAR
+          | scnr=checkSCNID '.nextDbl'  ASN name=checkVAR       #NumAsnUsrDbl
+          | scnr=checkSCNID '.nextDbl' CPYASN name=checkVAR     #NumAsnUsrDblVAR
+          | 'Scanner ' name=checkSCNID ';'                      #ScannerAsn
+          | scnr=checkSCNID '.close'                            #ScannerCls
+
+          | value=calculation ASN name=arrayGetValue            #AsnArrVal //Assign a value to an array position.
+
+          | scnr=checkSCNID '.nextStr' ASN name=arrayGetValue   #StrArrValUsrIn //Take user input and assign the given string to the array position.
+          | scnr=checkSCNID '.nextInt'  ASN name=arrayGetValue  #IntArrValUsrIn //Take user input and assign the int to the array position.
+          | scnr=checkSCNID '.nextDbl'  ASN name=arrayGetValue  #DblArrValUsrIn //Take user input and assing the double to the array position.
+
+          | value=arrayGetValue ASN name=checkSTRID             #AsnStrFromArr //Get a value from an array and use it to create a new string value;
+          | value=arrayGetValue CPYASN name=checkSTRID          #CpyAsnStrFromArr //Get a value from an array and use it to overwrite an old string.
           ;
 
 arrayBuild: '{' (NIN | INT | DBL | checkSTRID | calculation | STR) (',' (NIN | INT | DBL | checkSTRID | calculation | STR))* '}';
+arrayGetValue: arrayName = checkArray '.[' number=INT']';
 
 ASN: '->';
 CPYASN: '-->';

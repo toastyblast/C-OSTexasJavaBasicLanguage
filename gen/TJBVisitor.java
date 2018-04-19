@@ -1,4 +1,4 @@
-// Generated from D:/IdeaProjects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
+// Generated from D:/School/Projects/Java Projects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -21,6 +21,13 @@ public interface TJBVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitExpression(TJBParser.ExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ExArrLiteral}
+	 * labeled alternative in {@link TJBParser#calculation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExArrLiteral(TJBParser.ExArrLiteralContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code ExNegate}
 	 * labeled alternative in {@link TJBParser#calculation}.
@@ -342,11 +349,59 @@ public interface TJBVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitScannerCls(TJBParser.ScannerClsContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code AsnArrVal}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAsnArrVal(TJBParser.AsnArrValContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code StrArrValUsrIn}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStrArrValUsrIn(TJBParser.StrArrValUsrInContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code IntArrValUsrIn}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIntArrValUsrIn(TJBParser.IntArrValUsrInContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code DblArrValUsrIn}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDblArrValUsrIn(TJBParser.DblArrValUsrInContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code AsnStrFromArr}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAsnStrFromArr(TJBParser.AsnStrFromArrContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code CpyAsnStrFromArr}
+	 * labeled alternative in {@link TJBParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCpyAsnStrFromArr(TJBParser.CpyAsnStrFromArrContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link TJBParser#arrayBuild}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitArrayBuild(TJBParser.ArrayBuildContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TJBParser#arrayGetValue}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayGetValue(TJBParser.ArrayGetValueContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TJBParser#checkSTRID}.
 	 * @param ctx the parse tree

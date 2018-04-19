@@ -104,8 +104,8 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
 //            return Type.ARRAY;
 //        }
         if (ifVariableExists(value, currentScope)){
-            addCtx(ctx, Type.ARRAY);
-            return Type.ARRAY;
+            addCtx(ctx, getVariableType(value, currentScope));
+            return getVariableType(value, currentScope);
         }
         return null;
     }
@@ -272,14 +272,15 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
     @Override
     public Type visitArrAsn(TJBParser.ArrAsnContext ctx) {
         Type name = visit(ctx.name);
+        Type typeOfArray = visit(ctx.value);
 
         if (name != null) {
             throw new CompilerException(ctx, ctx.name.getText() + " Is already defined.");
         }
         currentScope.getSymTable().put(ctx.name.getText()
-                , new Symbol(ctx, Type.ARRAY, numberOnStack));
+                , new Symbol(ctx, typeOfArray, numberOnStack));
         numberOnStack++;
-        addCtx(ctx, Type.ARRAY);
+        addCtx(ctx, typeOfArray);
         return super.visitArrAsn(ctx);
     }
 
@@ -724,7 +725,7 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
             }
         }
 
-        addCtx(ctx, type);
+//        addCtx(ctx, type);
         return type;
     }
 
@@ -836,6 +837,8 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         return Type.STRING;
     }
 
+    //Scanner.
+
     @Override
     public Type visitScannerCls(TJBParser.ScannerClsContext ctx) {
         Type type = visit(ctx.scnr);
@@ -871,5 +874,70 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
             return type;
         }
         return null;
+    }
+
+    //Get array value.
+
+    @Override
+    public Type visitArrayGetValue(TJBParser.ArrayGetValueContext ctx) {
+        Type typeOfArray = visit(ctx.arrayName);
+        Type typeOfValue = null;
+
+        if (typeOfArray == null){
+            throw new CompilerException(ctx, ctx.arrayName.getText() + " List does not exist");
+        }
+
+        if (typeOfArray == Type.DOUBLEARRAY){
+            typeOfValue = Type.DOUBLE;
+        } else if (typeOfArray == Type.INTARRAY){
+            typeOfValue = Type.INT;
+        } else if (typeOfArray == Type.STRINGARRAY){
+            typeOfValue = Type.STRING;
+        }
+        addCtx(ctx, typeOfValue);
+        return typeOfValue;
+    }
+
+    @Override
+    public Type visitAsnArrVal(TJBParser.AsnArrValContext ctx) {
+        Type value = visit(ctx.value);
+        Type arrValue = visit(ctx.name);
+
+        if (arrValue == Type.INT && value == Type.DOUBLE){
+            throw new CompilerException(ctx, ctx.getText() + " You cannot assign double to an int.");
+        }
+        return arrValue;
+    }
+
+    @Override
+    public Type visitExArrLiteral(TJBParser.ExArrLiteralContext ctx) {
+        Type type = visit(ctx.arrayGetValue());
+        addCtx(ctx, type);
+        return type;
+    }
+
+    @Override
+    public Type visitAsnStrFromArr(TJBParser.AsnStrFromArrContext ctx) {
+        Type name = visit(ctx.name);
+
+        if (name != null) {
+            throw new CompilerException(ctx, ctx.name.getText() + " Is already defined.");
+        }
+        currentScope.getSymTable().put(ctx.name.getText()
+                , new Symbol(ctx, Type.STRING, numberOnStack));
+        numberOnStack++;
+        addCtx(ctx, Type.STRING);
+        return super.visitAsnStrFromArr(ctx);
+    }
+
+    @Override
+    public Type visitCpyAsnStrFromArr(TJBParser.CpyAsnStrFromArrContext ctx) {
+        Type name = visit(ctx.name);
+
+        if (name == null) {
+            throw new CompilerException(ctx, ctx.name.getText() + " Is not defined.");
+        }
+        addCtx(ctx, Type.STRING);
+        return super.visitCpyAsnStrFromArr(ctx);
     }
 }

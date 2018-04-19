@@ -93,7 +93,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
             }
         }
 
-        Type type = singleton.getCheckUpTable().get(ctx.value).getType();
+        Type type = singleton.getCheckUpTable().get(ctx).getType();
         code.add("\tldc\t" + terminalNodes.size());
 
         switch (type) {
@@ -876,10 +876,12 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         return code;
     }
 
+    private boolean newLine = false;
     @Override
     public ArrayList<String> visitDisplay(TJBParser.DisplayContext ctx) {
         ArrayList<String> code = new ArrayList<>();
 
+        newLine = !ctx.line.getText().equals("Dispn");
         for (TJBParser.DisplayOptionsContext displayOptions : ctx.displayOptions()) {
             code.addAll(visit(displayOptions));
         }
@@ -893,7 +895,12 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
         code.add("\tldc\t" + ctx.STR().getText());
-        code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava/lang/String;)V\n");
+        if (newLine){
+            code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava/lang/String;)V\n");
+        } else {
+            code.add("\tinvokevirtual\tjava/io/PrintStream/print(Ljava/lang/String;)V\n");
+        }
+
 
         return code;
     }
@@ -907,7 +914,11 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         int indexOffset = singleton.getCheckUpTable().get(ctx.name).getNumberOnStack();
 
         code.add("\taload\t" + indexOffset);
-        code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava/lang/String;)V\n");
+        if (newLine){
+            code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava/lang/String;)V\n");
+        } else {
+            code.add("\tinvokevirtual\tjava/io/PrintStream/print(Ljava/lang/String;)V\n");
+        }
 
         return code;
     }
@@ -922,10 +933,18 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         Type type = singleton.getCheckUpTable().get(ctx).getType();
         switch (type) {
             case INT:
-                code.add("\tinvokevirtual\tjava/io/PrintStream/println(I)V\n");
+                if (newLine){
+                    code.add("\tinvokevirtual\tjava/io/PrintStream/println(I)V\n");
+                } else {
+                    code.add("\tinvokevirtual\tjava/io/PrintStream/print(I)V\n");
+                }
                 break;
             case DOUBLE:
-                code.add("\tinvokevirtual\tjava/io/PrintStream/println(F)V\n");
+                if (newLine){
+                    code.add("\tinvokevirtual\tjava/io/PrintStream/println(F)V\n");
+                } else {
+                    code.add("\tinvokevirtual\tjava/io/PrintStream/print(F)V\n");
+                }
                 break;
         }
 
@@ -936,15 +955,25 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     public ArrayList<String> visitDispArray(TJBParser.DispArrayContext ctx) {
         ArrayList<String> code = new ArrayList<>();
 
-        String arrID = ctx.name.getText();
+        Type arrayType = singleton.getCheckUpTable().get(ctx.name).getType();
         int indexOffset = singleton.getCheckUpTable().get(ctx.name).getNumberOnStack();
 
         code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
         code.add("\taload\t" + indexOffset);
 
         //FIXME - Martin?: CHECK IF THIS IS CORRECT FOR ARRAYS!
-        code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava.lang.reflect.Array;)V\n");
-
+        if (arrayType == Type.INTARRAY) {
+            code.add("\tinvokestatic\tjava/util/Arrays/toString([I)Ljava/lang/String;");
+        } else if (arrayType == Type.STRINGARRAY){
+            code.add("\tinvokestatic\tjava/util/Arrays/toString([Ljava/lang/Object;)Ljava/lang/String;");
+        } else if (arrayType == Type.DOUBLEARRAY){
+            code.add("\tinvokestatic\tjava/util/Arrays/toString([F)Ljava/lang/String;");
+        }
+        if (newLine) {
+            code.add("\tinvokevirtual\t java/io/PrintStream/println(Ljava/lang/String;)V");
+        } else {
+            code.add("\tinvokevirtual\t java/io/PrintStream/print(Ljava/lang/String;)V");
+        }
         return code;
     }
 
@@ -991,7 +1020,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava/lang/String;)V\n");
 
         code.add("\taload_" + indexOffset);
-        code.add("\tinvokevirtual\t" + "java/util/Scanner/next()Ljava/lang/String;");
+        code.add("\tinvokevirtual\t" + "java/util/Scanner/nextLine()Ljava/lang/String;");
         code.add("\tastore " + place);
 
         return code;
@@ -1009,7 +1038,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava/lang/String;)V\n");
 
         code.add("\taload_" + indexOffset);
-        code.add("\tinvokevirtual\t" + "java/util/Scanner/next()Ljava/lang/String;");
+        code.add("\tinvokevirtual\t" + "java/util/Scanner/nextLine()Ljava/lang/String;");
         code.add("\tastore " + numberIndexOffset);
 
         return code;
@@ -1091,6 +1120,150 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.add("\tinvokestatic\t" + "java/lang/Float/valueOf(F)Ljava/lang/Float;");
         code.add("\tinvokevirtual " + "java/lang/Float/floatValue()F");
         code.add("\tfstore " + numberIndexOffset);
+
+        return code;
+    }
+
+    //Get value from array.
+
+
+    @Override
+    public ArrayList<String> visitExArrLiteral(TJBParser.ExArrLiteralContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+        code.addAll(visit(ctx.arrayGetValue()));
+        Type typeOfValue = singleton.getCheckUpTable().get(ctx).getType();
+        if (typeOfValue == Type.INT) {
+            code.add("\tiaload\t");
+        } else if (typeOfValue == Type.DOUBLE){
+            code.add("\tfaload\t");
+        }
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitArrayGetValue(TJBParser.ArrayGetValueContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+        int arrayPosition = singleton.getCheckUpTable().get(ctx.arrayName).getNumberOnStack();
+        String valuePosition = ctx.number.getText();
+
+        code.add("\taload\t" + arrayPosition);
+        code.add("\tldc\t" + valuePosition);
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitAsnArrVal(TJBParser.AsnArrValContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        Type typeOfArray = singleton.getCheckUpTable().get(ctx.name).getType();
+
+        code.addAll(visit(ctx.name));
+        code.addAll(visit(ctx.value));
+
+        if (typeOfArray == Type.INT){
+            code.add("\tiastore\n");
+        } else if (typeOfArray == Type.DOUBLE){
+            if (!ctx.value.getText().contains(".")){
+                code.add("\ti2f\t");
+            }
+            code.add("\tfastore\n");
+        }
+        return code;
+    }
+
+    @Override
+    @SuppressWarnings("Duplicates")
+    public ArrayList<String> visitAsnStrFromArr(TJBParser.AsnStrFromArrContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        String strID = ctx.name.getText();
+        variables.add(strID);
+        int indexOffset = singleton.getCheckUpTable().get(ctx.name).getNumberOnStack();
+
+        code.addAll(visit(ctx.value));
+        code.add("\taaload\t");
+
+        code.add("\tastore\t" + indexOffset + "\n");
+
+        return code;
+    }
+
+    @Override
+    @SuppressWarnings("Duplicates")
+    public ArrayList<String> visitCpyAsnStrFromArr(TJBParser.CpyAsnStrFromArrContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        String strID = ctx.name.getText();
+        int indexOffset = singleton.getCheckUpTable().get(ctx.name).getNumberOnStack();
+
+        code.addAll(visit(ctx.value));
+        code.add("\taaload\t");
+
+        code.add("\tastore\t" + indexOffset + "\n");
+
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitStrArrValUsrIn(TJBParser.StrArrValUsrInContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        int indexOffset = singleton.getCheckUpTable().get(ctx.scnr).getNumberOnStack();
+        int numberIndexOffset = singleton.getCheckUpTable().get(ctx.name).getNumberOnStack();
+
+        code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
+        code.add("\tldc\t" + '"' + "Please type a string." + '"');
+        code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava/lang/String;)V\n");
+
+        code.addAll(visit(ctx.name));
+
+        code.add("\taload_" + indexOffset);
+        code.add("\tinvokevirtual\t" + "java/util/Scanner/nextLine()Ljava/lang/String;");
+        code.add("\taastore\t");
+
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitIntArrValUsrIn(TJBParser.IntArrValUsrInContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        int place = variables.size();
+        int indexOffset = singleton.getCheckUpTable().get(ctx.scnr).getNumberOnStack();
+
+        code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
+        code.add("\tldc\t" + '"' + "Please type a number." + '"');
+        code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava/lang/String;)V\n");
+
+        code.addAll(visit(ctx.name));
+
+        code.add("\taload_" + indexOffset);
+        code.add("\tinvokevirtual\t" + "java/util/Scanner/nextInt()I");
+
+        code.add("\tiastore\t");
+
+        return code;
+    }
+
+    @Override
+    public ArrayList<String> visitDblArrValUsrIn(TJBParser.DblArrValUsrInContext ctx) {
+        ArrayList<String> code = new ArrayList<>();
+
+        int place = variables.size();
+        int indexOffset = singleton.getCheckUpTable().get(ctx.scnr).getNumberOnStack();
+
+        code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
+        code.add("\tldc\t" + '"' + "Please type a number." + '"');
+        code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava/lang/String;)V\n");
+
+        code.addAll(visit(ctx.name));
+
+        code.add("\taload_" + indexOffset);
+        code.add("\tinvokevirtual\t" + "java/util/Scanner/nextFloat()F");
+        code.add("\tinvokestatic\t" + "java/lang/Float/valueOf(F)Ljava/lang/Float;");
+        code.add("\tinvokevirtual " + "java/lang/Float/floatValue()F");
+
+        code.add("\tfastore\t");
 
         return code;
     }

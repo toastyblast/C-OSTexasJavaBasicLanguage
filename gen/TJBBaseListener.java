@@ -1,4 +1,4 @@
-// Generated from D:/IdeaProjects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
+// Generated from D:/School/Projects/Java Projects/C-OSTexasJavaBasicLanguage\TJB.g4 by ANTLR 4.7
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -34,6 +34,18 @@ public class TJBBaseListener implements TJBListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExpression(TJBParser.ExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterExArrLiteral(TJBParser.ExArrLiteralContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExArrLiteral(TJBParser.ExArrLiteralContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -603,6 +615,78 @@ public class TJBBaseListener implements TJBListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterAsnArrVal(TJBParser.AsnArrValContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAsnArrVal(TJBParser.AsnArrValContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterStrArrValUsrIn(TJBParser.StrArrValUsrInContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitStrArrValUsrIn(TJBParser.StrArrValUsrInContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIntArrValUsrIn(TJBParser.IntArrValUsrInContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIntArrValUsrIn(TJBParser.IntArrValUsrInContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDblArrValUsrIn(TJBParser.DblArrValUsrInContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDblArrValUsrIn(TJBParser.DblArrValUsrInContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAsnStrFromArr(TJBParser.AsnStrFromArrContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAsnStrFromArr(TJBParser.AsnStrFromArrContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCpyAsnStrFromArr(TJBParser.CpyAsnStrFromArrContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCpyAsnStrFromArr(TJBParser.CpyAsnStrFromArrContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterArrayBuild(TJBParser.ArrayBuildContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -610,6 +694,18 @@ public class TJBBaseListener implements TJBListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitArrayBuild(TJBParser.ArrayBuildContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArrayGetValue(TJBParser.ArrayGetValueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArrayGetValue(TJBParser.ArrayGetValueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
