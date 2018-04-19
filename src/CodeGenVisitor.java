@@ -204,13 +204,13 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         String arrID = ctx.name.getText();
 
-        String copyArrID = ctx.value.getText();
-        int copyOffset = variables.indexOf(copyArrID) + 1;
+        int copyOffset = singleton.getCheckUpTable().get(ctx.value).getNumberOnStack();
 
         variables.add(arrID);
-        int indexOffset = variables.size();
+        int indexOffset = singleton.getCheckUpTable().get(ctx.name).getNumberOnStack();
 
-        //TODO - Martin?: Figure out how arrays work and are made in Jasmin!
+        code.add("\taload " + copyOffset);
+        code.add("\tastore " + indexOffset);
 
         return code;
     }
@@ -268,12 +268,13 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         ArrayList<String> code = new ArrayList<>();
 
         String arrID = ctx.name.getText();
-        int indexOffset = variables.indexOf(arrID) + 1;
+        int indexOffset = singleton.getCheckUpTable().get(ctx.value).getNumberOnStack();
 
         String copyArrID = ctx.value.getText();
-        int copyIndexOffset = variables.indexOf(copyArrID) + 1;
+        int copyIndexOffset = singleton.getCheckUpTable().get(ctx.name).getNumberOnStack();
 
-        //TODO - Martin?: Figure out how arrays work and are made in Jasmin!
+        code.add("\taload " + indexOffset);
+        code.add("\tastore " + copyIndexOffset);
 
         return code;
     }
@@ -952,7 +953,6 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
         code.add("\taload\t" + indexOffset);
 
-        //FIXME - Martin?: CHECK IF THIS IS CORRECT FOR ARRAYS!
         if (arrayType == Type.INTARRAY) {
             code.add("\tinvokestatic\tjava/util/Arrays/toString([I)Ljava/lang/String;");
         } else if (arrayType == Type.STRINGARRAY){
