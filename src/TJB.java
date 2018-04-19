@@ -10,6 +10,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+/**
+ * Main class for the Texas Java Basic (TJ-B) programming language compiler. Run this code to turn your text files
+ *  into runnable class files. The compiler will also immediately run the code and give the outputs for you, along
+ *  with moving the generated files to the correct spaces within the project structure.
+ *
+ * Made for Saxion's HBO-IT (International) course "Compilers & Operating systems" (Y2Q3 ~ 2017-2018).
+ * @author Yoran Kerbusch & Martin S. Slavov.
+ */
 public class TJB {
     private static String startProg = ".class public {{name}}\n" +
             ".super java/lang/Object\n" +
@@ -30,6 +38,12 @@ public class TJB {
 
     private static String endProg = "\n\treturn\n.end method";
 
+    /**
+     * Main method of the class that is called upon running. Asks for the file to read and gets its contents if
+     * possible, passing that to the runTJBCompiler method.
+     *
+     * @param args are any system arguments added by the user, which this compiler does not use.
+     */
     public static void main(String[] args) {
         Scanner inputScanner = new Scanner(System.in);
         String pathToCodeFile;
@@ -53,6 +67,12 @@ public class TJB {
         }
     }
 
+    /**
+     * Method that runs the entire compiler, from the input calls to the tree generation and code file building for the
+     * user, and running said code to give the outputs.
+     *
+     * @param line is the text from the input file given by the user.
+     */
     private static void runTJBCompiler(String line) {
         Scanner inputScanner = new Scanner(System.in);
         String programName, jasminFileName;
@@ -128,6 +148,11 @@ public class TJB {
         }
     }
 
+    /**
+     * Method that executes what is normally a command prompt only function, to do various tasks for the compiler.
+     *
+     * @param command is the full string command the compiler wants to perform.
+     */
     private static void executedCommand(String command) {
         try {
             Runtime rt = Runtime.getRuntime();
