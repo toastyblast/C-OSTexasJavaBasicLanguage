@@ -487,17 +487,9 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
 
     @Override
     public Type visitIfTJB(TJBParser.IfTJBContext ctx) {
-        //Create a new scope.
-        SymbolTable newScope = new SymbolTable();
-        newScope.setParent(currentScope);
-        //Make it the current scope.
-        currentScope = newScope;
-        //Visit everything.
+
         Type type = super.visitIfTJB(ctx);
-        //Add the scope to the list so you can use it later.
-        scopes.add(currentScope);
-        //After the visit is done make the parent the current scope again.
-        currentScope = currentScope.getParent();
+
         return type;
     }
 
@@ -506,9 +498,51 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         if (visit(ctx.bool) != Type.BOOLEAN) {
             throw new CompilerException(ctx, ctx.bool.getText() + "Is not a boolean statement");
         }
-        return super.visitIfStatement(ctx);
+        //Create a new scope.
+        SymbolTable newScope = new SymbolTable();
+        newScope.setParent(currentScope);
+        //Make it the current scope.
+        currentScope = newScope;
+        //Visit everything.
+        Type type = super.visitIfStatement(ctx);
+        //Add the scope to the list so you can use it later.
+        scopes.add(currentScope);
+        //After the visit is done make the parent the current scope again.
+        currentScope = currentScope.getParent();
+        return type;
     }
 
+    @Override
+    public Type visitElseStatement(TJBParser.ElseStatementContext ctx) {
+        //Create a new scope.
+        SymbolTable newScope = new SymbolTable();
+        newScope.setParent(currentScope);
+        //Make it the current scope.
+        currentScope = newScope;
+        //Visit everything.
+        Type type = super.visitElseStatement(ctx);
+        //Add the scope to the list so you can use it later.
+        scopes.add(currentScope);
+        //After the visit is done make the parent the current scope again.
+        currentScope = currentScope.getParent();
+        return type;
+    }
+
+    @Override
+    public Type visitElseIfStatement(TJBParser.ElseIfStatementContext ctx) {
+        //Create a new scope.
+        SymbolTable newScope = new SymbolTable();
+        newScope.setParent(currentScope);
+        //Make it the current scope.
+        currentScope = newScope;
+        //Visit everything.
+        Type type = super.visitElseIfStatement(ctx);
+        //Add the scope to the list so you can use it later.
+        scopes.add(currentScope);
+        //After the visit is done make the parent the current scope again.
+        currentScope = currentScope.getParent();
+        return type;
+    }
 
     //For loop
     @Override
