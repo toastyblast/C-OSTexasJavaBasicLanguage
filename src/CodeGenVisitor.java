@@ -136,6 +136,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         List<ParseTree> terminalNodes = new ArrayList<>();
 
+        //Store all the array arguments in a list.
         for (int i = 0; i < ctx.value.getChildCount(); i++) {
             if (!ctx.value.getChild(i).getText().equals("{") &&
                     !ctx.value.getChild(i).getText().equals("}") &&
@@ -149,81 +150,107 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         switch (type) {
             case INTARRAY:
+                //Create the array list.
                 code.add("\tnewarray\tint");
+                //Store the array list.
                 code.add("\tastore\t" + indexOffset + "\n");
 
                 for (int i = 0; i < terminalNodes.size(); i++) {
+                    //Load the array list.
                     code.add("\taload\t" + indexOffset);
+                    //Position of the argument in the list.
                     code.add("\tldc\t" + i);
 
                     if (terminalNodes.get(i) instanceof TerminalNode) {
+                        //If the argument is a simple number, load the value.
                         code.add("\tldc\t" + terminalNodes.get(i).getText());
                     } else if (terminalNodes.get(i) instanceof TJBParser.CalculationContext) {
 
                         if (terminalNodes.get(i).getChild(0) instanceof TJBParser.CheckVARContext) {
-                            code.add("\tiload\t" + (variables.indexOf(terminalNodes.get(i).getChild(0).getText()) + 1));
+                            //If the argument is a VAR load the var.
+                            code.add("\tiload\t" + (singleton.getCheckUpTable().get(terminalNodes.get(i).getChild(0)).getNumberOnStack()));
                         } else {
+                            //If the argument anything else just load the code for it.
                             code.addAll(visit(terminalNodes.get(i)));
                         }
                     }
 
+                    //Store the argument in the list.
                     code.add("\tiastore\n");
                 }
 
                 break;
             case DOUBLEARRAY:
+                //Create the list.
                 code.add("\tnewarray\tfloat");
+                //Store teh list.
                 code.add("\tastore\t" + indexOffset + "\n");
 
+                //Go through the arguments.
                 for (int i = 0; i < terminalNodes.size(); i++) {
+                    //Load the list.
                     code.add("\taload\t" + indexOffset);
+                    //Position of the argument in the list.
                     code.add("\tldc\t" + i);
 
                     if (terminalNodes.get(i) instanceof TerminalNode) {
+                        //If the argument is a simple number load it.
                         code.add("\tldc\t" + terminalNodes.get(i).getText());
 
+                        //If the argument is not a float turn it into a float.
                         if (!terminalNodes.get(i).getText().contains(".")) {
                             code.add("\ti2f");
                         }
                     } else if (terminalNodes.get(i) instanceof TJBParser.CalculationContext) {
 
                         if (terminalNodes.get(i).getChild(0) instanceof TJBParser.CheckVARContext) {
-                            Symbol symbol = singleton.getSymbolTable().getSymTable().get(terminalNodes.get(i).getChild(0).getText());
-                            code.add("\tiload\t" + (variables.indexOf(terminalNodes.get(i).getChild(0).getText()) + 1));
-
+                            //If the argument is a VAR load it.
+                            Symbol symbol = singleton.getCheckUpTable().get(terminalNodes.get(i).getChild(0));
+                            code.add("\tiload\t" + (symbol.getNumberOnStack()));
+                            //If the argument is not a float turn it into a float.
                             if (symbol.getType() == Type.INT) {
                                 code.add("\ti2f");
                             }
                         } else {
+                            //If the argument is anything else just load the code for it.
                             Type type1 = singleton.getCheckUpTable().get(terminalNodes.get(i)).getType();
                             code.addAll(visit(terminalNodes.get(i)));
-
+                            //If the argument is not a float turn it into a float.
                             if (type1 == Type.INT) {
                                 code.add("\ti2f");
                             }
                         }
                     }
 
+                    //Store the argument.
                     code.add("\tfastore\n");
                 }
 
                 break;
             case STRINGARRAY:
+                //Create the list.
                 code.add("\tanewarray\tjava/lang/String");
+                //Store the list.
                 code.add("\tastore\t" + indexOffset + "\n");
 
                 for (int i = 0; i < terminalNodes.size(); i++) {
+                    //Load the list.
                     code.add("\taload\t" + indexOffset);
+                    //Position of the argument in the list.
                     code.add("\tldc\t" + i);
 
                     if (terminalNodes.get(i) instanceof TerminalNode) {
+                        //If the argument is a simple string load it.
                         code.add("\tldc\t" + terminalNodes.get(i).getText());
                     } else if (terminalNodes.get(i) instanceof TJBParser.CheckSTRIDContext) {
-                        code.add("\taload\t" + (variables.indexOf(terminalNodes.get(i).getChild(0).getText()) + 1));
+                        //If the argument is a declared string, then load it.
+                        code.add("\taload\t" + (singleton.getCheckUpTable().get(terminalNodes.get(i).getChild(0)).getNumberOnStack()));
                     } else if (terminalNodes.get(i) instanceof TJBParser.StringUsrInContext){
+                        //If the argument is a user input string then load the code for it.
                         code.addAll(visit(terminalNodes.get(i)));
                     }
 
+                    //Store the argument.
                     code.add("\taastore\n");
                 }
 
@@ -262,6 +289,11 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         return code;
     }
 
+    /**
+     * Visitor for when an array is used to declare a new array.
+     * @param ctx The context of the current node.
+     * @return The code that the node returns.
+     */
     @Override
     public ArrayList<String> visitArrCpyAsn(TJBParser.ArrCpyAsnContext ctx) {
         ArrayList<String> code = new ArrayList<>();
@@ -273,7 +305,9 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         variables.add(arrID);
         int indexOffset = singleton.getCheckUpTable().get(ctx.name).getNumberOnStack();
 
+        //Load the old array.
         code.add("\taload " + copyOffset);
+        //Store the new array.
         code.add("\tastore " + indexOffset);
 
         return code;
@@ -365,6 +399,12 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         return code;
     }
 
+    /**
+     * Visitor for when a declared array is used to overwrite another declared array.
+     * L1 --> l2
+     * @param ctx The context of the current node.
+     * @return The return value of the current node.
+     */
     @Override
     public ArrayList<String> visitArrAsnVAR(TJBParser.ArrAsnVARContext ctx) {
         ArrayList<String> code = new ArrayList<>();
@@ -1291,6 +1331,11 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         return code;
     }
 
+    /**
+     * Visitor for when an array is displayed.
+     * @param ctx The context of the node.
+     * @return The return code of the node.
+     */
     @Override
     public ArrayList<String> visitDispArray(TJBParser.DispArrayContext ctx) {
         ArrayList<String> code = new ArrayList<>();
@@ -1301,6 +1346,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.add("\tgetstatic\tjava/lang/System/out\tLjava/io/PrintStream;");
         code.add("\taload\t" + indexOffset);
 
+        //Depending on the type of the array a different to string method is required.
         if (arrayType == Type.INTARRAY) {
             code.add("\tinvokestatic\tjava/util/Arrays/toString([I)Ljava/lang/String;");
         } else if (arrayType == Type.STRINGARRAY) {
@@ -1308,6 +1354,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         } else if (arrayType == Type.DOUBLEARRAY) {
             code.add("\tinvokestatic\tjava/util/Arrays/toString([F)Ljava/lang/String;");
         }
+        //Print on a new line or on the same line.
         if (newLine) {
             code.add("\tinvokevirtual\t java/io/PrintStream/println(Ljava/lang/String;)V");
         } else {
@@ -1316,6 +1363,11 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         return code;
     }
 
+    /**
+     * Visitor for when a scanner is created.
+     * @param ctx The context of the node.
+     * @return The return code of the node.
+     */
     @Override
     public ArrayList<String> visitScannerAsn(TJBParser.ScannerAsnContext ctx) {
         ArrayList<String> code = new ArrayList<>();
@@ -1333,6 +1385,11 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         return code;
     }
 
+    /**
+     * Visitor for when a scanner is closed.
+     * @param ctx The context of the node.
+     * @return The return value of the code.
+     */
     @Override
     public ArrayList<String> visitScannerCls(TJBParser.ScannerClsContext ctx) {
         ArrayList<String> code = new ArrayList<>();
@@ -1345,6 +1402,11 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         return code;
     }
 
+    /**
+     * Visitor for when a user input is used to declare a string.
+     * @param ctx The context of the node.
+     * @return The return code of the node.
+     */
     @Override
     public ArrayList<String> visitStrAsnUsrIn(TJBParser.StrAsnUsrInContext ctx) {
         ArrayList<String> code = new ArrayList<>();
@@ -1359,12 +1421,19 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava/lang/String;)V\n");
 
         code.add("\taload_" + indexOffset);
+        //Get the user input.
         code.add("\tinvokevirtual\t" + "java/util/Scanner/nextLine()Ljava/lang/String;");
+        //Store the string.
         code.add("\tastore " + place);
 
         return code;
     }
 
+    /**
+     * Visitor for when a user input is used to overwrite an already declared string.
+     * @param ctx The context of the node.
+     * @return The return code of the node.
+     */
     @Override
     public ArrayList<String> visitStrAsnUsrInVAR(TJBParser.StrAsnUsrInVARContext ctx) {
         ArrayList<String> code = new ArrayList<>();
@@ -1386,11 +1455,19 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
     //Get value from array.
 
 
+    /**
+     * Visitor for when a variable from an array is used in a calculation.
+     * @param ctx The context of the node.
+     * @return The return code of the node.
+     */
     @Override
     public ArrayList<String> visitExArrLiteral(TJBParser.ExArrLiteralContext ctx) {
         ArrayList<String> code = new ArrayList<>();
+        //Load the code for getting the variable.
         code.addAll(visit(ctx.arrayGetValue()));
+        //Get the type.
         Type typeOfValue = singleton.getCheckUpTable().get(ctx).getType();
+        //Load the value.
         if (typeOfValue == Type.INT) {
             code.add("\tiaload\t");
         } else if (typeOfValue == Type.DOUBLE) {
@@ -1399,29 +1476,45 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         return code;
     }
 
+    /**
+     * Visitor for when a variable from an array list is used.
+     * @param ctx The context of the node.
+     * @return The return code of the node.
+     */
     @Override
     public ArrayList<String> visitArrayGetValue(TJBParser.ArrayGetValueContext ctx) {
         ArrayList<String> code = new ArrayList<>();
         int arrayPosition = singleton.getCheckUpTable().get(ctx.arrayName).getNumberOnStack();
         String valuePosition = ctx.number.getText();
 
+        //Load the list.
         code.add("\taload\t" + arrayPosition);
+        //The position of the value in the list.
         code.add("\tldc\t" + valuePosition);
         return code;
     }
 
+    /**
+     * Visitor for when a calculation is assigned to a variable in an array.
+     * @param ctx The context of the node.
+     * @return The return code of the node.
+     */
     @Override
     public ArrayList<String> visitAsnArrVal(TJBParser.AsnArrValContext ctx) {
         ArrayList<String> code = new ArrayList<>();
 
         Type typeOfArray = singleton.getCheckUpTable().get(ctx.name).getType();
 
+        //Load the code for loading the variable.
         code.addAll(visit(ctx.name));
+        //Load the code for the calculation.
         code.addAll(visit(ctx.value));
 
+        //Store the new value.
         if (typeOfArray == Type.INT) {
             code.add("\tiastore\n");
         } else if (typeOfArray == Type.DOUBLE) {
+            //If the value is an int turn it into a float.
             if (!ctx.value.getText().contains(".")) {
                 code.add("\ti2f\t");
             }
@@ -1430,6 +1523,11 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         return code;
     }
 
+    /**
+     * Visitor for when a variable in a array is used to declare a string.
+     * @param ctx The context of the node.
+     * @return The return code of the node.
+     */
     @Override
     @SuppressWarnings("Duplicates")
     public ArrayList<String> visitAsnStrFromArr(TJBParser.AsnStrFromArrContext ctx) {
@@ -1437,32 +1535,48 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         String strID = ctx.name.getText();
         variables.add(strID);
+        //Position of the new string.
         int indexOffset = singleton.getCheckUpTable().get(ctx.name).getNumberOnStack();
 
+        //Load the code for getting the array variable.
         code.addAll(visit(ctx.value));
+        //Get teh array variable.
         code.add("\taaload\t");
-
+        //Store the new string.
         code.add("\tastore\t" + indexOffset + "\n");
 
         return code;
     }
 
+    /**
+     * Visitor for when a array variable is used to overwrite an already declared string.
+     * @param ctx The context of the node.
+     * @return The return code of the node.
+     */
     @Override
     @SuppressWarnings("Duplicates")
     public ArrayList<String> visitCpyAsnStrFromArr(TJBParser.CpyAsnStrFromArrContext ctx) {
         ArrayList<String> code = new ArrayList<>();
 
         String strID = ctx.name.getText();
+        //The position of the string.
         int indexOffset = singleton.getCheckUpTable().get(ctx.name).getNumberOnStack();
 
+        //Load the code for getting the array variable.
         code.addAll(visit(ctx.value));
+        //Load the variable.
         code.add("\taaload\t");
-
+        //Save the new value.
         code.add("\tastore\t" + indexOffset + "\n");
 
         return code;
     }
 
+    /**
+     * Visitor for when a user input is used to overwrite the value of a array variable.
+     * @param ctx The context of the node.
+     * @return The return code of the node.
+     */
     @Override
     public ArrayList<String> visitStrArrValUsrIn(TJBParser.StrArrValUsrInContext ctx) {
         ArrayList<String> code = new ArrayList<>();
@@ -1474,36 +1588,60 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.add("\tldc\t" + '"' + "Please type a string." + '"');
         code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava/lang/String;)V\n");
 
+        //Load the code for getting the variable.
         code.addAll(visit(ctx.name));
 
         code.add("\taload_" + indexOffset);
+        //Get the input.
         code.add("\tinvokevirtual\t" + "java/util/Scanner/nextLine()Ljava/lang/String;");
+        //Store the new input.
         code.add("\taastore\t");
 
         return code;
     }
 
+    /**
+     * Visitor for when a declare string is used to change the value of an array variable.
+     * @param ctx The context of the node.
+     * @return The return code of the node.
+     */
     @Override
     public ArrayList<String> visitStrArrAsnVar(TJBParser.StrArrAsnVarContext ctx) {
         ArrayList<String> code = new ArrayList<>();
         int copyIndexOffset = singleton.getCheckUpTable().get(ctx.value).getNumberOnStack();
 
+        //Load the code for getting the array variable.
         code.addAll(visit(ctx.name));
+        //Load the string variable.
         code.add("\taload\t" + copyIndexOffset);
+        //Store the new value.
         code.add("\taastore\t");
         return code;
     }
 
+    /**
+     * Visitor for when a normal(not declared) string is used to change the value of an array variable.
+     * @param ctx The context of the node.
+     * @return The return code of the node.
+     */
     @Override
     public ArrayList<String> visitStrArrAsn(TJBParser.StrArrAsnContext ctx) {
         ArrayList<String> code = new ArrayList<>();
 
+        //Load the code for getting the array variable.
         code.addAll(visit(ctx.name));
+        //Load the string.
         code.add("\tldc\t" + ctx.value.getText());
+        //Store the new value.
         code.add("\taastore\t");
         return code;
     }
 
+    /**
+     * Visitor for when a user input int is used in a calculation.
+     * @param ctx The context of the node.
+     * @return The return code of the node.
+     */
     @Override
     public ArrayList<String> visitExAsnUsrInt(TJBParser.ExAsnUsrIntContext ctx) {
         ArrayList<String> code = new ArrayList<>();
@@ -1521,6 +1659,11 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         return code;
     }
 
+    /**
+     * Visitor for when a user input double is used in a calculation.
+     * @param ctx The context of the node.
+     * @return The return code of the node.
+     */
     @Override
     public ArrayList<String> visitExAsnUsrDbl(TJBParser.ExAsnUsrDblContext ctx) {
         ArrayList<String> code = new ArrayList<>();
@@ -1534,11 +1677,17 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.add("\taload_" + indexOffset);
         code.add("\tinvokevirtual\t" + "java/util/Scanner/nextFloat()F");
         code.add("\tinvokestatic\t" + "java/lang/Float/valueOf(F)Ljava/lang/Float;");
+        //Make the return value from an object to a float.
         code.add("\tinvokevirtual " + "java/lang/Float/floatValue()F");
 
         return code;
     }
 
+    /**
+     * Visitor for when user input string is used.
+     * @param ctx The context of the node.
+     * @return The return code of the node.
+     */
     @Override
     public ArrayList<String> visitStringUsrIn(TJBParser.StringUsrInContext ctx) {
         ArrayList<String> code = new ArrayList<>();
@@ -1550,11 +1699,17 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava/lang/String;)V\n");
 
         code.add("\taload_" + indexOffset);
+        //Get the user input.
         code.add("\tinvokevirtual\t" + "java/util/Scanner/nextLine()Ljava/lang/String;");
 
         return code;
     }
 
+    /**
+     * Code for when a user input string is displayed.
+     * @param ctx The context of the node.
+     * @return The return code of the node.
+     */
     @Override
     public ArrayList<String> visitDispUsrString(TJBParser.DispUsrStringContext ctx) {
         ArrayList<String> code = new ArrayList<>();

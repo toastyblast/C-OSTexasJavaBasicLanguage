@@ -85,7 +85,7 @@ assignment:
           | value=arrayGetValue CPYASN name=checkSTRID          #CpyAsnStrFromArr //Get a value from an array and use it to overwrite an old string.
           ;
 
-arrayBuild: '{' (NIN | INT | DBL | checkSTRID | calculation | STR | stringUsrIn) (',' (NIN | INT | DBL | checkSTRID | calculation | STR | stringUsrIn))* '}';
+arrayBuild: '{' (checkSTRID | calculation | STR | stringUsrIn) (',' (checkSTRID | calculation | STR | stringUsrIn))* '}';
 arrayGetValue: arrayName = checkArray '.[' number=INT']';
 
 stringUsrIn: scnr=checkSCNID '.nextStr';

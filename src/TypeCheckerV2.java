@@ -465,9 +465,9 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         }
 
         currentScope.getSymTable().put(ctx.name.getText()
-                , new Symbol(ctx, Type.ARRAY,numberOnStack));
+                , new Symbol(ctx, value,numberOnStack));
         numberOnStack++;
-        addCtx(ctx, Type.ARRAY);
+        addCtx(ctx, value);
         return super.visitArrCpyAsn(ctx);
     }
 
@@ -492,7 +492,7 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         if (value == null) {
             throw new CompilerException(ctx, ctx.name.getText() + " Is not defined.");
         }
-        addCtx(ctx, Type.ARRAY);
+        addCtx(ctx, value);
         return super.visitArrAsnVAR(ctx);
     }
 
