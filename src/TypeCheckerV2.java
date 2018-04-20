@@ -874,7 +874,7 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
                     throw new CompilerException(ctx, " Iterator value cannot be empty");
                 }
                 //Depending on the 2nd argument the type of the new variable is determined.
-                if (ctx.iterVal.getText().contains(",")) {
+                if (ctx.iterVal.getText().contains(".")) {
                     iteratorType = Type.DOUBLE;
                 } else {
                     iteratorType = Type.INT;
