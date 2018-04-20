@@ -1023,8 +1023,10 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
             switch (type1) {
                 case INT:
                     type = Type.INTARRAY;
+                    break;
                 case DOUBLE:
                     type = Type.DOUBLEARRAY;
+                    break;
             }
         } else if (ctx.getChild(1) instanceof TJBParser.StringUsrInContext){
             //If the first child is a string from user input(rule).
