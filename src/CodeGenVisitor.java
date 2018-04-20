@@ -1180,13 +1180,24 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         //Do the calculation given.
         code.addAll(visit(ctx.calc));
+        Type calculationType = singleton.getCheckUpTable().get(ctx.calc).getType();
 
         //Then add the result of the calculation to the var and store the result onto the var.
         if (iteratorType == Type.INT) {
+            //The calculation needs to be casted to an int if it was a float so that the iadd works.
+            if (calculationType == Type.DOUBLE) {
+                code.add("\tf2i");
+            }
+
             //Value given is an integer.
             code.add("\tiadd");
             code.add("\tistore\t" + indexOffset + "\n");
         } else {
+            //The calculation needs to be casted to a float if it was an int so that the fadd works.
+            if (calculationType == Type.INT) {
+                code.add("\ti2f");
+            }
+
             //The value given is a double.
             code.add("\tfadd");
             code.add("\tfstore\t" + indexOffset + "\n");
