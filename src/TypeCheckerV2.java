@@ -201,6 +201,10 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
             throw new CompilerException(ctx, ctx.right.getText() + " Is not defined.");
         }
 
+        if (left == Type.STRING || right == Type.STRING){
+            throw new CompilerException(ctx, ctx.getText() + " Cannot use strings in calculations.");
+        }
+
         //If the calculation is made up of 2 integers then the type of the calculation will be an INTEGER.
         if (left == Type.INT && right == Type.INT) {
             addCtx(ctx, Type.INT);
@@ -233,6 +237,10 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
             throw new CompilerException(ctx, ctx.right.getText() + " Is not defined.");
         }
 
+        if (left == Type.STRING || right == Type.STRING){
+            throw new CompilerException(ctx, ctx.getText() + " Cannot use strings in calculations.");
+        }
+
         //If the calculation is made up of 2 integers then the type of the calculation will be an INTEGER.
         if (left == Type.INT && right == Type.INT) {
             addCtx(ctx, Type.INT);
@@ -263,6 +271,10 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
             throw new CompilerException(ctx, ctx.left.getText() + " Is not defined.");
         } else if (right == null) {
             throw new CompilerException(ctx, ctx.right.getText() + " Is not defined.");
+        }
+
+        if (left == Type.STRING || right == Type.STRING){
+            throw new CompilerException(ctx, ctx.getText() + " Cannot use strings in calculations.");
         }
 
         //If the calculation is made up of 2 integers then the type of the calculation will be an INTEGER.
