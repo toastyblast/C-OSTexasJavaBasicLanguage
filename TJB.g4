@@ -22,6 +22,8 @@ calculation: '(' val=calculation ')'                                          # 
           | NIN                                                               # ExNegLiteral
           | INT                                                               # ExIntLiteral
           | arrayGetValue                                                     # ExArrLiteral
+          | scnr=checkSCNID '.nextInt'                                        # ExAsnUsrInt
+          | scnr=checkSCNID '.nextDbl'                                        # ExAsnUsrDbl
           ;
 
 ifTJB: ifStatement (elseIfStatement)* (elsePart=elseStatement)? 'End';
@@ -53,6 +55,7 @@ displayOptions:
           | name=checkSTRID      #DispSTRID
           | calc=calculation     #DispCalc
           | name=checkArray      #DispArray
+          | str=stringUsrIn      #DispUsrString
           ;
 
 assignment:
@@ -68,10 +71,7 @@ assignment:
 
           | scnr=checkSCNID '.nextStr' ASN name=checkSTRID      #StrAsnUsrIn
           | scnr=checkSCNID '.nextStr' CPYASN name=checkSTRID   #StrAsnUsrInVAR
-          | scnr=checkSCNID '.nextInt'  ASN name=checkVAR       #NumAsnUsrInt
-          | scnr=checkSCNID '.nextInt' CPYASN name=checkVAR     #NumAsnUsrIntVAR
-          | scnr=checkSCNID '.nextDbl'  ASN name=checkVAR       #NumAsnUsrDbl
-          | scnr=checkSCNID '.nextDbl' CPYASN name=checkVAR     #NumAsnUsrDblVAR
+
           | 'Scanner ' name=checkSCNID ';'                      #ScannerAsn
           | scnr=checkSCNID '.close'                            #ScannerCls
 
@@ -80,15 +80,15 @@ assignment:
           | value=checkSTRID CPYASN name=arrayGetValue          #StrArrAsnVar
 
           | scnr=checkSCNID '.nextStr' ASN name=arrayGetValue   #StrArrValUsrIn //Take user input and assign the given string to the array position.
-          | scnr=checkSCNID '.nextInt'  ASN name=arrayGetValue  #IntArrValUsrIn //Take user input and assign the int to the array position.
-          | scnr=checkSCNID '.nextDbl'  ASN name=arrayGetValue  #DblArrValUsrIn //Take user input and assing the double to the array position.
 
           | value=arrayGetValue ASN name=checkSTRID             #AsnStrFromArr //Get a value from an array and use it to create a new string value;
           | value=arrayGetValue CPYASN name=checkSTRID          #CpyAsnStrFromArr //Get a value from an array and use it to overwrite an old string.
           ;
 
-arrayBuild: '{' (NIN | INT | DBL | checkSTRID | calculation | STR) (',' (NIN | INT | DBL | checkSTRID | calculation | STR))* '}';
+arrayBuild: '{' (NIN | INT | DBL | checkSTRID | calculation | STR | stringUsrIn) (',' (NIN | INT | DBL | checkSTRID | calculation | STR | stringUsrIn))* '}';
 arrayGetValue: arrayName = checkArray '.[' number=INT']';
+
+stringUsrIn: scnr=checkSCNID '.nextStr';
 
 ASN: '->';
 CPYASN: '-->';

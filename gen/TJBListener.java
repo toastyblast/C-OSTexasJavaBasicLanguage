@@ -99,6 +99,18 @@ public interface TJBListener extends ParseTreeListener {
 	 */
 	void exitExNegLiteral(TJBParser.ExNegLiteralContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code ExAsnUsrDbl}
+	 * labeled alternative in {@link TJBParser#calculation}.
+	 * @param ctx the parse tree
+	 */
+	void enterExAsnUsrDbl(TJBParser.ExAsnUsrDblContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ExAsnUsrDbl}
+	 * labeled alternative in {@link TJBParser#calculation}.
+	 * @param ctx the parse tree
+	 */
+	void exitExAsnUsrDbl(TJBParser.ExAsnUsrDblContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code ExAddOp}
 	 * labeled alternative in {@link TJBParser#calculation}.
 	 * @param ctx the parse tree
@@ -134,6 +146,18 @@ public interface TJBListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExParentheses(TJBParser.ExParenthesesContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ExAsnUsrInt}
+	 * labeled alternative in {@link TJBParser#calculation}.
+	 * @param ctx the parse tree
+	 */
+	void enterExAsnUsrInt(TJBParser.ExAsnUsrIntContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ExAsnUsrInt}
+	 * labeled alternative in {@link TJBParser#calculation}.
+	 * @param ctx the parse tree
+	 */
+	void exitExAsnUsrInt(TJBParser.ExAsnUsrIntContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code ExMulDivOp}
 	 * labeled alternative in {@link TJBParser#calculation}.
@@ -381,6 +405,18 @@ public interface TJBListener extends ParseTreeListener {
 	 */
 	void exitDispArray(TJBParser.DispArrayContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code DispUsrString}
+	 * labeled alternative in {@link TJBParser#displayOptions}.
+	 * @param ctx the parse tree
+	 */
+	void enterDispUsrString(TJBParser.DispUsrStringContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code DispUsrString}
+	 * labeled alternative in {@link TJBParser#displayOptions}.
+	 * @param ctx the parse tree
+	 */
+	void exitDispUsrString(TJBParser.DispUsrStringContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code NumAsn}
 	 * labeled alternative in {@link TJBParser#assignment}.
 	 * @param ctx the parse tree
@@ -513,54 +549,6 @@ public interface TJBListener extends ParseTreeListener {
 	 */
 	void exitStrAsnUsrInVAR(TJBParser.StrAsnUsrInVARContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code NumAsnUsrInt}
-	 * labeled alternative in {@link TJBParser#assignment}.
-	 * @param ctx the parse tree
-	 */
-	void enterNumAsnUsrInt(TJBParser.NumAsnUsrIntContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code NumAsnUsrInt}
-	 * labeled alternative in {@link TJBParser#assignment}.
-	 * @param ctx the parse tree
-	 */
-	void exitNumAsnUsrInt(TJBParser.NumAsnUsrIntContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code NumAsnUsrIntVAR}
-	 * labeled alternative in {@link TJBParser#assignment}.
-	 * @param ctx the parse tree
-	 */
-	void enterNumAsnUsrIntVAR(TJBParser.NumAsnUsrIntVARContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code NumAsnUsrIntVAR}
-	 * labeled alternative in {@link TJBParser#assignment}.
-	 * @param ctx the parse tree
-	 */
-	void exitNumAsnUsrIntVAR(TJBParser.NumAsnUsrIntVARContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code NumAsnUsrDbl}
-	 * labeled alternative in {@link TJBParser#assignment}.
-	 * @param ctx the parse tree
-	 */
-	void enterNumAsnUsrDbl(TJBParser.NumAsnUsrDblContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code NumAsnUsrDbl}
-	 * labeled alternative in {@link TJBParser#assignment}.
-	 * @param ctx the parse tree
-	 */
-	void exitNumAsnUsrDbl(TJBParser.NumAsnUsrDblContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code NumAsnUsrDblVAR}
-	 * labeled alternative in {@link TJBParser#assignment}.
-	 * @param ctx the parse tree
-	 */
-	void enterNumAsnUsrDblVAR(TJBParser.NumAsnUsrDblVARContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code NumAsnUsrDblVAR}
-	 * labeled alternative in {@link TJBParser#assignment}.
-	 * @param ctx the parse tree
-	 */
-	void exitNumAsnUsrDblVAR(TJBParser.NumAsnUsrDblVARContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code ScannerAsn}
 	 * labeled alternative in {@link TJBParser#assignment}.
 	 * @param ctx the parse tree
@@ -633,30 +621,6 @@ public interface TJBListener extends ParseTreeListener {
 	 */
 	void exitStrArrValUsrIn(TJBParser.StrArrValUsrInContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code IntArrValUsrIn}
-	 * labeled alternative in {@link TJBParser#assignment}.
-	 * @param ctx the parse tree
-	 */
-	void enterIntArrValUsrIn(TJBParser.IntArrValUsrInContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code IntArrValUsrIn}
-	 * labeled alternative in {@link TJBParser#assignment}.
-	 * @param ctx the parse tree
-	 */
-	void exitIntArrValUsrIn(TJBParser.IntArrValUsrInContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code DblArrValUsrIn}
-	 * labeled alternative in {@link TJBParser#assignment}.
-	 * @param ctx the parse tree
-	 */
-	void enterDblArrValUsrIn(TJBParser.DblArrValUsrInContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code DblArrValUsrIn}
-	 * labeled alternative in {@link TJBParser#assignment}.
-	 * @param ctx the parse tree
-	 */
-	void exitDblArrValUsrIn(TJBParser.DblArrValUsrInContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code AsnStrFromArr}
 	 * labeled alternative in {@link TJBParser#assignment}.
 	 * @param ctx the parse tree
@@ -700,6 +664,16 @@ public interface TJBListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitArrayGetValue(TJBParser.ArrayGetValueContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TJBParser#stringUsrIn}.
+	 * @param ctx the parse tree
+	 */
+	void enterStringUsrIn(TJBParser.StringUsrInContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TJBParser#stringUsrIn}.
+	 * @param ctx the parse tree
+	 */
+	void exitStringUsrIn(TJBParser.StringUsrInContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TJBParser#checkSTRID}.
 	 * @param ctx the parse tree

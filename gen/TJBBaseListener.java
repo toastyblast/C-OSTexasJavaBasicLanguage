@@ -111,6 +111,18 @@ public class TJBBaseListener implements TJBListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterExAsnUsrDbl(TJBParser.ExAsnUsrDblContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExAsnUsrDbl(TJBParser.ExAsnUsrDblContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterExAddOp(TJBParser.ExAddOpContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -142,6 +154,18 @@ public class TJBBaseListener implements TJBListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExParentheses(TJBParser.ExParenthesesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterExAsnUsrInt(TJBParser.ExAsnUsrIntContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExAsnUsrInt(TJBParser.ExAsnUsrIntContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -411,6 +435,18 @@ public class TJBBaseListener implements TJBListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterDispUsrString(TJBParser.DispUsrStringContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDispUsrString(TJBParser.DispUsrStringContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterNumAsn(TJBParser.NumAsnContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -543,54 +579,6 @@ public class TJBBaseListener implements TJBListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNumAsnUsrInt(TJBParser.NumAsnUsrIntContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNumAsnUsrInt(TJBParser.NumAsnUsrIntContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterNumAsnUsrIntVAR(TJBParser.NumAsnUsrIntVARContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNumAsnUsrIntVAR(TJBParser.NumAsnUsrIntVARContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterNumAsnUsrDbl(TJBParser.NumAsnUsrDblContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNumAsnUsrDbl(TJBParser.NumAsnUsrDblContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterNumAsnUsrDblVAR(TJBParser.NumAsnUsrDblVARContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNumAsnUsrDblVAR(TJBParser.NumAsnUsrDblVARContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterScannerAsn(TJBParser.ScannerAsnContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -663,30 +651,6 @@ public class TJBBaseListener implements TJBListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIntArrValUsrIn(TJBParser.IntArrValUsrInContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIntArrValUsrIn(TJBParser.IntArrValUsrInContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterDblArrValUsrIn(TJBParser.DblArrValUsrInContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitDblArrValUsrIn(TJBParser.DblArrValUsrInContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterAsnStrFromArr(TJBParser.AsnStrFromArrContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -730,6 +694,18 @@ public class TJBBaseListener implements TJBListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitArrayGetValue(TJBParser.ArrayGetValueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterStringUsrIn(TJBParser.StringUsrInContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitStringUsrIn(TJBParser.StringUsrInContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
