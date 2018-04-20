@@ -490,7 +490,11 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
 
         //If this is null this means that the left array has not been declared yet.
         if (value == null) {
-            throw new CompilerException(ctx, ctx.name.getText() + " Is not defined.");
+            throw new CompilerException(ctx, ctx.value.getText() + " Is not defined.");
+        }
+
+        if (value != name){
+            throw new CompilerException(ctx, ctx.getText() + " Type mismatch.");
         }
         addCtx(ctx, value);
         return super.visitArrAsnVAR(ctx);
@@ -1245,6 +1249,9 @@ public class TypeCheckerV2 extends TJBBaseVisitor<Type> {
         }
         if (arrValue == Type.INT && value == Type.DOUBLE){
             throw new CompilerException(ctx, ctx.getText() + " You cannot assign double to an int.");
+        }
+        if (arrValue == Type.STRING){
+            throw new CompilerException(ctx, ctx.getText() + " You cannot assign number to string.");
         }
         return arrValue;
     }

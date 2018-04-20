@@ -1326,6 +1326,13 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
                     code.add("\tinvokevirtual\tjava/io/PrintStream/print(F)V\n");
                 }
                 break;
+            case STRING:
+                if (newLine) {
+                    code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava/lang/String;)V\n");
+                } else {
+                    code.add("\tinvokevirtual\tjava/io/PrintStream/print(Ljava/lang/String;)V\n");
+                }
+                break;
         }
 
         return code;
@@ -1472,6 +1479,8 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
             code.add("\tiaload\t");
         } else if (typeOfValue == Type.DOUBLE) {
             code.add("\tfaload\t");
+        } else if (typeOfValue == Type.STRING){
+            code.add("\taaload\t");
         }
         return code;
     }
