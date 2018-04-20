@@ -20,7 +20,7 @@ End
 
 <COM> "This shows the ability to use logic statements for branching" </COM>
 <COM> "Alternatively And and Or can be used instead" </COM>
-If (A <= 9 && B >= 6) || C > 14
+If (A <= 9 && B >= 6) Or C > 14
 Then
     Displn "A is less than or equal to 9 and B is more than or equal to 6 OR C is more than 14", A, B, C, ""
 End
@@ -35,7 +35,7 @@ Then
     Displn "A is more than 10", A, ""
 Else if C = 15
 Then
-    Displn "C is 15". ""
+    Displn "C is 15", ""
 End
 
 1 -> D

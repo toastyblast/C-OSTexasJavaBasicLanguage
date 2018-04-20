@@ -33,3 +33,9 @@ Displn L1
 Displn L2
 {"Hello", "World"} -> L3
 Displn L3
+
+5 -> L1.[0]
+60 -> L2.[0]
+"New string" -> L3.[0]
+
+Displn L1, L2, L3
