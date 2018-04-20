@@ -19,4 +19,6 @@ Disp A
 7.5 * 2 --> B
 5.5 % 5 --> A
 
-<COM> "MARTIN DO SOME WRONG ARRAY STUFF HERE" </COM>
+<COM> "Since the first variable is an int the array list will be of type INTARRAY " </COM>
+<COM> "The parser will give an error because the second argument is a string" </COM>
+{1, "asd"} -> L1
