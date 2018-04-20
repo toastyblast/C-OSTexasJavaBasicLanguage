@@ -32,4 +32,4 @@ Displn L1
 {50.0, 14, 12, 26} -> L2
 Displn L2
 {"Hello", "World"} -> L3
-Dipsln L3
+Displn L3

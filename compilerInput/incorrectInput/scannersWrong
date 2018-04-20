@@ -1,0 +1,16 @@
+Scanner Scn10;
+{1,2} -> L1
+<COM> Closing a scanner that does not exist </COM>
+Scn1.close
+
+<COM> Type mismatch Cannot assign a string to an integer</COM>
+Scn10.nextStr -> L1.[0]
+
+<COM> Type mismatch Cannot assign double to an int </COM
+Scn10.nextDbl -> L1.[0]
+
+<COM> Type mismatch in if statement </COM>
+If Scn10.nextStr < 5
+Then
+End
+
