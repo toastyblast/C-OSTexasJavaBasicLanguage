@@ -1422,7 +1422,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         code.add("\taload_" + indexOffset);
         //Get the user input.
-        code.add("\tinvokevirtual\t" + "java/util/Scanner/nextLine()Ljava/lang/String;");
+        code.add("\tinvokevirtual\t" + "java/util/Scanner/next()Ljava/lang/String;");
         //Store the string.
         code.add("\tastore " + place);
 
@@ -1446,7 +1446,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         code.add("\tinvokevirtual\tjava/io/PrintStream/println(Ljava/lang/String;)V\n");
 
         code.add("\taload_" + indexOffset);
-        code.add("\tinvokevirtual\t" + "java/util/Scanner/nextLine()Ljava/lang/String;");
+        code.add("\tinvokevirtual\t" + "java/util/Scanner/next()Ljava/lang/String;");
         code.add("\tastore " + numberIndexOffset);
 
         return code;
@@ -1516,6 +1516,8 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
         } else if (typeOfArray == Type.DOUBLE) {
             //If the value is an int turn it into a float.
             if (!ctx.value.getText().contains(".")) {
+                code.add("\ti2f\t");
+            } else if (ctx.value instanceof TJBParser.ExAsnUsrIntContext){
                 code.add("\ti2f\t");
             }
             code.add("\tfastore\n");
@@ -1593,7 +1595,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         code.add("\taload_" + indexOffset);
         //Get the input.
-        code.add("\tinvokevirtual\t" + "java/util/Scanner/nextLine()Ljava/lang/String;");
+        code.add("\tinvokevirtual\t" + "java/util/Scanner/next()Ljava/lang/String;");
         //Store the new input.
         code.add("\taastore\t");
 
@@ -1700,7 +1702,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
 
         code.add("\taload_" + indexOffset);
         //Get the user input.
-        code.add("\tinvokevirtual\t" + "java/util/Scanner/nextLine()Ljava/lang/String;");
+        code.add("\tinvokevirtual\t" + "java/util/Scanner/next()Ljava/lang/String;");
 
         return code;
     }

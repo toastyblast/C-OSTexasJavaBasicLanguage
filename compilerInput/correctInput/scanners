@@ -1,0 +1,37 @@
+<COM> "Creating a scanner" </COM>
+Scanner Scn1;
+
+<COM> "Using a scanner to declare a variable" </COM>
+Scn1.nextInt -> A
+Displn A
+
+Scn1.nextStr -> Str1
+Displn Str1
+
+<COM> "Using a scanner in a calculation" </COM>
+Displn Scn1.nextInt * Scn1.nextDbl
+
+<COM> "Using a scanner to declare create arrays" </COM>
+{Scn1.nextDbl, Scn1.nextInt, 5} -> L1
+Displn L1
+
+<COM> "Using a scanner to change an array variable" </COM>
+Scn1.nextInt -> L1.[0]
+Displn L1
+
+<COM> "Using scanner to display a string from the user" </COM>
+Dispn Scn1.nextStr , " This string was from the user"
+Displn " "
+
+<COM> "Using a scanner to change a variable" </COM>
+Scn1.nextInt --> A
+Displn A
+
+<COM> "Using scanner in an if statement" </COM>
+If Scn1.nextInt >= 5
+Then
+Displn "The user input was bigger or equal"
+Else
+Displn "The user input was less"
+End
+Scn1.close

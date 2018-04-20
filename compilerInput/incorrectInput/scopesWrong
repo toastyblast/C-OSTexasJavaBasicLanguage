@@ -12,12 +12,12 @@ Then
     2 * D -> E
 
     For (C, 5, C <= 9, C += 1)
-        Disp C
+        Displn C
     End
 End
 
 <COM> "B cannot be displayed as it is not part of this scope" </COM>
-Disp B
+Displn B
 
 <COM> "The rule scoping has is that whatever is declared in your scope or that of any of your parents you can access" </COM>
 <COM> "However you cannot access any of the variables of your children as their scope is under yours" </COM>

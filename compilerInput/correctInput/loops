@@ -5,7 +5,7 @@
 <COM> "However for for loops this is necessary" </COM>
 While A < 2
     A + 1 --> A
-    Disp "While loop run done number", A, ""
+    Displn "While loop run done number", A, ""
 End
 
 <COM> "Endless while loops are also possible by giving something like 2 equals 2 or a var that always equals one value up until that might be changed in some branch" </COM>
@@ -13,14 +13,14 @@ End
 <COM> "This for loop declares the new variable D" </COM>
 <COM> "And as seen the for loop does need its whole loop statement surrounded by brackets" </COM>
 For (B, 5, B > 3, B += -1)
-    Disp B
+    Displn B
 End
 <COM> "As side note B will only be available within the for loop as it was declared within said scope" </COM>
 
 <COM> "But for loops can also use variables already declared" </COM>
 0 -> C
 For (C, C < 2, C += 1)
-    Disp C
+    Displn C
 End
 
 0 -> D
@@ -28,8 +28,8 @@ End
 <COM> "Or reassign said already declared variables and increment using calculations or other vars" </COM>
 <COM> "And of course the iterator for the for loop can also be used or changed inside of the for loop" </COM>
 For (C, 10, C <= 17, C += (3 * A) + 1)
-    Disp C
+    Displn C
     (C * 10) / 5 --> D
 End
 
-Disp D
+Displn D

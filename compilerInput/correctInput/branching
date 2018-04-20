@@ -4,15 +4,15 @@
 <COM> "Change A to a different value to trigger the else branch" </COM>
 If A = 10
 Then
-    Disp "A is 10", ""
+    Displn "A is 10", ""
 Else
-    Disp "A is NOT 10", A, ""
+    Displn "A is NOT 10", A, ""
 End
 
 <COM> "This is a double negation and shows that comparisons can be negated" </COM>
 If !(A != 10)
 Then
-    Disp "A is still 10", ""
+    Displn "A is still 10", ""
 End
 
 5 -> B
@@ -22,20 +22,20 @@ End
 <COM> "Alternatively And and Or can be used instead" </COM>
 If (A <= 9 && B >= 6) || C > 14
 Then
-    Disp "A is less than or equal to 9 and B is more than or equal to 6 OR C is more than 14", A, B, C, ""
+    Displn "A is less than or equal to 9 and B is more than or equal to 6 OR C is more than 14", A, B, C, ""
 End
 
 <COM> "Else if statements can also be used as many times as desired as well as including or not including an else at the end" </COM>
 <COM> "And calculations with or without variables can also be used in the comparisons" </COM>
 If B < 2 * 3
 Then
-    Disp "B is less than 5", B, ""
+    Displn "B is less than 5", B, ""
 Else if A > 10
 Then
-    Disp "A is more than 10", A, ""
+    Displn "A is more than 10", A, ""
 Else if C = 15
 Then
-    Disp "C is 15". ""
+    Displn "C is 15". ""
 End
 
 1 -> D
@@ -46,12 +46,12 @@ If (D = 1)
 Then
     If A = 10
     Then
-        Disp "A is still as ever 10"
+        Displn "A is still as ever 10"
     Else
-        Disp "A is once more not 10", A
+        Displn "A is once more not 10", A
     End
 Else
-    Disp "D is not 1", D
+    Displn "D is not 1", D
 End
 
 <COM> "To make an always true branch compare 1 to 1 and to make an always negative compare 1 to 0 for instance" </COM>

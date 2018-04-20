@@ -1,0 +1,32 @@
+0 -> A
+0 -> B
+1 -> C
+11 -> D
+
+While( A < D)
+
+While(B < D - C)
+Dispn " "
+B + 1 --> B
+End
+
+0 --> B
+
+
+While(B < C - 1)
+Dispn "#"
+B + 1 --> B
+End
+
+0 --> B
+
+While(B < C)
+Dispn "#"
+B + 1 --> B
+End
+
+Displn " "
+0 --> B
+C + 1 --> C
+A + 1 --> A
+End
