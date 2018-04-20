@@ -914,7 +914,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
                     //If value 1 (left) is SMALLER THAN value 2 (right) we should get int 1 as a result.
                     code.add("\tfcmpl");
                     //We want to jump to the label only if the int is -1 or 0 (meaning value 1 is BIGGER THAN or EQUAL TO value 2)
-                    code.add("\tifle\t");
+                    code.add("\tifge\t");
                 }
                 break;
             case "<=":
@@ -925,7 +925,7 @@ public class CodeGenVisitor extends TJBBaseVisitor<ArrayList<String>> {
                     //If value 1 (left) is SMALLER THAN value 2 (right) we should get int 1 (less) or 0 (equal) as a result.
                     code.add("\tfcmpl");
                     //We want to jump to the label only if the int is -1 (meaning value 1 is BIGGER THAN value 2)
-                    code.add("\tiflt\t");
+                    code.add("\tifgt\t");
                 }
                 break;
             case "=":
