@@ -1,0 +1,68 @@
+This project was made by Yoran Kerbusch and Martin S. Slavov for Saxion's Y2Q3 course Compilers & Operating Systems.
+The goal of the project was for duos to make their own programming language by making use of ANTLR 4.
+It has to be a language that is translated into Jasmin machine code, which can then manually be run on a computer.
+
+In the case of these two, they made a programming language named Texas Java-Basic (TJ-B), which is based on the
+    programming language used by the Texas Instruments 84 series of graphical calculators.
+It was purpose built to be limiting like the calculator, forcing conventions otherwise thought of to be stupid.
+However, this has been done to keep the authenticity of the language, as the calculators had a lack of processing power
+    and storage and were made with small, calculation focused programs in mind.
+
+This includes:
+- Calculations (including negative numbers): +, -, *, / and %
+- Priority support: The usage of brackets as in '(5 - 3) / 2' will instead do the sum first, then division.
+- Assigning integer, double and String variables;
+    - Integers and doubles can be stored in 26 predefined variables, named: A till Z (capital letters!);
+    - Only 10 strings can be stored, using: Str1, Str2, [...], Str9 & Str0;
+    - Once a variable is assigned with a type like Integer, it cannot be replaced by doubles and vice versa;
+        - However, an integer variable can be replaced by another integer.
+- Branches (if/else if/else), ended by 'End' statements;
+- Logic operations: || (or 'Or') and && (or 'And');
+- Boolean operations: <, <=, =, !=, >=, >;
+    - Boolean negation: like for example '!(4 < 5)' will return false instead;
+- Loops (for and while);
+- Arrays for integers, doubles and strings;
+    - There are 6 predefined arrays: L1, L2, [...], L5 & L6;
+    - More arrays can be made with a 5 character name. This name has to start with an l (lower case L), followed by up
+        to 5 characters. Valid characters include lower & upper case letters and numbers;
+        - Once an array has a value type set in it, i.e. an integer, it is of type integer and cannot store doubles or
+            strings.
+- Scoping. Parents cannot see variables defined in loops or branches within them. Children can access variables defined
+    by all their parents;
+- Input scanners, to get user input, stored to variables.
+
+All these features, together with examples on how to use the language, can be found in the 'compilerInput' folder.
+These files show all the features with explanations and examples on how to use them. Additionally, the incorrect files
+    will show wrong usages of features. These can also be run, but will result in the generator throwing errors.
+
+--- HOW TO USE ---
+To test any of the files supplied, run the 'TJB' class. This will prompt for a text file. Now open the 'pathToFiles'.
+    Copy and paste the desired path from said file into the running application.
+Proceed to give the Jasmin file generated a name, as prompted.
+Then finally watch the program being run, as output in the terminal.
+
+Additionally, Jasmin code is also generated, found in the folder 'compilerOutput/jasminCode/' as a J class file with
+    your given name. This can then be run to verify the code generation from the automated system is correct.
+
+One can also make their own text file with TJB code and give that to the generator. If the code is incorrect the
+    generator will let you know what you did wrong and you can additionally consult the example files.
+
+--- WHO MADE WHAT ---
+Martin S. Slavov
+- Almost all of the TypeChecker & TypeCheckerV2 (responsible for checking for typing mistakes in TJB programs & keeping track of variables);
+- Input scanners;
+- Arrays;
+- Singleton;
+- Symbol & SymbolTable.
+
+Yoran Kerbusch
+- Almost all of the CodeGenVisitor (responsible for turning TJB code files into Jasmin code to make it runnable on computers);
+- Variables (integers, doubles & Strings);
+- If/Else If/Else statements;
+- For- and While loops;
+- Boolean logic (comparisons, and/or, reversals ('!'-character) and priority);
+- Calculations;
+- The TJB class, which automatically reads the TJB code, turns it into Jasmin and runs said code.
+
+Together
+- The TJB.g4 alphabet file.

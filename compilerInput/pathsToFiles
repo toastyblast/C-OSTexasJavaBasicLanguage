@@ -7,7 +7,7 @@ CORRECT FILES:
 - ./compilerInput/correctInput/loops
 - ./compilerInput/correctInput/scanners
 - ./compilerInput/correctInput/scopes
-- ./compilerInput/correctInput/BONUS Pyramid
+- ./compilerInput/correctInput/pyramidProgramExample
 
 INCORRECT FILES:
 - ./compilerInput/incorrectInput/assigningWrong
