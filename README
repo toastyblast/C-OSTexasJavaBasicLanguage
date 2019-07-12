@@ -46,6 +46,8 @@ Additionally, Jasmin code is also generated, found in the folder 'compilerOutput
 
 One can also make their own text file with TJB code and give that to the generator. If the code is incorrect the
     generator will let you know what you did wrong and you can additionally consult the example files.
+    
+Further documentation on this code and the language can be found at: https://docs.google.com/document/d/1xf-kMW62Z1aDjOZ9khCbzTqPMdbuABDkiNMHt5Hlv7w/edit?usp=sharing
 
 --- WHO MADE WHAT ---
 Martin S. Slavov
